@@ -1,0 +1,16 @@
+{
+    "name": "Mpesa",
+    "alias": "mpesa",
+    "description": "Allows you to collect M-Pesa payments (STK Push + Paybill) in Ultimate POS.",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Mpesa\\Providers\\MpesaServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+
+    ],
+    "requires": []
+}

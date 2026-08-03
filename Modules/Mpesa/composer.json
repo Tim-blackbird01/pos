@@ -1,0 +1,19 @@
+{
+    "name": "ultimatepos/mpesa",
+    "description": "M-Pesa Daraja module for Ultimate POS",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Modules\\Mpesa\\": ""
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Mpesa\\Providers\\MpesaServiceProvider"
+            ]
+        }
+    }
+}
