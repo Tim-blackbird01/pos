@@ -76,8 +76,36 @@ include_once 'install_r.php';
 
 Route::middleware(['setData'])->group(function () {
     Route::get('/', function () {
-        return view('welcome');
+        $landingPackages = collect();
+
+        try {
+            if (class_exists(\Modules\Superadmin\Entities\Package::class)) {
+                $landingPackages = \Modules\Superadmin\Entities\Package::listPackages(true);
+            }
+        } catch (\Throwable $exception) {
+            report($exception);
+        }
+
+        return view('welcome', compact('landingPackages'));
     });
+
+    Route::view('/features', 'marketing.features')->name('marketing.features');
+    Route::get('/plans', function () {
+        $landingPackages = collect();
+
+        try {
+            if (class_exists(\Modules\Superadmin\Entities\Package::class)) {
+                $landingPackages = \Modules\Superadmin\Entities\Package::listPackages(true);
+            }
+        } catch (\Throwable $exception) {
+            report($exception);
+        }
+
+        return view('marketing.pricing', compact('landingPackages'));
+    })->name('marketing.pricing');
+    Route::view('/contact', 'marketing.contact')->name('marketing.contact');
+    Route::view('/updates', 'marketing.updates')->name('marketing.updates');
+    Route::view('/about', 'marketing.about')->name('marketing.about');
 
     Auth::routes();
 
