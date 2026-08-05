@@ -105,6 +105,7 @@
             border-radius: 11px;
             font: inherit;
             font-weight: 800;
+            color: var(--ink);
         }
         .primary {
             color: #fff;
@@ -254,7 +255,7 @@
         }
         .band {
             padding: 56px 0;
-            background: var(--ink);
+            background: linear-gradient(135deg, var(--primary) 0%, #62bd96 100%);
             color: #fff;
         }
         .band-inner {
@@ -272,51 +273,74 @@
         }
         .band p {
             max-width: 570px;
-            color: #c8d2e7;
+            color: #f2f8f2;
             line-height: 1.6;
         }
         .band .button {
             flex: 0 0 auto;
             color: var(--ink);
-            background: var(--mint);
+            background: #fff;
+            border-color: transparent;
+            box-shadow: 0 14px 30px rgba(29, 95, 61, 0.16);
         }
-        .footer {
-            padding: 44px 0 27px;
-            color: #aeb9d0;
-            background: #0d1629;
+        .band .button:hover {
+            background: #e3f5e8;
+            color: var(--ink);
+            transform: translateY(-1px);
+            box-shadow: 0 16px 34px rgba(29, 95, 61, 0.18);
         }
-        .footer-grid {
+        .site-footer {
+            padding: 64px 0 23px;
+            color: #71809a;
+            background: linear-gradient(112deg, #f5f6fe, #f7fbfa);
+            border-top: 1px solid #e8ecf4;
+        }
+        .site-footer .brand {
+            color: #111c35;
+        }
+        .site-footer .accent {
+            color: var(--primary);
+        }
+        .footer-columns {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 25px;
+            grid-template-columns: 1.45fr 1fr 1fr 1fr;
+            gap: 30px;
         }
-        .footer .brand {
-            color: #fff;
-        }
-        .footer p,
-        .footer a {
-            color: #aeb9d0;
-            font-size: 13px;
+        .footer-intro p {
+            max-width: 315px;
+            color: #aeb8ce;
+            font-size: 14px;
             line-height: 1.6;
+            margin: 18px 0 0;
         }
-        .footer a {
-            display: block;
-            margin: 7px 0;
-        }
-        .footer a:hover {
-            color: var(--mint);
-        }
-        .footer h4 {
-            margin: 4px 0 12px;
-            color: #fff;
+        .footer-columns h4 {
+            margin: 5px 0 13px;
+            color: #111c35;
             font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
-        .legal {
-            margin-top: 30px;
-            padding-top: 16px;
-            border-top: 1px solid #ffffff18;
-            color: #8190ad;
+        .footer-columns a {
+            display: block;
+            margin: 9px 0;
+            color: #71809a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        .footer-columns a:hover {
+            color: var(--primary);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 44px;
+            padding-top: 18px;
+            color: #8895b2;
             font-size: 12px;
+            border-top: 1px solid #ffffff17;
+            flex-wrap: wrap;
         }
         .plans {
             display: grid;
@@ -695,36 +719,44 @@
         </nav>
     </header>
     <main>@yield ('content')</main>
-    <footer class="footer">
+    <footer class="site-footer" id="start">
         <div class="shell">
-            <div class="footer-grid">
-                <div>
+            <div class="footer-columns">
+                <div class="footer-intro">
                     <a class="brand" href="{{ url('/') }}"
                         ><span class="mark"
                             ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
                                 <path d="M8 15h3m2 0h3" />
                             </svg></span
-                        >CraftSalesPOS</a
+                        >CraftSales<span class="accent">POS</span></a
                     >
-                    <p>Clear, capable tools for the businesses that keep communities moving.</p>
+                    <p>A clear point-of-sale workspace for selling, stocking, serving and growing with confidence.</p>
                 </div>
                 <div>
-                    <h4>Explore</h4>
-                    <a href="{{ route('marketing.features') }}">Features</a
+                    <h4>Product</h4>
+                    <a href="{{ url('/') }}#solutions">Solutions</a
+                    ><a href="{{ route('marketing.features') }}">Features</a
                     ><a href="{{ route('marketing.pricing') }}">Pricing</a
-                    ><a href="{{ route('marketing.about') }}">About</a>
+                    ><a href="{{ route('marketing.updates') }}">Updates</a>
                 </div>
                 <div>
-                    <h4>Connect</h4>
-                    <a href="{{ route('marketing.contact') }}">Contact</a
-                    ><a href="{{ route('marketing.updates') }}">Updates</a
-                    ><a href="{{ route('login') }}">Sign in</a>
+                    <h4>Company</h4>
+                    <a href="{{ route('marketing.about') }}">About</a
+                    ><a href="{{ route('marketing.contact') }}">Contact</a
+                    ><a href="{{ route('business.getRegister') }}">Get started</a>
+                </div>
+                <div>
+                    <h4>Account</h4>
+                    <a href="{{ route('login') }}">Sign in</a
+                    ><a href="{{ route('business.getRegister') }}">Create workspace</a>
                 </div>
             </div>
-            <div class="legal">
-                &copy; {{ date('Y') }} {{ config('app.name', 'CraftSalesPOS') }}. Built for the work
-                behind every good sale.
+            <div class="footer-bottom">
+                <span
+                    >&copy; {{ date('Y') }} {{ config('app.name', 'CraftSalesPOS') }}. All rights
+                    reserved.</span
+                >
             </div>
         </div>
     </footer>
