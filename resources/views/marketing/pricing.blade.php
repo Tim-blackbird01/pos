@@ -61,7 +61,10 @@
             @endforelse
         </div>
     </section>
-    <section class="band" style="background: linear-gradient(180deg, #359060 0%, #207152 50%, #1B6047 100%);">
+    <section
+        class="band"
+        style="background: linear-gradient(180deg, #359060 0%, #207152 50%, #1b6047 100%)"
+    >
         <div class="shell band-inner">
             <div>
                 <h2>Questions before you choose?</h2>

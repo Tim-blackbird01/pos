@@ -293,54 +293,51 @@
             padding: 64px 0 23px;
             color: #71809a;
             background: linear-gradient(112deg, #f5f6fe, #f7fbfa);
-            border-top: 1px solid #e8ecf4;
+            border-top: 1px solid var(--line);
         }
         .site-footer .brand {
-            color: #111c35;
+            color: var(--ink);
         }
         .site-footer .accent {
             color: var(--primary);
         }
         .footer-columns {
             display: grid;
-            grid-template-columns: 1.45fr 1fr 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1.65fr repeat(3, 1fr);
+            gap: 34px;
         }
         .footer-intro p {
-            max-width: 315px;
-            color: #aeb8ce;
+            max-width: 290px;
+            margin: 17px 0 20px;
             font-size: 14px;
-            line-height: 1.6;
-            margin: 18px 0 0;
+            line-height: 1.65;
         }
         .footer-columns h4 {
-            margin: 5px 0 13px;
-            color: #111c35;
-            font-size: 13px;
+            margin: 5px 0 15px;
+            color: var(--ink);
+            font-size: 14px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
         }
         .footer-columns a {
             display: block;
-            margin: 9px 0;
+            width: max-content;
+            max-width: 100%;
+            margin: 0 0 14px;
             color: #71809a;
-            font-size: 13px;
-            line-height: 1.7;
+            font-size: 14px;
         }
         .footer-columns a:hover {
-            color: var(--primary);
+            color: var(--green);
         }
         .footer-bottom {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            margin-top: 44px;
-            padding-top: 18px;
-            color: #8895b2;
+            gap: 18px;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #dfe5ed;
             font-size: 12px;
-            border-top: 1px solid #ffffff17;
-            flex-wrap: wrap;
         }
         .plans {
             display: grid;
@@ -657,6 +654,25 @@
             }
             .mission {
                 grid-template-columns: 1fr;
+            }
+            .site-footer {
+                padding-top: 46px;
+            }
+            .footer-columns {
+                grid-template-columns: 1fr 1fr;
+                gap: 28px 22px;
+            }
+            .footer-intro {
+                grid-column: span 2;
+                grid-row: auto;
+            }
+            .footer-columns > div:last-child {
+                grid-column: auto;
+            }
+            .footer-bottom {
+                align-items: flex-start;
+                flex-direction: column;
+                margin-top: 34px;
             }
         }
     </style>
