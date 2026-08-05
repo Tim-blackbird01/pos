@@ -1,6 +1,35 @@
-@extends('marketing.layout')
-@section('title', 'Updates')
-@section('content')
-<section class="page-hero"><div class="shell"><span class="eyebrow">Product notes and practical ideas</span><h1>News for businesses that keep moving.</h1><p>Product releases, operational insights and the details that help your team get more from its workspace.</p></div></section>
-<section class="shell section"><div class="post-grid"><article class="post large"><span class="tag">Featured update</span><h2>A clearer way to coordinate every location.</h2><p>Explore the principles behind a calmer view of sales, stock and team activity across the places your business operates.</p><a href="{{ route('marketing.features') }}">Explore the features &rarr;</a></article><div style="display:grid;gap:18px"><article class="post"><span class="tag">Operations</span><h3>Close the day with more context.</h3><p>Small reporting habits that make weekly planning feel much less like a scramble.</p><a href="{{ route('marketing.features') }}">Read more &rarr;</a></article><article class="post"><span class="tag">Security</span><h3>Access that reflects real roles.</h3><p>A practical approach to giving each teammate the access they need and no more.</p><a href="{{ route('marketing.contact') }}">Ask a question &rarr;</a></article></div></div></section>
+@extends ('marketing.layout')
+@section ('title', 'Updates')
+@section ('content')
+    <section class="page-hero">
+        <div class="shell">
+            <span class="eyebrow">Product notes and practical ideas</span>
+            <h1>News for businesses that keep moving.</h1>
+            <p>Product releases, operational insights and the details that help your team get more from its workspace.</p>
+        </div>
+    </section>
+    <section class="shell section">
+        <div class="post-grid">
+            <article class="post large">
+                <span class="tag">Featured update</span>
+                <h2>A clearer way to coordinate every location.</h2>
+                <p>Explore the principles behind a calmer view of sales, stock and team activity across the places your business operates.</p>
+                <a href="{{ route('marketing.features') }}">Explore the features &rarr;</a>
+            </article>
+            <div style="display: grid; gap: 18px">
+                <article class="post">
+                    <span class="tag">Operations</span>
+                    <h3>Close the day with more context.</h3>
+                    <p>Small reporting habits that make weekly planning feel much less like a scramble.</p>
+                    <a href="{{ route('marketing.features') }}">Read more &rarr;</a>
+                </article>
+                <article class="post">
+                    <span class="tag">Security</span>
+                    <h3>Access that reflects real roles.</h3>
+                    <p>A practical approach to giving each teammate the access they need and no more.</p>
+                    <a href="{{ route('marketing.contact') }}">Ask a question &rarr;</a>
+                </article>
+            </div>
+        </div>
+    </section>
 @endsection

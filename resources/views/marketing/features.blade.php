@@ -1,7 +1,58 @@
-@extends('marketing.layout')
-@section('title', 'Features')
-@section('content')
-<section class="page-hero"><div class="shell"><span class="eyebrow">Enterprise-grade control, without the drag</span><h1>Everything your business needs to move with confidence.</h1><p>One connected workspace for checkout, stock, customers, teams and the decisions that keep your day on track.</p></div></section>
-<section class="shell section"><div class="grid-3"><article class="card"><span class="icon">$</span><h3>Checkout that keeps pace</h3><p>Move from cart to payment smoothly, with the flexibility to support the way your customers prefer to buy.</p></article><article class="card"><span class="icon mint">#</span><h3>Stock you can trust</h3><p>See what is available, what is moving and what needs attention before a missing item becomes a lost sale.</p></article><article class="card"><span class="icon gold">+</span><h3>Customers remembered</h3><p>Build better service with the details, history and follow-up context your team needs at the counter.</p></article><article class="card dark"><span class="icon">01</span><h3>Multi-location clarity</h3><p>Bring stock, people and performance together across every location without losing the local detail.</p></article><article class="card"><span class="icon">%</span><h3>Reports that answer back</h3><p>Turn the activity of a busy day into useful signals for sales, payments, profit and purchasing.</p></article><article class="card"><span class="icon mint">*</span><h3>Permissioned teamwork</h3><p>Give each role the access it needs while keeping business data purposeful, organised and secure.</p></article></div></section>
-<section class="band"><div class="shell band-inner"><div><h2>Built for the people at the counter and the people planning what comes next.</h2><p>CraftSalesPOS gives both groups the same dependable picture of the business.</p></div><a class="button" href="{{ route('business.getRegister') }}">Start your workspace &rarr;</a></div></section>
+@extends ('marketing.layout')
+@section ('title', 'Features')
+@section ('content')
+    <section class="page-hero">
+        <div class="shell">
+            <span class="eyebrow">Enterprise-grade control, without the drag</span>
+            <h1>Everything your business needs to move with confidence.</h1>
+            <p>One connected workspace for checkout, stock, customers, teams and the decisions that keep your day on track.</p>
+        </div>
+    </section>
+    <section class="shell section">
+        <div class="grid-3">
+            <article class="card">
+                <span class="icon">$</span>
+                <h3>Checkout that keeps pace</h3>
+                <p>Move from cart to payment smoothly, with the flexibility to support the way your customers prefer to buy.</p>
+            </article>
+            <article class="card">
+                <span class="icon mint">#</span>
+                <h3>Stock you can trust</h3>
+                <p>See what is available, what is moving and what needs attention before a missing item becomes a lost sale.</p>
+            </article>
+            <article class="card">
+                <span class="icon gold">+</span>
+                <h3>Customers remembered</h3>
+                <p>Build better service with the details, history and follow-up context your team needs at the counter.</p>
+            </article>
+            <article class="card dark">
+                <span class="icon">01</span>
+                <h3>Multi-location clarity</h3>
+                <p>Bring stock, people and performance together across every location without losing the local detail.</p>
+            </article>
+            <article class="card">
+                <span class="icon">%</span>
+                <h3>Reports that answer back</h3>
+                <p>Turn the activity of a busy day into useful signals for sales, payments, profit and purchasing.</p>
+            </article>
+            <article class="card">
+                <span class="icon mint">*</span>
+                <h3>Permissioned teamwork</h3>
+                <p>Give each role the access it needs while keeping business data purposeful, organised and secure.</p>
+            </article>
+        </div>
+    </section>
+    <section class="band">
+        <div class="shell band-inner">
+            <div>
+                <h2>
+                    Built for the people at the counter and the people planning what comes next.
+                </h2>
+                <p>CraftSalesPOS gives both groups the same dependable picture of the business.</p>
+            </div>
+            <a class="button" href="{{ route('business.getRegister') }}"
+                >Start your workspace &rarr;</a
+            >
+        </div>
+    </section>
 @endsection
