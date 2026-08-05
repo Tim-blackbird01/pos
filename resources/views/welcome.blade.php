@@ -59,7 +59,7 @@
                 >{{ config('app.name', 'CraftSalesPOS') }}</a
             >
             <div class="navlinks">
-                <a href="#solutions">Solutions</a
+                <a href="{{ route('marketing.industries') }}">Industries</a
                 ><a href="{{ route('marketing.features') }}">Features</a
                 ><a href="{{ route('marketing.pricing') }}">Pricing</a
                 ><a href="{{ route('marketing.about') }}">About</a
@@ -90,7 +90,7 @@
             </button>
             <div class="mobile-menu" id="mobile-nav" aria-hidden="true">
                 <div class="navlinks">
-                    <a href="#solutions">Solutions</a
+                    <a href="{{ route('marketing.industries') }}">Industries</a
                     ><a href="{{ route('marketing.features') }}">Features</a
                     ><a href="{{ route('marketing.pricing') }}">Pricing</a
                     ><a href="{{ route('marketing.about') }}">About</a
@@ -577,7 +577,7 @@
                 </div>
                 <div>
                     <h4>Product</h4>
-                    <a href="#solutions">Solutions</a
+                    <a href="{{ route('marketing.industries') }}">Industries</a
                     ><a href="{{ route('marketing.features') }}">Features</a
                     ><a href="{{ route('marketing.pricing') }}">Pricing</a
                     ><a href="{{ route('marketing.updates') }}">Updates</a>

@@ -90,6 +90,7 @@ Route::middleware(['setData'])->group(function () {
     });
 
     Route::view('/features', 'marketing.features')->name('marketing.features');
+    Route::view('/industries', 'marketing.industries')->name('marketing.industries');
     Route::get('/plans', function () {
         $landingPackages = collect();
 

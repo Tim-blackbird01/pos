@@ -49,11 +49,11 @@
             z-index: 5;
         }
         .nav {
-            min-height: 72px;
+            min-height: 76px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 22px;
         }
         .brand {
             display: inline-flex;
@@ -76,21 +76,27 @@
         .mark svg {
             width: 20px;
         }
-        .links,
-        .actions {
+        .navlinks {
             display: flex;
-            align-items: center;
-            gap: 22px;
+            gap: 27px;
             color: var(--muted);
-            font-size: 13px;
-            font-weight: 750;
+            font-size: 14px;
+            font-weight: 700;
         }
-        .links a:hover,
-        .actions > a:not(.button):hover {
+        .navlinks a:hover,
+        .signin:hover {
             color: var(--green);
         }
-        .actions > a.button:hover {
-            color: #fff;
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 750;
+        }
+        .signin {
+            color: var(--muted);
+            padding: 10px 6px;
         }
         .active {
             color: var(--green) !important;
@@ -99,8 +105,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 11px 16px;
+            gap: 9px;
+            padding: 12px 17px;
             border: 1px solid transparent;
             border-radius: 11px;
             font: inherit;
@@ -115,40 +121,45 @@
         .primary:hover {
             background: #1d5f3d;
         }
-        .lang {
+        .language {
             position: relative;
         }
-        .lang summary {
+        .language summary {
             cursor: pointer;
             list-style: none;
+            padding: 9px 7px;
+            color: var(--muted);
         }
-        .lang summary::-webkit-details-marker {
+        .language summary::-webkit-details-marker {
             display: none;
         }
-        .lang summary:after {
+        .language summary:after {
             content: 'v';
             margin-left: 4px;
             font-size: 10px;
         }
-        .lang div {
+        .language-menu {
             position: absolute;
             right: 0;
-            top: 26px;
-            width: 170px;
-            max-height: 260px;
+            top: 38px;
+            width: 178px;
+            max-height: 270px;
             overflow: auto;
             padding: 7px;
             border: 1px solid var(--line);
-            border-radius: 11px;
+            border-radius: 12px;
             background: #fff;
-            box-shadow: 0 15px 32px #1d2c4b24;
+            box-shadow: 0 16px 35px #1b294520;
         }
-        .lang a {
+        .language-menu a {
             display: block;
-            padding: 8px;
-            border-radius: 7px;
+            padding: 8px 9px;
+            border-radius: 8px;
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 650;
         }
-        .lang a:hover {
+        .language-menu a:hover {
             color: var(--green);
             background: #e4f6ea;
         }
@@ -689,8 +700,11 @@
                     </svg></span
                 >CraftSalesPOS</a
             >
-            <nav class="links">
-                <a href="{{ url('/') }}#solutions">Solutions</a
+            <div class="navlinks">
+                <a
+                    href="{{ route('marketing.industries') }}"
+                    class="{{ request()->routeIs('marketing.industries') ? 'active' : '' }}"
+                    >Industries</a
                 ><a
                     class="{{ request()->routeIs('marketing.features') ? 'active' : '' }}"
                     href="{{ route('marketing.features') }}"
@@ -712,13 +726,13 @@
                     href="{{ route('marketing.contact') }}"
                     >Contact</a
                 >
-            </nav>
-            <div class="actions">
-                <details class="lang">
+            </div>
+            <div class="nav-actions">
+                <details class="language">
                     <summary>
                         {{ isset($_GET['lang']) && isset(config('constants.langs')[$_GET['lang']]) ? config('constants.langs')[$_GET['lang']]['full_name'] : config('constants.langs')[config('app.locale')]['full_name'] }}
                     </summary>
-                    <div>
+                    <div class="language-menu">
                         @foreach (config('constants.langs') as $key => $language)
                             <a
                                 href="{{ url()->current() }}?lang={{ $key }}"
@@ -727,7 +741,7 @@
                         @endforeach
                     </div>
                 </details>
-                <a href="{{ route('login') }}">Sign in</a
+                <a class="signin" href="{{ route('login') }}">Sign in</a
                 ><a class="button primary" href="{{ route('business.getRegister') }}"
                     >Get started</a
                 >
@@ -751,7 +765,7 @@
                 </div>
                 <div>
                     <h4>Product</h4>
-                    <a href="{{ url('/') }}#solutions">Solutions</a
+                    <a href="{{ route('marketing.industries') }}">Industries</a
                     ><a href="{{ route('marketing.features') }}">Features</a
                     ><a href="{{ route('marketing.pricing') }}">Pricing</a
                     ><a href="{{ route('marketing.updates') }}">Updates</a>
