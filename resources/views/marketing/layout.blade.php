@@ -11,7 +11,7 @@
         :root {
             --ink: #14203a;
             --muted: #66738a;
-            --blue: #3158d8;
+            --green: #1d5f3d;
             --mint: #aef0d1;
             --paper: #f7f8fc;
             --line: #e0e5ef;
@@ -37,7 +37,7 @@
             text-decoration: none;
         }
         .shell {
-            width: min(1120px, calc(100% - 40px));
+            width: min(1160px, calc(100% - 40px));
             margin: auto;
         }
         .top {
@@ -70,8 +70,8 @@
             place-items: center;
             border-radius: 10px;
             color: #fff;
-            background: linear-gradient(135deg, #355ce1, #7658de);
-            box-shadow: 0 9px 20px #4057bf33;
+            background: linear-gradient(135deg, #1d5f3d, #7fd8b5);
+            box-shadow: 0 9px 20px #1d5f3d33;
         }
         .mark svg {
             width: 20px;
@@ -86,11 +86,14 @@
             font-weight: 750;
         }
         .links a:hover,
-        .actions > a:hover {
-            color: var(--blue);
+        .actions > a:not(.button):hover {
+            color: var(--green);
+        }
+        .actions > a.button:hover {
+            color: #fff;
         }
         .active {
-            color: var(--blue) !important;
+            color: var(--green) !important;
         }
         .button {
             display: inline-flex;
@@ -109,7 +112,7 @@
             box-shadow: 0 10px 22px #14203a24;
         }
         .primary:hover {
-            background: var(--blue);
+            background: #1d5f3d;
         }
         .lang {
             position: relative;
@@ -145,20 +148,20 @@
             border-radius: 7px;
         }
         .lang a:hover {
-            color: var(--blue);
-            background: #edf1ff;
+            color: var(--green);
+            background: #e4f6ea;
         }
         .page-hero {
             padding: 82px 0 55px;
             text-align: center;
-            background: radial-gradient(circle at 50% 0, #e1e8ff 0, transparent 36%), var(--paper);
+            background: radial-gradient(circle at 50% 0, #d7f1e0 0, transparent 36%), var(--paper);
         }
         .eyebrow {
             display: inline-block;
             padding: 7px 10px;
             border-radius: 999px;
-            color: #3857ad;
-            background: #e8edff;
+            color: #1e6b3c;
+            background: #e3f9eb;
             font-size: 11px;
             font-weight: 850;
             letter-spacing: 0.08em;
@@ -225,8 +228,8 @@
             width: 45px;
             height: 45px;
             border-radius: 13px;
-            color: #3558d3;
-            background: #e8edff;
+            color: #1f6a47;
+            background: #daf5e7;
             font-size: 20px;
             font-weight: 900;
         }
@@ -506,12 +509,12 @@
         .post a {
             display: inline-block;
             margin-top: 22px;
-            color: var(--blue);
+            color: #1d5f3d;
             font-size: 13px;
             font-weight: 800;
         }
         .large a {
-            color: var(--mint);
+            color: #1d5f3d;
         }
         .story {
             display: grid;
@@ -524,7 +527,7 @@
             position: relative;
             overflow: hidden;
             border-radius: 20px;
-            background: linear-gradient(145deg, #cfd8ff, #f5f7ff);
+            background: linear-gradient(145deg, #daf3e5, #eff8f1);
         }
         .visual:before {
             content: '';
@@ -544,7 +547,7 @@
             width: 180px;
             height: 113px;
             border-radius: 17px;
-            background: #17284e;
+            background: #1d5f3d;
             box-shadow:
                 0 20px 0 #ffffff9c,
                 0 40px 0 #ffffff73;
@@ -605,7 +608,7 @@
         }
         @media (max-width: 540px) {
             .shell {
-                width: min(100% - 28px, 1120px);
+                width: min(100% - 28px, 1160px);
             }
             .nav {
                 min-height: 64px;
@@ -633,6 +636,7 @@
             }
         }
     </style>
+    @stack ('styles')
 </head>
 <body>
     <header class="top">
@@ -724,5 +728,6 @@
             </div>
         </div>
     </footer>
+    @stack ('scripts')
 </body>
 </html>
