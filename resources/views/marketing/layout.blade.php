@@ -692,14 +692,23 @@
 <body>
     <header class="top">
         <nav class="shell nav">
-            <a class="brand" href="{{ url('/') }}"
-                ><span class="mark"
-                    ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
-                        <path d="M8 15h3m2 0h3" />
-                    </svg></span
-                >CraftSalesPOS</a
-            >
+            <a class="brand" href="{{ url('/') }}">
+                @if (file_exists(public_path('uploads/logo.svg')))
+                    <img
+                        src="/uploads/logo.svg"
+                        alt="{{ config('app.name', 'CraftSalesPOS') }}"
+                        style="height: 38px; width: auto; object-fit: contain"
+                    />
+                @else
+                    <span class="mark"
+                        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
+                            <path d="M8 15h3m2 0h3" />
+                        </svg
+                    ></span>
+                @endif
+                {{ config('app.name', 'CraftSalesPOS') }}
+            </a>
             <div class="navlinks">
                 <a
                     href="{{ route('marketing.industries') }}"
@@ -753,14 +762,23 @@
         <div class="shell">
             <div class="footer-columns">
                 <div class="footer-intro">
-                    <a class="brand" href="{{ url('/') }}"
-                        ><span class="mark"
-                            ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
-                                <path d="M8 15h3m2 0h3" />
-                            </svg></span
-                        >CraftSales<span class="accent">POS</span></a
-                    >
+                    <a class="brand" href="{{ url('/') }}">
+                        @if (file_exists(public_path('uploads/logo.svg')))
+                            <img
+                                src="/uploads/logo.svg"
+                                alt="{{ config('app.name', 'CraftSalesPOS') }}"
+                                style="height: 38px; width: auto; object-fit: contain"
+                            />
+                        @else
+                            <span class="mark"
+                                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
+                                    <path d="M8 15h3m2 0h3" />
+                                </svg
+                            ></span>
+                        @endif
+                        {{ config('app.name', 'CraftSalesPOS') }}
+                    </a>
                     <p>A clear point-of-sale workspace for selling, stocking, serving and growing with confidence.</p>
                 </div>
                 <div>

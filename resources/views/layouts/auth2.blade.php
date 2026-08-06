@@ -80,11 +80,19 @@
                                             <div
                                                 class="lg:tw-w-16 md:tw-h-16 tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-mx-auto tw-overflow-hidden tw-p-0.5 tw-mb-4"
                                             >
-                                                <img
-                                                    src="{{ asset('img/logo-small.png')}}"
-                                                    alt="lock"
-                                                    class="tw-object-fill"
-                                                />
+                                                @if (file_exists(public_path('uploads/logo.svg')))
+                                                    <img
+                                                        src="/uploads/logo.svg"
+                                                        alt="{{ config('app.name', 'POS') }}"
+                                                        class="tw-object-contain tw-w-full tw-h-full"
+                                                    />
+                                                @else
+                                                    <img
+                                                        src="{{ asset('img/logo-small.png')}}"
+                                                        alt="lock"
+                                                        class="tw-object-fill"
+                                                    />
+                                                @endif
                                             </div>
                                         </a>
                                         @if (config('constants.SHOW_REPAIR_STATUS_LOGIN_SCREEN') && Route::has('repair-status'))
