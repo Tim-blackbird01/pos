@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_GMAIL_ENABLED', false) ? 'gmail' : env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,12 +36,12 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
+            'host' => env('MAIL_HOST', env('MAIL_GMAIL_HOST', 'smtp.mailgun.org')),
+            'port' => env('MAIL_PORT', env('MAIL_GMAIL_PORT', 587)),
+            'encryption' => env('MAIL_ENCRYPTION', env('MAIL_GMAIL_ENCRYPTION', 'tls')),
+            'username' => env('MAIL_USERNAME', env('MAIL_GMAIL_USERNAME')),
             'address' => env('MAIL_FROM_ADDRESS'),
-            'password' => env('MAIL_PASSWORD'),
+            'password' => env('MAIL_PASSWORD', env('MAIL_GMAIL_APP_PASSWORD')),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],

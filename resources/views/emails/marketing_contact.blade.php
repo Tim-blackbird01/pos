@@ -32,11 +32,9 @@
             <h1 style="margin: 0; font-size: 26px; line-height: 1.1">
                 New contact request received
             </h1>
-            <p style="
-                    margin: 12px 0 0;
-                    color: rgba(255, 255, 255, 0.86);
-                    max-width: 520px;
-                ">A visitor submitted the contact form on {{ config('app.name', 'CraftSalesPOS') }}.</p>
+            <p
+                style="margin: 12px 0 0; color: rgba(255, 255, 255, 0.86); max-width: 520px"
+            >A visitor submitted the contact form on {{ config('app.name', 'CraftSalesPOS') }}.</p>
         </div>
         <div style="padding: 32px">
             <table
@@ -81,9 +79,9 @@
                             color: #065f46;
                         "
                     >
-                        Topic
+                        Subject
                     </td>
-                    <td style="padding: 12px 0; color: #0f172a">{{ $data['topic'] }}</td>
+                    <td style="padding: 12px 0; color: #0f172a">{{ $data['subject'] }}</td>
                 </tr>
                 <tr>
                     <td
@@ -113,10 +111,9 @@
                 "
             >
                 <p style="margin: 0; font-weight: 700">Reply details</p>
-                <p style="
-                        margin: 8px 0 0;
-                        color: #475569;
-                    ">Respond directly to the sender at {{ $data['email'] }} to continue the conversation.</p>
+                <p
+                    style="margin: 8px 0 0; color: #475569"
+                >Respond directly to the sender at {{ $data['email'] }} to continue the conversation.</p>
             </div>
         </div>
     </div>

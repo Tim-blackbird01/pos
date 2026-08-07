@@ -11,4 +11,20 @@ document.addEventListener('DOMContentLoaded', function () {
             button.textContent = 'Sending...';
         }
     });
+
+    var overlay = document.getElementById('successOverlay');
+    if (overlay && overlay.dataset.success === 'true') {
+        var split = document.querySelector('.split');
+        overlay.classList.add('active');
+        if (split) {
+            split.classList.add('blurred');
+        }
+
+        window.setTimeout(function () {
+            overlay.classList.remove('active');
+            if (split) {
+                split.classList.remove('blurred');
+            }
+        }, 3800);
+    }
 });

@@ -19,7 +19,7 @@ class MarketingContactForm extends Mailable
 
     public function build()
     {
-        return $this->subject('New marketing contact request: ' . $this->data['topic'])
+        return $this->subject('New marketing contact request: ' . $this->data['subject'])
             ->view('emails.marketing_contact')
             ->with('data', $this->data);
     }

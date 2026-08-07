@@ -18,15 +18,27 @@
     </section>
 
     <section class="shell section">
+        <div
+            id="successOverlay"
+            class="success-overlay"
+            data-success="{{ session('success') ? 'true' : 'false' }}"
+        >
+            <div class="success-card">
+                <img
+                    src="{{ asset('images/landing/Check Ok GIF by RainToMe.gif') }}"
+                    alt="Success"
+                    class="success-gif"
+                />
+                <p class="success-copy">{{ session('success') ?? 'Your message was sent successfully!' }}</p>
+            </div>
+        </div>
+
         <div class="split">
             <form class="contact-card" action="{{ route('contact.send') }}" method="POST">
                 @csrf
                 <h2>Send a message</h2>
                 <p class="form-copy">Fill out the form below and our team will get back to you shortly.</p>
 
-                @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
                 @if (session('error'))
                     <div class="alert alert-error">{{ session('error') }}</div>
                 @endif
@@ -68,29 +80,29 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="topic">What can we help with?</label>
-                    <select id="topic" class="form-input" name="topic">
+                    <label for="subject">Subject</label>
+                    <select id="subject" class="form-input" name="subject">
                         <option
                             value="Sales and pricing"
-                            {{ old('topic') === 'Sales and pricing' ? 'selected' : '' }}
+                            {{ old('subject') === 'Sales and pricing' ? 'selected' : '' }}
                         >
                             Sales and pricing
                         </option>
                         <option
                             value="Getting started"
-                            {{ old('topic') === 'Getting started' ? 'selected' : '' }}
+                            {{ old('subject') === 'Getting started' ? 'selected' : '' }}
                         >
                             Getting started
                         </option>
                         <option
                             value="Product question"
-                            {{ old('topic') === 'Product question' ? 'selected' : '' }}
+                            {{ old('subject') === 'Product question' ? 'selected' : '' }}
                         >
                             Product question
                         </option>
                         <option
                             value="Technical support"
-                            {{ old('topic') === 'Technical support' ? 'selected' : '' }}
+                            {{ old('subject') === 'Technical support' ? 'selected' : '' }}
                         >
                             Technical support
                         </option>

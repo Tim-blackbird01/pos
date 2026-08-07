@@ -30,11 +30,9 @@
             "
         >
             <h1 style="margin: 0; font-size: 26px; line-height: 1.1">Thanks for reaching out</h1>
-            <p style="
-                    margin: 12px 0 0;
-                    color: rgba(255, 255, 255, 0.86);
-                    max-width: 520px;
-                ">Hi {{ $data['name'] }}, we received your message and will reply shortly.</p>
+            <p
+                style="margin: 12px 0 0; color: rgba(255, 255, 255, 0.86); max-width: 520px"
+            >Hi {{ $data['name'] }}, we received your message and will reply shortly.</p>
         </div>
         <div style="padding: 32px">
             <p style="margin: 0 0 20px; color: #475569; line-height: 1.7">We received the following information from your contact request. If anything looks incorrect, simply reply to this message and we will update it.</p>
@@ -55,9 +53,9 @@
                             color: #065f46;
                         "
                     >
-                        Topic
+                        Subject
                     </td>
-                    <td style="padding: 12px 0; color: #0f172a">{{ $data['topic'] }}</td>
+                    <td style="padding: 12px 0; color: #0f172a">{{ $data['subject'] }}</td>
                 </tr>
                 <tr>
                     <td
@@ -100,16 +98,14 @@
                 "
             >
                 <p style="margin: 0; font-weight: 700">What happens next</p>
-                <p style="
-                        margin: 8px 0 0;
-                        color: #475569;
-                    ">One of our team members will review your request and send a reply as soon as possible. If you need to make a change, reply to this message.</p>
+                <p
+                    style="margin: 8px 0 0; color: #475569"
+                >One of our team members will review your request and send a reply as soon as possible. If you need to make a change, reply to this message.</p>
             </div>
 
-            <p style="
-                    margin: 30px 0 0;
-                    color: #475569;
-                ">Thanks,<br />{{ config('app.name') }} Team</p>
+            <p
+                style="margin: 30px 0 0; color: #475569"
+            >Thanks,<br />{{ config('app.name') }} Team</p>
         </div>
     </div>
 </div>
