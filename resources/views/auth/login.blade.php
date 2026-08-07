@@ -606,6 +606,7 @@
             box-shadow: 0 8px 18px rgba(65, 170, 74, .24);
             cursor: pointer;
         }
+        .lp-submit:hover { background: linear-gradient(90deg, #4aa64f, #6fcf5e); }
         .lp-register-prompt { margin: 25px 0 0; color: rgba(255,255,255,.86); font-size: 14px; }
         .cs-copyright { position: absolute; bottom: 28px; left: 0; right: 0; margin: 0; color: rgba(255,255,255,.62); font-size: 12px; text-align: center; }
 
