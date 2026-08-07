@@ -60,7 +60,7 @@
                         required
                         name="name"
                         value="{{ old('name') }}"
-                        placeholder="Jane Doe"
+                        placeholder="Your Name"
                         autocomplete="name"
                     />
                 </div>
