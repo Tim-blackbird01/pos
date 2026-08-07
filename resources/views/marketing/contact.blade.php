@@ -1,52 +1,131 @@
 @extends ('marketing.layout')
 @section ('title', 'Contact')
+
+@push ('styles')
+    <link rel="stylesheet" href="{{ asset('css/marketing-contact.css') }}" />
+@endpush
+
+@push ('scripts')
+    <script src="{{ asset('js/marketing-contact.js') }}" defer></script>
+@endpush
+
 @section ('content')
     <section class="page-hero">
         <div class="shell">
-            <span class="eyebrow">We are here to help</span>
-            <h1>Let's make your next business day easier.</h1>
-            <p>Whether you are exploring CraftSalesPOS, planning a rollout or looking for support, start a conversation here.</p>
+            <h1>Your Next Solution Starts Here.</h1>
+            <p>Whether you are exploring CraftSalesPOS, planning a rollout, or looking for support, start a conversation here.</p>
         </div>
     </section>
+
     <section class="shell section">
         <div class="split">
-            <form class="form" action="{{ route('business.getRegister') }}" method="get">
-                <h2 style="margin: 0; letter-spacing: -0.05em">Send a message</h2>
-                <label>Your name<input required name="name" placeholder="Your name" /></label
-                ><label
-                    >Work email<input
+            <form class="contact-card" action="{{ route('contact.send') }}" method="POST">
+                @csrf
+                <h2>Send a message</h2>
+                <p class="form-copy">Fill out the form below and our team will get back to you shortly.</p>
+
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-error">{{ session('error') }}</div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-error">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="form-group">
+                    <label for="name">Your name</label>
+                    <input
+                        id="name"
+                        class="form-input"
+                        required
+                        name="name"
+                        value="{{ old('name') }}"
+                        placeholder="Jane Doe"
+                        autocomplete="name"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Work email</label>
+                    <input
+                        id="email"
+                        class="form-input"
                         required
                         type="email"
                         name="email"
-                        placeholder="name@business.com" /></label
-                ><label
-                    >What can we help with?<select name="topic">
-                        <option>Sales and pricing</option>
-                        <option>Getting started</option>
-                        <option>Product question</option>
-                        <option>Technical support</option>
-                    </select></label
-                ><label
-                    >Your message<textarea
+                        value="{{ old('email') }}"
+                        placeholder="name@business.com"
+                        autocomplete="email"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="topic">What can we help with?</label>
+                    <select id="topic" class="form-input" name="topic">
+                        <option
+                            value="Sales and pricing"
+                            {{ old('topic') === 'Sales and pricing' ? 'selected' : '' }}
+                        >
+                            Sales and pricing
+                        </option>
+                        <option
+                            value="Getting started"
+                            {{ old('topic') === 'Getting started' ? 'selected' : '' }}
+                        >
+                            Getting started
+                        </option>
+                        <option
+                            value="Product question"
+                            {{ old('topic') === 'Product question' ? 'selected' : '' }}
+                        >
+                            Product question
+                        </option>
+                        <option
+                            value="Technical support"
+                            {{ old('topic') === 'Technical support' ? 'selected' : '' }}
+                        >
+                            Technical support
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your message</label>
+                    <textarea
+                        id="message"
+                        class="form-input"
                         name="message"
-                        placeholder="Tell us a little about your business"
-                    ></textarea></label
-                ><button class="button primary" type="submit">
-                    Continue to registration &rarr;
-                </button>
+                        rows="5"
+                        placeholder="Tell us a little about your business..."
+                        >{{ old('message') }}</textarea
+                    >
+                </div>
+
+                <button class="btn btn-primary" type="submit">Send Message &rarr;</button>
             </form>
+
             <aside class="form-note">
                 <h2>A clear place to begin.</h2>
                 <p>We built CraftSalesPOS for practical questions and busy teams. Share the context that matters and we will point you in the right direction.</p>
+
                 <div class="item">
-                    <b>Exploring the platform?</b>Start with your business type, number of locations
-                    and the workflow you want to improve.
+                    <b>Exploring the platform?</b>
+                    Start with your business type, number of locations, and the workflow you want to
+                    improve.
                 </div>
+
                 <div class="item">
-                    <b>Need a quick answer?</b>Sign in to your workspace to access the tools and
-                    information available to your team.
+                    <b>Need a quick answer?</b>
+                    Start a workspace to access the tools and information available to your team.
                 </div>
-                <a class="button primary" href="{{ route('login') }}">Sign in</a>
             </aside>
         </div>
     </section>

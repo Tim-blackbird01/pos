@@ -109,7 +109,7 @@
         <div class="spotlight" data-reveal>
             <div class="spotlight-media">
                 <img
-                    src="{{ asset('images/landing/laptop_no_background.svg') }}"
+                    src="{{ asset('images/landing/laptop.svg') }}"
                     alt="Business owner reviewing CraftSalesPOS reports on a tablet"
                     loading="lazy"
                 />

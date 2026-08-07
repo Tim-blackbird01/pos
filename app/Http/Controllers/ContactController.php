@@ -22,6 +22,9 @@ use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 use Yajra\DataTables\Facades\DataTables;
 use App\Events\ContactCreatedOrModified;
+use App\Mail\MarketingContactForm;
+use App\Mail\MarketingContactAutoReply;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -53,6 +56,44 @@ class ContactController extends Controller
         $this->moduleUtil = $moduleUtil;
         $this->transactionUtil = $transactionUtil;
         $this->notificationUtil = $notificationUtil;
+    }
+
+    public function sendMarketingContact(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:191',
+            'email' => 'required|email|max:191',
+            'topic' => 'required|string|max:191',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        $recipient = config('mail.contact_address');
+        $fromAddress = config('mail.from.address');
+        $fromName = config('mail.from.name', config('app.name'));
+
+        if (empty($recipient)) {
+            return redirect()->back()->with('error', 'Contact recipient email is not configured. Set MAIL_CONTACT_ADDRESS in .env.');
+        }
+
+        if (empty($fromAddress)) {
+            return redirect()->back()->with('error', 'Mail sender address is not configured. Set MAIL_FROM_ADDRESS in .env.');
+        }
+
+        // Send to site recipient (admin)
+        Mail::to($recipient)->send((new MarketingContactForm($data))->from($fromAddress, $fromName));
+
+        // Send confirmation/auto-reply to sender
+        try {
+            Mail::to($data['email'])->send((new MarketingContactAutoReply($data))
+                ->from($fromAddress, $fromName)
+                ->replyTo($recipient, $fromName)
+            );
+        } catch (\Exception $e) {
+            // Don't fail the whole request if auto-reply fails; log and continue
+            report($e);
+        }
+
+        return redirect()->route('marketing.contact')->with('success', 'Thanks — your message has been sent. A confirmation email has been delivered to your inbox.');
     }
 
     /**

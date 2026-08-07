@@ -105,6 +105,7 @@ Route::middleware(['setData'])->group(function () {
         return view('marketing.pricing', compact('landingPackages'));
     })->name('marketing.pricing');
     Route::view('/contact', 'marketing.contact')->name('marketing.contact');
+    Route::post('/contact', [ContactController::class, 'sendMarketingContact'])->name('contact.send');
     Route::view('/updates', 'marketing.updates')->name('marketing.updates');
     Route::view('/about', 'marketing.about')->name('marketing.about');
 
