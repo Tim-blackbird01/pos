@@ -49,7 +49,7 @@
             z-index: 5;
         }
         .nav {
-            min-height: 76px;
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -63,6 +63,7 @@
             font-weight: 850;
             letter-spacing: -0.04em;
         }
+        .top .brand > img { height: 54px !important; width: auto; object-fit: contain; }
         .mark {
             width: 34px;
             height: 34px;
@@ -254,15 +255,15 @@
             background: #fff0c2;
         }
         .dark {
-            background: var(--ink);
+            background: #207152;
             color: #fff;
         }
         .dark p {
-            color: #c7d3e9;
+            color: #d9f1df;
         }
         .dark .icon {
             color: #1e634d;
-            background: var(--mint);
+            background: #daf5e7;
         }
         .band {
             padding: 56px 0;

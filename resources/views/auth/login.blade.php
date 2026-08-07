@@ -1,6 +1,7 @@
 ﻿@extends ('layouts.auth2')
 @section ('title', __('lang_v1.login'))
 @inject ('request', 'Illuminate\Http\Request')
+@section ('standalone_auth', 'true')
 @section ('content')
     @php
         $username = old('username');
@@ -58,13 +59,63 @@
         ];
     @endphp
 
-    <div class="lp-wrap">
-        <div class="lp-stage">
-            <div class="lp-left">
+    <div class="cs-auth-container">
+        <a
+            class="cs-brand-logo"
+            href="{{ url('/') }}"
+            aria-label="{{ config('app.name', 'ultimatePOS') }} home"
+        >
+            @if (file_exists(public_path('uploads/logo.svg')))
+                <img
+                    src="{{ asset('uploads/logo.svg') }}"
+                    alt="{{ config('app.name', 'ultimatePOS') }}"
+                />
+            @else
+                <img
+                    src="{{ asset('img/logo-small.png') }}"
+                    alt="{{ config('app.name', 'ultimatePOS') }}"
+                />
+            @endif
+        </a>
+        <header class="cs-top-nav">
+            @if (config('constants.allow_registration') && !($request->segment(1) == 'business' && $request->segment(2) == 'register'))
+                <a
+                    href="{{ route('business.getRegister') }}@if(!empty(request()->lang)){{'?lang='.request()->lang}}@endif"
+                    class="cs-btn-pill"
+                    >{{ __('business.register') }}</a
+                >
+            @endif
+            @if (Route::has('pricing') && config('app.env') != 'demo')
+                <a
+                    href="{{ action([\Modules\Superadmin\Http\Controllers\PricingController::class, 'index']) }}"
+                    class="cs-nav-link"
+                >
+                    @lang ('superadmin::lang.pricing')
+                </a>
+            @endif
+            <details class="cs-language-menu">
+                <summary class="cs-nav-link">
+                    {{ isset($_GET['lang']) ? config('constants.langs')[$_GET['lang']]['full_name'] : config('constants.langs')[config('app.locale')]['full_name'] }}
+                </summary>
+                <div class="cs-language-list">
+                    @foreach (config('constants.langs') as $key => $val)
+                        <a
+                            href="#"
+                            value="{{ $key }}"
+                            class="change_lang"
+                            >{{ $val['full_name'] }}</a
+                        >
+                    @endforeach
+                </div>
+            </details>
+        </header>
+
+        <div class="cs-split-layout">
+            <div class="cs-left-panel">
                 <div class="lp-brand">
-                    <span class="lp-brand-mark" aria-hidden="true">
-                        <i class="fas fa-cash-register"></i>
-                    </span>
+                    <span class="lp-brand-mark" aria-hidden="true"
+                        ><i class="fas fa-cash-register"></i
+                    ></span>
                     <h1>{{ config('app.name', 'ultimatePOS') }}</h1>
                     <p class="lp-brand-copy">Point of sale, inventory and business management built for every kind of shop, from a single counter to multi-location retail.</p>
                 </div>
@@ -118,116 +169,142 @@
                         </div>
                     </div>
                 @endif
+
+                <div class="cs-bg-squares" aria-hidden="true">
+                    <div class="cs-sq cs-sq-1"></div>
+                    <div class="cs-sq cs-sq-2"></div>
+                    <div class="cs-sq cs-sq-3"></div>
+                    <div class="cs-sq cs-sq-4"></div>
+                    <div class="cs-sq cs-sq-5"></div>
+                    <div class="cs-sq cs-sq-6"></div>
+                    <div class="cs-sq cs-sq-7"></div>
+                    <div class="cs-sq cs-sq-8"></div>
+                    <div class="cs-sq cs-sq-9"></div>
+                    <div class="cs-sq cs-sq-10"></div>
+                    <div class="cs-sq cs-sq-11"></div>
+                    <div class="cs-sq cs-sq-12"></div>
+                </div>
+
+                <div class="cs-dot-grid" aria-hidden="true"></div>
+
+                <div class="cs-wave-bottom" aria-hidden="true">
+                    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+                        <path fill="#6bbd88" fill-opacity="0.85" d="M0,192C280,290 560,110 840,210C1120,310 1300,220 1440,180L1440,320L0,320Z"></path>
+                        <path fill="#124a2f" fill-opacity="1" d="M0,230C320,310 640,180 960,250C1200,290 1360,240 1440,220L1440,320L0,320Z"></path>
+                    </svg>
+                </div>
             </div>
 
-            <div class="lp-divider" aria-hidden="true"></div>
+            <div class="cs-right-panel">
+                <main class="lp-login-card">
+                    <span class="lp-form-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                            <circle cx="10" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </span>
 
-            <div class="lp-right">
-                <span class="lp-form-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
-                        <circle cx="10" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                </span>
-
-                <form method="POST" action="{{ route('login') }}" id="login-form" class="lp-form">
-                    {{ csrf_field() }}
-
-                    <div class="lp-field {{ $errors->has('username') ? 'has-error' : '' }}">
-                        <i class="fas fa-user"></i>
-                        <input
-                            name="username"
-                            required
-                            autofocus
-                            placeholder="@lang('lang_v1.username')"
-                            data-last-active-input=""
-                            id="username"
-                            type="text"
-                            value="{{ $username }}"
-                        />
+                    <div class="lp-form-heading">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to continue to {{ config('app.name', 'ultimatePOS') }}</p>
                     </div>
-                    @if ($errors->has('username'))
-                        <span class="lp-error">{{ $errors->first('username') }}</span>
-                    @endif
 
-                    <div
-                        class="lp-field lp-field-password {{ $errors->has('password') ? 'has-error' : '' }}"
+                    <form
+                        method="POST"
+                        action="{{ route('login') }}"
+                        id="login-form"
+                        class="lp-form"
                     >
-                        <i class="fas fa-lock"></i>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            value="{{ $password }}"
-                            required
-                            placeholder="@lang('lang_v1.password')"
-                        />
-                        <button type="button" id="show_hide_icon" class="lp-eye-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                            </svg>
-                        </button>
-                    </div>
-                    @if ($errors->has('password'))
-                        <span class="lp-error">{{ $errors->first('password') }}</span>
-                    @endif
+                        {{ csrf_field() }}
 
-                    <div class="lp-form-row">
-                        <label class="lp-checkbox">
+                        <div class="lp-field {{ $errors->has('username') ? 'has-error' : '' }}">
+                            <i class="fas fa-user"></i>
                             <input
-                                type="checkbox"
-                                name="remember"
-                                {{ old('remember') ? 'checked' : '' }}
+                                name="username"
+                                required
+                                autofocus
+                                placeholder="@lang('lang_v1.username')"
+                                data-last-active-input=""
+                                id="username"
+                                type="text"
+                                value="{{ $username }}"
                             />
-                            <span class="lp-checkbox-box"><i class="fas fa-check"></i></span>
-                            <span class="lp-checkbox-label">@lang ('lang_v1.remember_me')</span>
-                        </label>
-
-                        @if (config('app.env') != 'demo')
-                            <a href="{{ route('password.request') }}" class="lp-link" tabindex="-1">
-                                <i class="far fa-envelope"></i>
-                                @lang ('lang_v1.forgot_your_password')
-                            </a>
+                        </div>
+                        @if ($errors->has('username'))
+                            <span class="lp-error">{{ $errors->first('username') }}</span>
                         @endif
-                    </div>
 
-                    @if (config('constants.enable_recaptcha'))
-                        <div class="lp-recaptcha">
-                            <div
-                                class="g-recaptcha"
-                                data-sitekey="{{ config('constants.google_recaptcha_key') }}"
-                            ></div>
-                            @if ($errors->has('g-recaptcha-response'))
-                                <span
-                                    class="lp-error"
-                                    >{{ $errors->first('g-recaptcha-response') }}</span
+                        <div
+                            class="lp-field lp-field-password {{ $errors->has('password') ? 'has-error' : '' }}"
+                        >
+                            <i class="fas fa-lock"></i>
+                            <input
+                                id="password"
+                                type="password"
+                                name="password"
+                                value="{{ $password }}"
+                                required
+                                placeholder="@lang('lang_v1.password')"
+                            />
+                            <button type="button" id="show_hide_icon" class="lp-eye-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                    <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                </svg>
+                            </button>
+                        </div>
+                        @if ($errors->has('password'))
+                            <span class="lp-error">{{ $errors->first('password') }}</span>
+                        @endif
+
+                        <div class="lp-form-row">
+                            <label class="lp-checkbox">
+                                <input
+                                    type="checkbox"
+                                    name="remember"
+                                    {{ old('remember') ? 'checked' : '' }}
+                                />
+                                <span class="lp-checkbox-box"><i class="fas fa-check"></i></span>
+                                <span class="lp-checkbox-label">@lang ('lang_v1.remember_me')</span>
+                            </label>
+
+                            @if (config('app.env') != 'demo')
+                                <a
+                                    href="{{ route('password.request') }}"
+                                    class="lp-link"
+                                    tabindex="-1"
                                 >
+                                    <i class="far fa-envelope"></i>
+                                    @lang ('lang_v1.forgot_your_password')
+                                </a>
                             @endif
                         </div>
-                    @endif
 
-                    <button type="submit" class="lp-submit">@lang ('lang_v1.login')</button>
-                </form>
+                        @if (config('constants.enable_recaptcha'))
+                            <div class="lp-recaptcha">
+                                <div
+                                    class="g-recaptcha"
+                                    data-sitekey="{{ config('constants.google_recaptcha_key') }}"
+                                ></div>
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span
+                                        class="lp-error"
+                                        >{{ $errors->first('g-recaptcha-response') }}</span
+                                    >
+                                @endif
+                            </div>
+                        @endif
 
-                @if (!($request->segment(1) == 'business' && $request->segment(2) == 'register'))
+                        <button type="submit" class="lp-submit">@lang ('lang_v1.login')</button>
+                    </form>
                     @if (config('constants.allow_registration'))
-                        <div class="lp-register">
-                            <a
-                                href="{{ route('business.getRegister') }}@if (!empty(request()->lang)) {{ '?lang=' . request()->lang }} @endif"
-                            >
-                                {{ __('business.not_yet_registered') }}
-                                <span
-                                    class="lp-register-accent"
-                                    >{{ __('business.register_now') }}</span
-                                >
-                            </a>
-                        </div>
+                        <p class="lp-register-prompt">{{ __('business.not_yet_registered') }} <a href="{{ route('business.getRegister') }}@if(!empty(request()->lang)){{ '?lang='.request()->lang }}@endif">{{ __('business.register') }}</a></p>
                     @endif
-                @endif
+                </main>
+                <p class="cs-copyright">&copy; {{ date('Y') }} {{ config('app.name', 'ultimatePOS') }}. All rights reserved.</p>
             </div>
         </div>
     </div>
@@ -236,167 +313,258 @@
 @section ('css')
     <style>
         :root {
-            --lp-ink: #0e2242;
-            --lp-line: rgba(255, 255, 255, 0.28);
-            --lp-danger: #ff8080;
+            --cs-green-dark: #124a2f;
+            --cs-green-accent: #48a96b;
+            --cs-bg-light: #f3f5f3;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         html,
         body {
             height: 100%;
+            font-family:
+                'Inter',
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                sans-serif;
+            background-color: var(--cs-green-dark);
+            overflow-x: hidden;
         }
 
-        /* ---------- full-page wrap ---------- */
-        .lp-wrap {
+        .cs-top-nav {
+            position: absolute;
+            top: 24px;
+            right: 48px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .cs-btn-pill {
+            background: #ffffff;
+            color: var(--cs-green-dark);
+            padding: 8px 22px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .cs-nav-link {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+        .cs-brand-logo { position: absolute; top: 25px; left: 48px; z-index: 20; display: block; width: 210px; height: 62px; filter: drop-shadow(0 2px 8px rgba(255, 255, 255, .55)) drop-shadow(0 2px 5px rgba(5, 45, 27, .22)); }
+        .cs-brand-logo img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+        .cs-language-menu { position: relative; }
+        .cs-language-menu summary { list-style: none; cursor: pointer; }
+        .cs-language-menu summary::-webkit-details-marker { display: none; }
+        .cs-language-menu summary::before { content: '▸'; margin-right: 7px; font-size: 11px; }
+        .cs-language-menu[open] summary::before { content: '▾'; }
+        .cs-language-list { position: absolute; right: 0; top: 28px; min-width: 150px; padding: 8px; border-radius: 12px; background: #fff; box-shadow: 0 16px 35px rgba(0, 0, 0, .18); }
+        .cs-language-list a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--cs-green-dark); font-size: 13px; text-decoration: none; }
+        .cs-language-list a:hover { background: #edf8ef; }
+
+        .cs-auth-container {
             position: relative;
             min-height: 100vh;
             width: 100%;
+            background-color: var(--cs-green-dark);
+        }
+        .cs-split-layout {
+            display: grid;
+            grid-template-columns: 44% 56%;
+            min-height: 100vh;
+        }
+
+        .cs-left-panel {
+            background-color: var(--cs-bg-light);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 64px;
             overflow: hidden;
+            border-top-right-radius: 60px;
+        }
+        .lp-brand { position: relative; z-index: 5; max-width: 455px; color: var(--cs-green-dark); }
+        .lp-brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 92px; height: 92px; margin-bottom: 26px; border-radius: 50%; background: linear-gradient(145deg, #5fc46c, #258347); color: #fff; box-shadow: 0 12px 24px rgba(17, 89, 47, .22); font-size: 36px; }
+        .lp-brand h1 { margin: 0 0 12px; color: #104a2e; font-size: clamp(38px, 4vw, 58px); font-weight: 800; letter-spacing: -2px; line-height: 1; }
+        .lp-brand-copy { margin: 0; color: #283a30; font-size: 17px; line-height: 1.8; }
+        .cs-bg-squares {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .cs-sq {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 16px;
+        }
+        .cs-sq-1 {
+            width: 580px;
+            height: 400px;
+            top: -140px;
+            left: -120px;
+            transform: rotate(-16deg);
+            opacity: 0.65;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.02);
+        }
+        .cs-sq-2 {
+            width: 460px;
+            height: 320px;
+            top: 40px;
+            left: -30px;
+            transform: rotate(-10deg);
+            opacity: 0.45;
+        }
+        .cs-sq-3 {
+            width: 260px;
+            height: 260px;
+            top: -30px;
+            left: 260px;
+            transform: rotate(25deg);
+            opacity: 0.3;
+        }
+        .cs-sq-4 {
+            width: 230px;
+            height: 230px;
+            top: 200px;
+            left: 220px;
+            transform: rotate(18deg);
+            opacity: 0.35;
+            background: #f8fafc;
+            border-radius: 20px;
+        }
+        .cs-sq-5 {
+            width: 170px;
+            height: 170px;
+            top: 150px;
+            left: 310px;
+            transform: rotate(32deg);
+            opacity: 0.2;
+            background: #e2e8f0;
+        }
+        .cs-sq-6 {
+            width: 340px;
+            height: 240px;
+            top: 360px;
+            left: 20px;
+            transform: rotate(-14deg);
+            opacity: 0.35;
+        }
+        .cs-sq-7 {
+            width: 210px;
+            height: 210px;
+            top: 380px;
+            left: 280px;
+            transform: rotate(12deg);
+            opacity: 0.25;
+            background: #cbd5e1;
+        }
+        .cs-sq-8 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: 380px;
+            transform: rotate(-8deg);
+            opacity: 0.15;
+            background: #e2e8f0;
+        }
+        .cs-sq-9 {
+            width: 480px;
+            height: 300px;
+            bottom: 40px;
+            left: -100px;
+            transform: rotate(-18deg);
+            opacity: 0.4;
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.015);
+        }
+        .cs-sq-10 {
+            width: 280px;
+            height: 280px;
+            bottom: 80px;
+            left: 150px;
+            transform: rotate(22deg);
+            opacity: 0.28;
+            background: #f1f5f9;
+        }
+        .cs-sq-11 {
+            width: 220px;
+            height: 220px;
+            bottom: -50px;
+            left: -40px;
+            transform: rotate(10deg);
+            opacity: 0.3;
+            background: #e2e8f0;
+        }
+        .cs-sq-12 {
+            width: 260px;
+            height: 260px;
+            bottom: 20px;
+            left: 320px;
+            transform: rotate(-12deg);
+            opacity: 0.18;
+            background: #cbd5e1;
+        }
+
+        .cs-dot-grid {
+            position: absolute;
+            right: 48px;
+            bottom: 110px;
+            width: 110px;
+            height: 90px;
+            background-image: radial-gradient(#2d8350 2.2px, transparent 2.2px);
+            background-size: 14px 14px;
+            opacity: 0.55;
+            z-index: 4;
+        }
+
+        .cs-wave-bottom {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            line-height: 0;
+            z-index: 3;
+        }
+        .cs-wave-bottom svg {
+            width: 100%;
+            height: 150px;
+        }
+
+        .cs-right-panel {
+            position: relative;
+            background: radial-gradient(circle at 45% 38%, #1d7c43 0, #104b2d 43%, #07331f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 100px 32px 72px;
         }
 
-        /* ---------- content stage: text left / divider / borderless form right ---------- */
-        .lp-stage {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 1040px;
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr;
-            align-items: center;
-            gap: 56px;
-            padding: 64px 40px;
-            color: #fff;
-        }
+        .lp-login-card { width: min(100%, 548px); padding: 54px 58px 50px; border: 1px solid rgba(184, 239, 194, .2); border-radius: 26px; background: linear-gradient(145deg, rgba(23, 112, 62, .76), rgba(7, 71, 39, .78)); box-shadow: 0 26px 70px rgba(0, 0, 0, .18); text-align: center; backdrop-filter: blur(10px); }
+        .lp-form-icon { display: inline-flex; align-items: center; justify-content: center; width: 78px; height: 78px; margin-bottom: 17px; border-radius: 50%; background: #f7fbf7; color: #267442; box-shadow: 0 8px 24px rgba(0, 0, 0, .12); }
+        .lp-form-icon svg { width: 48px; height: 48px; }
+        .lp-form-heading { margin-bottom: 28px; color: #fff; }
+        .lp-form-heading h2 { margin: 0 0 7px; color: #fff; font-size: 28px; font-weight: 800; }
+        .lp-form-heading p { margin: 0; color: rgba(255,255,255,.8); font-size: 15px; }
 
-        /* ---------- left column: brand text + demo links ---------- */
-        .lp-left {
-            display: flex;
-            flex-direction: column;
-            gap: 34px;
-        }
-
-        .lp-brand-mark {
-            display: inline-grid;
-            place-items: center;
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            font-size: 22px;
-            margin-bottom: 18px;
-        }
-        .lp-brand h1 {
-            margin: 0 0 12px;
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: 0.01em;
-        }
-        .lp-brand p {
-            margin: 0;
-            max-width: 360px;
-            font-size: 14.5px;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.78);
-        }
-
-        .lp-demo-block {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .lp-demo-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        .lp-demo-label--sub {
-            margin-top: 6px;
-        }
-        .lp-demo-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .lp-demo-list--sub .lp-demo-link {
-            opacity: 0.85;
-        }
-
-        .lp-demo-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            transition:
-                background 0.15s ease,
-                transform 0.15s ease;
-        }
-        .lp-demo-link i {
-            font-size: 11px;
-        }
-        .lp-demo-link:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: translateY(-1px);
-            color: #fff;
-            text-decoration: none;
-        }
-
-        /* ---------- vertical divider ---------- */
-        .lp-divider {
-            align-self: stretch;
-            width: 1px;
-            background: linear-gradient(
-                to bottom,
-                transparent,
-                var(--lp-line) 15%,
-                var(--lp-line) 85%,
-                transparent
-            );
-        }
-
-        /* ---------- right column: borderless / background-less form ---------- */
-        .lp-right {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            max-width: 340px;
-        }
-
-        .lp-form-icon {
-            align-self: flex-start;
-            display: grid;
-            place-items: center;
-            width: 56px;
-            height: 56px;
-            margin-bottom: 6px;
-            color: #fff;
-        }
-        .lp-form-icon svg {
-            width: 44px;
-            height: 44px;
-        }
-
+        /* keep existing form styles but adapt colors for right panel */
         .lp-form {
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
-
         .lp-field {
             display: flex;
             align-items: center;
@@ -404,211 +572,56 @@
             height: 46px;
             padding: 0 16px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition:
-                background 0.15s ease,
-                border-color 0.15s ease;
+            background: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #536159;
+            text-align: left;
         }
-        .lp-field:focus-within {
-            background: rgba(255, 255, 255, 0.22);
-            border-color: rgba(255, 255, 255, 0.55);
-        }
-        .lp-field.has-error {
-            border-color: var(--lp-danger);
-        }
-        .lp-field i {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.75);
-            width: 14px;
-            text-align: center;
-        }
-
         .lp-field input {
             flex: 1;
             height: 100%;
             border: none;
             outline: none;
             background: transparent;
-            color: #fff;
-            font-size: 13.5px;
-            font-weight: 500;
+            color: #1a2b20;
         }
-        .lp-field input::placeholder {
-            color: rgba(255, 255, 255, 0.65);
-        }
-
-        .lp-field-password {
-            position: relative;
-            padding-right: 6px;
-        }
-        .lp-eye-btn {
-            flex: 0 0 auto;
-            width: 30px;
-            height: 30px;
-            display: grid;
-            place-items: center;
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .lp-eye-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        .lp-eye-btn svg {
-            width: 17px;
-            height: 17px;
-        }
-
-        .lp-error {
-            display: block;
-            margin-top: -6px;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--lp-danger);
-            padding-left: 16px;
-        }
-
-        .lp-form-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 2px;
-        }
-
-        .lp-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .lp-checkbox input {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .lp-checkbox-box {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            border: 1.5px solid rgba(255, 255, 255, 0.55);
-            display: grid;
-            place-items: center;
-            color: transparent;
-            transition:
-                background 0.15s ease,
-                border-color 0.15s ease,
-                color 0.15s ease;
-        }
-        .lp-checkbox-box i {
-            font-size: 9px;
-        }
-        .lp-checkbox input:checked + .lp-checkbox-box {
-            background: #fff;
-            border-color: #fff;
-            color: #1a4fa0;
-        }
-        .lp-checkbox-label {
-            font-size: 12.5px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .lp-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-        }
-        .lp-link i {
-            font-size: 11px;
-        }
-        .lp-link:hover {
-            color: #fff;
-            text-decoration: underline;
-        }
-
-        .lp-recaptcha {
-            margin-top: 2px;
-        }
-
+        .lp-field input::placeholder { color: #7b857e; }
+        .lp-eye-btn { display: inline-flex; width: 23px; height: 23px; padding: 0; border: 0; background: transparent; color: #5d6861; cursor: pointer; }
+        .lp-eye-btn svg { width: 100%; height: 100%; }
+        .lp-form-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #fff; font-size: 13px; text-align: left; }
+        .lp-checkbox { display: inline-flex; align-items: center; gap: 7px; margin: 0; cursor: pointer; }
+        .lp-checkbox input { position: absolute; opacity: 0; }
+        .lp-checkbox-box { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border: 1px solid rgba(255,255,255,.8); border-radius: 4px; font-size: 9px; }
+        .lp-checkbox input:not(:checked) + .lp-checkbox-box i { display: none; }
+        .lp-link, .lp-register-prompt a { color: #86dc84; font-weight: 700; text-decoration: none; }
+        .lp-link:hover, .lp-register-prompt a:hover { color: #c4f6b9; }
+        .lp-error { color: #ffd5d5; font-size: 12px; text-align: left; }
         .lp-submit {
             height: 46px;
-            margin-top: 6px;
             border: none;
             border-radius: 999px;
-            background: #fff;
-            color: #1a4fa0;
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition:
-                transform 0.12s ease,
-                box-shadow 0.12s ease,
-                filter 0.12s ease;
-            box-shadow: 0 14px 28px -12px rgba(0, 0, 0, 0.4);
-        }
-        .lp-submit:hover {
-            filter: brightness(0.96);
-            transform: translateY(-1px);
-        }
-        .lp-submit:active {
-            transform: translateY(0);
-        }
-
-        .lp-register {
-            margin-top: 6px;
-            font-size: 12.5px;
-        }
-        .lp-register a {
-            color: rgba(255, 255, 255, 0.75);
-            text-decoration: none;
-        }
-        .lp-register-accent {
-            font-weight: 700;
+            background: linear-gradient(90deg, #57b95d, #8bd977);
             color: #fff;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(65, 170, 74, .24);
+            cursor: pointer;
         }
-        .lp-register a:hover .lp-register-accent {
-            text-decoration: underline;
-        }
+        .lp-register-prompt { margin: 25px 0 0; color: rgba(255,255,255,.86); font-size: 14px; }
+        .cs-copyright { position: absolute; bottom: 28px; left: 0; right: 0; margin: 0; color: rgba(255,255,255,.62); font-size: 12px; text-align: center; }
 
-        /* ---------- responsive ---------- */
-        @media (max-width: 860px) {
-            .lp-stage {
+        @media (max-width: 900px) {
+            .cs-split-layout {
                 grid-template-columns: 1fr;
-                gap: 36px;
-                padding: 56px 24px;
-                max-width: 460px;
             }
-            .lp-divider {
-                width: 100%;
-                height: 1px;
-                background: linear-gradient(
-                    to right,
-                    transparent,
-                    var(--lp-line) 15%,
-                    var(--lp-line) 85%,
-                    transparent
-                );
+            .cs-left-panel {
+                display: none;
+                border-top-right-radius: 0;
             }
-            .lp-right {
-                max-width: none;
-            }
-            .lp-brand p {
-                max-width: none;
-            }
+            .cs-right-panel { min-height: 100vh; padding: 92px 20px 68px; }
+            .lp-login-card { padding: 38px 28px; }
+            .cs-top-nav { top: 20px; right: 20px; gap: 14px; }
+            .cs-brand-logo { top: 14px; left: 16px; width: 62px; height: 62px; padding: 6px; isolation: isolate; border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none; }
+            .cs-brand-logo::before { content: ''; position: absolute; z-index: -1; inset: -13px; background: radial-gradient(circle, rgba(255, 255, 255, .92) 0, rgba(236, 255, 239, .52) 36%, transparent 72%); filter: blur(11px); }
         }
     </style>
 @endsection
