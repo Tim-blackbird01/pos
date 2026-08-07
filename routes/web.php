@@ -108,6 +108,8 @@ Route::middleware(['setData'])->group(function () {
     Route::post('/contact', [ContactController::class, 'sendMarketingContact'])->name('contact.send');
     Route::view('/updates', 'marketing.updates')->name('marketing.updates');
     Route::view('/about', 'marketing.about')->name('marketing.about');
+    Route::view('/terms', 'marketing.terms')->name('marketing.terms');
+    Route::view('/privacy', 'marketing.privacy')->name('marketing.privacy');
 
     Auth::routes();
 
