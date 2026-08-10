@@ -8,6 +8,8 @@
 <style>
 :root { --bg-white:#f4f7f5; --green-dark:#0f3d26; --green-mid:#165334; --green-accent:#48a96b; --green-glow:#82e28a; --green-lime:#52c26d; --text-dark:#1f2937; --text-muted:#4b5563; --card-bg:rgba(255,255,255,0.95); --border-color:#e2e8f0; }
 *{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:96px}
+:target{scroll-margin-top:110px}
 body{font-family:'Inter',ui-sans-serif,system-ui,-apple-system,sans-serif;background-color:var(--bg-white);color:var(--text-dark);line-height:1.6;overflow-x:hidden}
 .bg-wrapper{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;overflow:hidden;background-color:var(--bg-white)}
 .green-section{position:absolute;top:-20%;right:-10%;width:85%;height:140%;background:radial-gradient(circle at 80% 20%,#175a38 0%,#0c331f 70%,#072214 100%);transform:rotate(-38deg);transform-origin:top left;border-top-left-radius:40px;box-shadow:-15px 15px 40px rgba(0,0,0,.2)}
@@ -44,6 +46,8 @@ body{font-family:'Inter',ui-sans-serif,system-ui,-apple-system,sans-serif;backgr
 .contact-box p{color:rgba(255,255,255,.85);font-size:14px;margin-bottom:8px}
 .contact-box a{color:var(--green-glow);text-decoration:none;font-weight:600}
 @media(max-width:992px){.layout-grid{grid-template-columns:1fr}.sidebar-toc{display:none}.doc-header h1{font-size:32px}}
+@media(max-width:760px){.container{padding:28px 16px 60px}.doc-header{margin-bottom:32px;padding-bottom:20px}.doc-meta{flex-wrap:wrap;gap:10px}.doc-meta span{display:inline-flex;align-items:center;gap:8px}.data-grid{grid-template-columns:1fr}.section-card{padding:28px}.data-card{padding:18px}.contact-box{padding:24px}.toc-title{font-size:13px}.toc-list a{font-size:13px;padding:8px 10px}.custom-list{gap:8px}.custom-list li{padding-left:22px}.feature-grid{grid-template-columns:1fr}.layout-grid{gap:24px}}
+@media(max-width:540px){.container{padding:22px 14px 50px}.doc-header{padding-bottom:18px}.doc-header h1{font-size:28px}.doc-meta{gap:8px}.doc-meta span{font-size:13px}.section-card{padding:22px}.contact-box{padding:20px}.toc-title{display:none}.toc-list{display:none}.layout-grid{gap:18px}}
 </style>
 @endpush
 

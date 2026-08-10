@@ -20,6 +20,12 @@
         * {
             box-sizing: border-box;
         }
+        html {
+            scroll-padding-top: 96px;
+        }
+        :target {
+            scroll-margin-top: 110px;
+        }
         body {
             margin: 0;
             color: var(--ink);
@@ -46,9 +52,14 @@
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 5;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 100;
+            transition: box-shadow .18s ease;
         }
         .nav {
+            position: relative;
             min-height: 90px;
             display: flex;
             align-items: center;
@@ -163,6 +174,76 @@
         .language-menu a:hover {
             color: var(--green);
             background: #e4f6ea;
+        }
+        .nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: #fff;
+            cursor: pointer;
+            transition: border-color .2s ease, transform .2s ease;
+        }
+        .nav-toggle:hover {
+            border-color: var(--line);
+        }
+        .nav-toggle span {
+            position: relative;
+            width: 20px;
+            height: 2px;
+            background: var(--ink);
+            display: inline-block;
+        }
+        .nav-toggle span::before,
+        .nav-toggle span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 20px;
+            height: 2px;
+            background: var(--ink);
+            transition: transform .2s ease;
+        }
+        .nav-toggle span::before {
+            top: -6px;
+        }
+        .nav-toggle span::after {
+            top: 6px;
+        }
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            flex-direction: column;
+            gap: 18px;
+            padding: 20px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--line);
+            box-shadow: 0 16px 35px rgba(20, 32, 58, 0.08);
+            z-index: 4;
+        }
+        .mobile-menu.open {
+            display: flex;
+        }
+        .mobile-menu .navlinks {
+            flex-direction: column;
+            gap: 18px;
+        }
+        .mobile-menu .nav-actions {
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+        }
+        .mobile-menu .button {
+            width: 100%;
+        }
+        .mobile-menu .signin {
+            padding-left: 0;
         }
         .page-hero {
             padding: 82px 0 55px;
@@ -610,8 +691,12 @@
             min-height: 190px;
         }
         @media (max-width: 820px) {
-            .links {
+            .top .nav > .navlinks,
+            .top .nav > .nav-actions {
                 display: none;
+            }
+            .nav-toggle {
+                display: inline-flex;
             }
             .grid-3,
             .plans {
@@ -756,10 +841,45 @@
                     >Get started</a
                 >
             </div>
+            <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation">
+                <span></span>
+            </button>
+            <div class="mobile-menu" aria-hidden="true">
+                <div class="navlinks">
+                    <a href="{{ route('marketing.industries') }}" class="{{ request()->routeIs('marketing.industries') ? 'active' : '' }}">Industries</a>
+                    <a href="{{ route('marketing.features') }}" class="{{ request()->routeIs('marketing.features') ? 'active' : '' }}">Features</a>
+                    <a href="{{ route('marketing.pricing') }}" class="{{ request()->routeIs('marketing.pricing') ? 'active' : '' }}">Pricing</a>
+                    <a href="{{ route('marketing.about') }}" class="{{ request()->routeIs('marketing.about') ? 'active' : '' }}">About</a>
+                    <a href="{{ route('marketing.updates') }}" class="{{ request()->routeIs('marketing.updates') ? 'active' : '' }}">Updates</a>
+                    <a href="{{ route('marketing.contact') }}" class="{{ request()->routeIs('marketing.contact') ? 'active' : '' }}">Contact</a>
+                </div>
+                <div class="nav-actions">
+                    <a class="signin" href="{{ route('login') }}">Sign in</a>
+                    <a class="button primary" href="{{ route('business.getRegister') }}">Get started</a>
+                </div>
+            </div>
         </nav>
     </header>
     <main>@yield ('content')</main>
     @include('layouts.partials.footer')
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const mobileNav = document.querySelector('.mobile-menu');
+        if (navToggle && mobileNav) {
+            navToggle.addEventListener('click', () => {
+                const open = mobileNav.classList.toggle('open');
+                navToggle.setAttribute('aria-expanded', String(open));
+                mobileNav.setAttribute('aria-hidden', String(!open));
+            });
+            document.addEventListener('click', (event) => {
+                if (!mobileNav.contains(event.target) && !navToggle.contains(event.target)) {
+                    mobileNav.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    mobileNav.setAttribute('aria-hidden', 'true');
+                }
+            });
+        }
+    </script>
     @stack ('scripts')
 </body>
 </html>

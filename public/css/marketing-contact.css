@@ -63,6 +63,20 @@
     }
 }
 
+@media (max-width: 700px) {
+    .split {
+        padding: 0 0.125rem;
+        margin: 0.75rem auto 3rem;
+    }
+
+    .contact-card,
+    .form-note {
+        padding: 1rem;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
 .contact-card,
 .form-note {
     background: var(--bg-glass);
