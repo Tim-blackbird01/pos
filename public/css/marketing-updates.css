@@ -1,0 +1,181 @@
+.topic-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+.pill {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid #e2e2e7;
+    font-size: 0.85rem;
+    color: #5b5b66;
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+.pill:hover {
+    border-color: #16161a;
+}
+.pill--active {
+    background: #16161a;
+    color: #fff;
+    border-color: #16161a;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+.post-grid--tri {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.post-stack {
+    display: grid;
+    gap: 18px;
+}
+
+.post {
+    border: 1px solid #ececef;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+.post:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+}
+.post--hidden {
+    display: none !important;
+}
+
+.post--large {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.post__media img,
+.post__media--small img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+.post__media--small img {
+    height: 140px;
+}
+
+.post__body {
+    padding: 20px 22px 24px;
+}
+
+.post .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6a5bff;
+    margin-bottom: 10px;
+}
+
+.post h2 {
+    font-size: 1.5rem;
+    margin: 0 0 10px;
+}
+.post h3 {
+    font-size: 1.15rem;
+    margin: 0 0 8px;
+}
+.post p {
+    color: #5b5b66;
+    margin: 0 0 14px;
+    line-height: 1.5;
+}
+
+.post__link {
+    font-weight: 600;
+    color: #16161a;
+    text-decoration: none;
+}
+.post__link:hover {
+    text-decoration: underline;
+}
+
+.no-results {
+    text-align: center;
+    color: #8a8a94;
+    padding: 40px 0;
+}
+
+.updates-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #f6f6f8;
+    border-radius: 16px;
+    padding: 32px 36px;
+    flex-wrap: wrap;
+}
+.updates-cta h2 {
+    margin: 0 0 6px;
+    font-size: 1.3rem;
+}
+.updates-cta p {
+    margin: 0;
+    color: #5b5b66;
+}
+
+.btn--primary {
+    background: #064e3b;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.btn--primary:hover {
+    background: #059669;
+}
+
+@media (max-width: 860px) {
+    .post-grid,
+    .post-grid--tri {
+        grid-template-columns: 1fr;
+    }
+    .post__media img,
+    .post__media--small img {
+        height: auto;
+    }
+}
+
+/* Rendering fixes for remote images and SVGs: force compositing layer and
+   prefer contain for inline SVG to avoid pixelation/artifacts on some GPUs */
+.post__media img,
+.post__media--small img {
+    image-rendering: auto;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+.post__media img[src$='.svg'],
+.post__media--small img[src$='.svg'] {
+    object-fit: contain;
+    height: auto;
+}
