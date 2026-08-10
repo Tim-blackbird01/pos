@@ -36,12 +36,23 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
+            'host' => env('MAIL_HOST', env('MAIL_GMAIL_HOST', 'smtp.mailgun.org')),
+            'port' => env('MAIL_PORT', env('MAIL_GMAIL_PORT', 587)),
+            'encryption' => env('MAIL_ENCRYPTION', env('MAIL_GMAIL_ENCRYPTION', 'tls')),
+            'username' => env('MAIL_USERNAME', env('MAIL_GMAIL_USERNAME')),
             'address' => env('MAIL_FROM_ADDRESS'),
-            'password' => env('MAIL_PASSWORD'),
+            'password' => env('MAIL_PASSWORD', env('MAIL_GMAIL_APP_PASSWORD')),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+
+        'gmail' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_GMAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_GMAIL_PORT', 587),
+            'encryption' => env('MAIL_GMAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_GMAIL_USERNAME'),
+            'password' => env('MAIL_GMAIL_APP_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
@@ -96,6 +107,8 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+
+    'contact_address' => env('MAIL_CONTACT_ADDRESS', env('MAIL_FROM_ADDRESS')),
 
     /*
     |--------------------------------------------------------------------------

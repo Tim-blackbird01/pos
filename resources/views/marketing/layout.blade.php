@@ -49,7 +49,7 @@
             z-index: 5;
         }
         .nav {
-            min-height: 76px;
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -63,6 +63,7 @@
             font-weight: 850;
             letter-spacing: -0.04em;
         }
+        .top .brand > img { height: 54px !important; width: auto; object-fit: contain; }
         .mark {
             width: 34px;
             height: 34px;
@@ -254,15 +255,15 @@
             background: #fff0c2;
         }
         .dark {
-            background: var(--ink);
+            background: #207152;
             color: #fff;
         }
         .dark p {
-            color: #c7d3e9;
+            color: #d9f1df;
         }
         .dark .icon {
             color: #1e634d;
-            background: var(--mint);
+            background: #daf5e7;
         }
         .band {
             padding: 56px 0;
@@ -758,56 +759,7 @@
         </nav>
     </header>
     <main>@yield ('content')</main>
-    <footer class="site-footer" id="start">
-        <div class="shell">
-            <div class="footer-columns">
-                <div class="footer-intro">
-                    <a class="brand" href="{{ url('/') }}">
-                        @if (file_exists(public_path('uploads/logo.svg')))
-                            <img
-                                src="/uploads/logo.svg"
-                                alt="{{ config('app.name', 'CraftSalesPOS') }}"
-                                style="height: 38px; width: auto; object-fit: contain"
-                            />
-                        @else
-                            <span class="mark"
-                                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 7h16M7 3v8m10-8v8M6 21h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2Z" />
-                                    <path d="M8 15h3m2 0h3" />
-                                </svg
-                            ></span>
-                        @endif
-                        {{ config('app.name', 'CraftSalesPOS') }}
-                    </a>
-                    <p>A clear point-of-sale workspace for selling, stocking, serving and growing with confidence.</p>
-                </div>
-                <div>
-                    <h4>Product</h4>
-                    <a href="{{ route('marketing.industries') }}">Industries</a
-                    ><a href="{{ route('marketing.features') }}">Features</a
-                    ><a href="{{ route('marketing.pricing') }}">Pricing</a
-                    ><a href="{{ route('marketing.updates') }}">Updates</a>
-                </div>
-                <div>
-                    <h4>Company</h4>
-                    <a href="{{ route('marketing.about') }}">About</a
-                    ><a href="{{ route('marketing.contact') }}">Contact</a
-                    ><a href="{{ route('business.getRegister') }}">Get started</a>
-                </div>
-                <div>
-                    <h4>Account</h4>
-                    <a href="{{ route('login') }}">Sign in</a
-                    ><a href="{{ route('business.getRegister') }}">Create workspace</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span
-                    >&copy; {{ date('Y') }} {{ config('app.name', 'CraftSalesPOS') }}. All rights
-                    reserved.</span
-                >
-            </div>
-        </div>
-    </footer>
+    @include('layouts.partials.footer')
     @stack ('scripts')
 </body>
 </html>
