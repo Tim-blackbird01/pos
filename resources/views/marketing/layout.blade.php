@@ -60,7 +60,7 @@
         }
         .nav {
             position: relative;
-            min-height: 90px;
+            min-height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -846,22 +846,48 @@
             </button>
             <div class="mobile-menu" aria-hidden="true">
                 <div class="navlinks">
-                    <a href="{{ route('marketing.industries') }}" class="{{ request()->routeIs('marketing.industries') ? 'active' : '' }}">Industries</a>
-                    <a href="{{ route('marketing.features') }}" class="{{ request()->routeIs('marketing.features') ? 'active' : '' }}">Features</a>
-                    <a href="{{ route('marketing.pricing') }}" class="{{ request()->routeIs('marketing.pricing') ? 'active' : '' }}">Pricing</a>
-                    <a href="{{ route('marketing.about') }}" class="{{ request()->routeIs('marketing.about') ? 'active' : '' }}">About</a>
-                    <a href="{{ route('marketing.updates') }}" class="{{ request()->routeIs('marketing.updates') ? 'active' : '' }}">Updates</a>
-                    <a href="{{ route('marketing.contact') }}" class="{{ request()->routeIs('marketing.contact') ? 'active' : '' }}">Contact</a>
+                    <a
+                        href="{{ route('marketing.industries') }}"
+                        class="{{ request()->routeIs('marketing.industries') ? 'active' : '' }}"
+                        >Industries</a
+                    >
+                    <a
+                        href="{{ route('marketing.features') }}"
+                        class="{{ request()->routeIs('marketing.features') ? 'active' : '' }}"
+                        >Features</a
+                    >
+                    <a
+                        href="{{ route('marketing.pricing') }}"
+                        class="{{ request()->routeIs('marketing.pricing') ? 'active' : '' }}"
+                        >Pricing</a
+                    >
+                    <a
+                        href="{{ route('marketing.about') }}"
+                        class="{{ request()->routeIs('marketing.about') ? 'active' : '' }}"
+                        >About</a
+                    >
+                    <a
+                        href="{{ route('marketing.updates') }}"
+                        class="{{ request()->routeIs('marketing.updates') ? 'active' : '' }}"
+                        >Updates</a
+                    >
+                    <a
+                        href="{{ route('marketing.contact') }}"
+                        class="{{ request()->routeIs('marketing.contact') ? 'active' : '' }}"
+                        >Contact</a
+                    >
                 </div>
                 <div class="nav-actions">
                     <a class="signin" href="{{ route('login') }}">Sign in</a>
-                    <a class="button primary" href="{{ route('business.getRegister') }}">Get started</a>
+                    <a class="button primary" href="{{ route('business.getRegister') }}"
+                        >Get started</a
+                    >
                 </div>
             </div>
         </nav>
     </header>
     <main>@yield ('content')</main>
-    @include('layouts.partials.footer')
+    @include ('layouts.partials.footer')
     <script>
         const navToggle = document.querySelector('.nav-toggle');
         const mobileNav = document.querySelector('.mobile-menu');
