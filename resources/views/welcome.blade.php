@@ -449,7 +449,7 @@
                 <div class="business-track">
                     <article class="gallery-item retail-shot">
                         <img
-                            src="{{ asset('images/landing/african-retail.jpg') }}"
+                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
                             alt="Supermarket using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -467,7 +467,7 @@
 
                     <article class="gallery-item laptop-shot">
                         <img
-                            src="{{ asset('images/landing/african-laptop.jpg') }}"
+                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
                             alt="Salon using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -494,7 +494,7 @@
 
                     <article class="gallery-item laptop-shot">
                         <img
-                            src="{{ asset('images/landing/african-laptop.jpg') }}"
+                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
                             alt="Fashion boutique using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -505,7 +505,7 @@
 
                     <article class="gallery-item retail-shot" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-retail.jpg') }}"
+                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -523,7 +523,7 @@
 
                     <article class="gallery-item laptop-shot" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-laptop.jpg') }}"
+                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -550,7 +550,7 @@
 
                     <article class="gallery-item laptop-shot" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-laptop.jpg') }}"
+                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -721,7 +721,7 @@
             </div>
         </section>
     </main>
-    @include('layouts.partials.footer')
+    @include ('layouts.partials.footer')
     <script>
         const header = document.querySelector('.top');
         const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 8);
