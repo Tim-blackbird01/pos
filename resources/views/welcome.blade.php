@@ -81,6 +81,29 @@
         @media (max-width:900px){.badges-container,.hero-bg-arc{display:none !important;}.hero-visual-wrapper{min-height:auto;justify-content:center;}.laptop-container{max-width:100%;animation:none;}}
         @media (max-width:540px){.hero{padding:90px 0 60px;}.hero-title{font-size:34px;}.hero-lede{font-size:15px;}.hero-actions{width:100%;flex-direction:column;}.btn-green,.btn-outline{width:100%;justify-content:center;}}
         @media (prefers-reduced-motion:reduce){.hero-bg-arc,.laptop-container,.feature-badge,.animated-vibrant-ring{animation:none !important;opacity:1 !important;}}
+        .industry-marquee-section{padding:70px 0 48px;background:#f8fafc;}
+        .industry-marquee-section .section-head{max-width:720px;margin:0 auto 32px;text-align:center;}
+        .industry-marquee-section .section-head h2{margin:0;font-size:clamp(32px,3.8vw,44px);line-height:1.08;letter-spacing:-.04em;color:var(--ink);}
+        .industry-marquee-section .section-head p{margin:18px auto 0;max-width:620px;color:#5a677f;font-size:16px;line-height:1.75;}
+        .industry-marquee{position:relative;overflow:hidden;}
+        .industry-marquee:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at top left,rgba(37,99,235,.08),transparent 28%),radial-gradient(circle at bottom right,rgba(29,95,61,.08),transparent 20%);}
+        .industry-track{display:flex;gap:18px;width:max-content;animation:industryScroll 32s linear infinite;padding:1px 0;}
+        .industry-marquee:hover .industry-track,.industry-marquee.is-paused .industry-track{animation-play-state:paused;}
+        @keyframes industryScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+        .industry-card{position:relative;flex-shrink:0;width:320px;min-height:220px;background:#fff;border-radius:22px;border:1px solid #e2e8f0;box-shadow:0 18px 35px -18px rgba(0,0,0,.16);overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+        .industry-card:hover{transform:translateY(-4px);border-color:rgba(29,95,61,.18);box-shadow:0 24px 42px -20px rgba(0,0,0,.14);}
+        .industry-card img{width:100%;height:100%;object-fit:cover;display:block;}
+        .industry-badge{position:absolute;left:24px;right:16px;bottom:16px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:9999px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);color:var(--ink);font-weight:700;font-size:14px;border:1px solid rgba(255,255,255,.7);}
+        .industry-badge i{width:8px;height:8px;border-radius:50%;background:var(--badge-color,#2563eb);box-shadow:0 0 0 2px var(--badge-glow,rgba(37,99,235,.12));flex-shrink:0;animation:badgeGlow 2.6s ease-in-out infinite;}
+        .industry-badge.badge-blue{--badge-color:#2563eb;--badge-glow:rgba(37,99,235,.16);}
+        .industry-badge.badge-green{--badge-color:#1d5f61;--badge-glow:rgba(29,95,97,.16);}
+        .industry-badge.badge-gold{--badge-color:#d97706;--badge-glow:rgba(217,119,6,.16);}
+        .industry-badge.badge-purple{--badge-color:#8b5cf6;--badge-glow:rgba(139,92,246,.16);}
+        .industry-badge.badge-coral{--badge-color:#ef4444;--badge-glow:rgba(239,68,68,.16);}
+        .industry-badge.badge-teal{--badge-color:#0ea5e9;--badge-glow:rgba(14,165,233,.16);}
+        @keyframes badgeGlow{0%,100%{transform:scale(1);box-shadow:0 0 0 2px var(--badge-glow);}50%{transform:scale(1.1);box-shadow:0 0 0 6px var(--badge-glow);}}
+        @media(max-width:900px){.industry-track{gap:14px;}.industry-card{width:280px;min-height:190px;}}
+        @media(max-width:640px){.industry-marquee-section{padding:42px 0 32px;}.industry-track{gap:12px;}.industry-card{width:220px;min-height:170px;}.industry-badge{font-size:13px;padding:11px 13px;}}
         html,body{max-width:100%;overflow-x:hidden}.gallery{padding-bottom:96px}.site-footer{padding:64px 0 23px;color:#71809a;background:linear-gradient(112deg,#f5f6fe,#f7fbfa);border-top:1px solid var(--line)}.footer-columns{display:grid;grid-template-columns:1.65fr repeat(3,1fr);gap:34px}.footer-intro .brand{color:var(--ink)}.footer-intro p{max-width:290px;margin:17px 0 20px;font-size:14px;line-height:1.65}.footer-pills{display:flex;gap:9px}.footer-pills span{display:grid;place-items:center;width:37px;height:37px;border:1px solid var(--line);border-radius:50%;color:#536280;background:#fff;font-size:13px;font-weight:850}.footer-columns h4{margin:5px 0 15px;color:var(--ink);font-size:14px}.footer-columns a{display:block;width:max-content;max-width:100%;margin:0 0 14px;color:#71809a;font-size:14px}.footer-columns a:hover{color:var(--green)}.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:48px;padding-top:24px;border-top:1px solid #dfe5ed;font-size:12px}.footer-status{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;color:#27845f;background:#e0f7eb}.footer-status i{width:7px;height:7px;border-radius:50%;background:#48c98d}@media(max-width:850px){.footer-columns{grid-template-columns:1.5fr 1fr 1fr}.footer-columns>div:last-child{grid-column:2}.footer-intro{grid-row:span 2}}@media(max-width:540px){.site-footer{padding-top:46px}.footer-columns{grid-template-columns:1fr 1fr;gap:28px 22px}.footer-intro{grid-column:span 2;grid-row:auto}.footer-columns>div:last-child{grid-column:auto}.footer-bottom{align-items:flex-start;flex-direction:column;margin-top:34px}}
         .mobile-app{padding:0 0 100px}.mobile-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}.mobile-copy h2{max-width:440px;margin:16px 0 14px;font-size:clamp(29px,3.6vw,43px);line-height:1.08;letter-spacing:-.05em}.mobile-copy p{max-width:440px;margin:0 0 24px;color:var(--muted);line-height:1.65}.mobile-points{display:grid;gap:13px;margin:0 0 28px;padding:0;list-style:none;color:var(--ink);font-size:14px;font-weight:650}.mobile-points li{display:flex;align-items:center;gap:11px}.mobile-points li:before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:#5ebf89;box-shadow:0 0 0 4px #5ebf892b}.mobile-visual{position:relative;display:flex;justify-content:center;align-items:flex-end;height:360px}.mobile-shot{position:relative;z-index:1;width:auto;max-width:190px;max-height:340px;filter:drop-shadow(0 22px 30px #24365a30);animation:mobile-float 5.5s ease-in-out infinite}.mobile-orbit{position:absolute;inset:0;z-index:0;pointer-events:none;animation:mobile-orbit-spin 11s linear infinite}.mobile-orbit i{position:absolute;top:50%;left:50%;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;filter:blur(13px);opacity:.6;animation:mobile-orbit-pulse 3.6s ease-in-out infinite}.mobile-orbit i:nth-child(1){background:#5ebf89;transform:translate(128px,0)}.mobile-orbit i:nth-child(2){background:#8d9fff;transform:translate(-64px,111px);animation-delay:-1.2s}.mobile-orbit i:nth-child(3){background:#ffb976;transform:translate(-64px,-111px);animation-delay:-2.4s}@keyframes mobile-orbit-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes mobile-orbit-pulse{0%,100%{opacity:.42}50%{opacity:.72}}.mobile-shadow{position:absolute;z-index:0;bottom:6px;left:50%;width:130px;height:22px;border-radius:50%;background:#1d2942;filter:blur(9px);opacity:.4;transform:translateX(-50%) scale(1);animation:mobile-shadow-pulse 5.5s ease-in-out infinite}.mobile-ping{position:absolute;z-index:2;left:50%;top:14px;display:flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #ffffffc7;border-radius:12px;color:#fff;background:#17284ee8;box-shadow:0 14px 26px #17213e38;backdrop-filter:blur(8px);font-size:11px;white-space:nowrap;animation:mobile-ping-float 5.5s ease-in-out -1.8s infinite}.mobile-ping i{width:8px;height:8px;border-radius:50%;background:#aef0d9;box-shadow:0 0 0 4px #aef0d930;flex:0 0 auto}.mobile-ping b{font-weight:800}@keyframes mobile-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}@keyframes mobile-shadow-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.4}50%{transform:translateX(-50%) scale(.7);opacity:.2}}@keyframes mobile-ping-float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-11px)}}@media(max-width:850px){.mobile-app{padding-bottom:70px}.mobile-grid{grid-template-columns:1fr;text-align:center;gap:36px}.mobile-copy h2,.mobile-copy p{margin-left:auto;margin-right:auto}.mobile-points{justify-items:center}.mobile-points li{justify-content:center}.mobile-visual{order:-1;height:300px}}@media(prefers-reduced-motion:reduce){.mobile-shot,.mobile-ping,.mobile-shadow,.mobile-orbit,.mobile-orbit i{animation:none!important}}
     </style>
@@ -248,6 +271,124 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+        <section class="industry-marquee-section shell" data-reveal>
+            <div class="section-head">
+                <h2>Businesses across industries rely on CraftSalesPOS</h2>
+                <p>From busy pharmacies to fashion boutiques, this section shows the everyday operations that our platform helps keep in flow.</p>
+            </div>
+            <div
+                class="industry-marquee"
+                role="region"
+                aria-label="Industries served by CraftSalesPOS"
+            >
+                <div class="industry-track">
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
+                            alt="Supermarkets using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-blue"><i></i> Supermarkets</span>
+                    </article>
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/african-pharmacies.png') }}"
+                            alt="Pharmacies using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-green"><i></i> Pharmacies</span>
+                    </article>
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
+                            alt="Salons and barbershops using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-gold"
+                            ><i></i> Salons &amp; Barbershops</span
+                        >
+                    </article>
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/african-laptop.png') }}"
+                            alt="Agrovet stores using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-purple"><i></i> Agrovet Stores</span>
+                    </article>
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/african-retail.png') }}"
+                            alt="Hardware and building supplies stores using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-coral"
+                            ><i></i> Hardware &amp; Building Supplies</span
+                        >
+                    </article>
+                    <article class="industry-card">
+                        <img
+                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
+                            alt="Fashion boutiques using CraftSalesPOS"
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-teal"><i></i> Fashion Boutiques</span>
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-blue"><i></i> Supermarkets</span>
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/african-pharmacies.png') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-green"><i></i> Pharmacies</span>
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-gold"
+                            ><i></i> Salons &amp; Barbershops</span
+                        >
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/african-laptop.png') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-purple"><i></i> Agrovet Stores</span>
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/african-retail.png') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-coral"
+                            ><i></i> Hardware &amp; Building Supplies</span
+                        >
+                    </article>
+                    <article class="industry-card" aria-hidden="true">
+                        <img
+                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <span class="industry-badge badge-teal"><i></i> Fashion Boutiques</span>
+                    </article>
                 </div>
             </div>
         </section>
