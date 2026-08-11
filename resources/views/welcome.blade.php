@@ -85,9 +85,8 @@
         .industry-marquee-section .section-head{max-width:720px;margin:0 auto 32px;text-align:center;}
         .industry-marquee-section .section-head h2{margin:0;font-size:clamp(32px,3.8vw,44px);line-height:1.08;letter-spacing:-.04em;color:var(--ink);}
         .industry-marquee-section .section-head p{margin:18px auto 0;max-width:620px;color:#5a677f;font-size:16px;line-height:1.75;}
-        .industry-marquee{position:relative;overflow:hidden;}
-        .industry-marquee:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at top left,rgba(37,99,235,.08),transparent 28%),radial-gradient(circle at bottom right,rgba(29,95,61,.08),transparent 20%);}
-        .industry-track{display:flex;gap:18px;width:max-content;animation:industryScroll 32s linear infinite;padding:1px 0;}
+        .industry-marquee{position:relative;overflow:hidden;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;}
+        .industry-track{display:flex;gap:18px;width:max-content;animation:industryScroll 32s linear infinite;padding:0;}
         .industry-marquee:hover .industry-track,.industry-marquee.is-paused .industry-track{animation-play-state:paused;}
         @keyframes industryScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
         .industry-card{position:relative;flex-shrink:0;width:320px;min-height:220px;background:#fff;border-radius:22px;border:1px solid #e2e8f0;box-shadow:0 18px 35px -18px rgba(0,0,0,.16);overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
