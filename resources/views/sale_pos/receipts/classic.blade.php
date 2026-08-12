@@ -1,6 +1,6 @@
 <!-- business information here -->
 
-<div class="row" style="color: #000000 !important;">
+<div class="row receipt-reference-header" style="color: #000000 !important;">
 		<!-- Logo -->
 		@if(empty($receipt_details->letter_head))
 			@if(!empty($receipt_details->logo))
@@ -74,7 +74,7 @@
 
 			<!-- Title of receipt -->
 			@if(!empty($receipt_details->invoice_heading))
-				<h3 class="text-center">
+				<h3 class="text-center receipt-reference-title">
 					{!! $receipt_details->invoice_heading !!}
 				</h3>
 			@endif
@@ -84,7 +84,7 @@
 				<img style="width: 100%;margin-bottom: 10px;" src="{{$receipt_details->letter_head}}">
 			</div>
 		@endif
-	<div class="col-xs-12 text-center">
+	<div class="col-xs-12 text-center receipt-reference-meta">
 		<!-- Invoice  number, Date  -->
 		<p style="width: 100% !important" class="word-wrap">
 			<span class="pull-left text-left word-wrap">
@@ -92,6 +92,13 @@
 					<b>{!! $receipt_details->invoice_no_prefix !!}</b>
 				@endif
 				{{$receipt_details->invoice_no}}
+				@if(!empty($receipt_details->payments))
+					<br/>
+					<b>Payment:</b>
+					@foreach($receipt_details->payments as $payment)
+						@if(!$loop->first), @endif{{ $payment['method'] }}
+					@endforeach
+				@endif
 
 				@if(!empty($receipt_details->types_of_service))
 					<br/>
@@ -121,9 +128,9 @@
 		        @endif
 
 				<!-- customer info -->
-				@if(!empty($receipt_details->customer_info))
+				@if(!empty($receipt_details->customer_name))
 					<br/>
-					<b>{{ $receipt_details->customer_label }}</b> <br> {!! $receipt_details->customer_info !!} <br>
+					<b>{{ $receipt_details->customer_label ?: __('contact.customer') }}:</b> {{ $receipt_details->customer_name }}
 				@endif
 				@if(!empty($receipt_details->client_id_label))
 					<br/>
@@ -139,6 +146,13 @@
 				@if(!empty($receipt_details->sales_person_label))
 					<br/>
 					<b>{{ $receipt_details->sales_person_label }}</b> {{ $receipt_details->sales_person }}
+				@endif
+				@if(!empty($receipt_details->service_staff))
+					<br/>
+					<b>Served by:</b> {{ $receipt_details->service_staff }}
+				@elseif(!empty($receipt_details->sales_person))
+					<br/>
+					<b>Served by:</b> {{ $receipt_details->sales_person }}
 				@endif
 				@if(!empty($receipt_details->commission_agent_label))
 					<br/>
@@ -204,14 +218,6 @@
 					<br>
 		        @endif
 		        
-				<!-- Waiter info -->
-				@if(!empty($receipt_details->service_staff_label) || !empty($receipt_details->service_staff))
-		        	<br/>
-					@if(!empty($receipt_details->service_staff_label))
-						<b>{!! $receipt_details->service_staff_label !!}</b>
-					@endif
-					{{$receipt_details->service_staff}}
-		        @endif
 		        @if(!empty($receipt_details->shipping_custom_field_1_label))
 					<br><strong>{!!$receipt_details->shipping_custom_field_1_label!!} :</strong> {!!$receipt_details->shipping_custom_field_1_value ?? ''!!}
 				@endif
@@ -271,7 +277,7 @@
 	@includeIf('sale_pos.receipts.partial.common_repair_invoice')
 </div>
 
-<div class="row" style="color: #000000 !important;">
+<div class="row receipt-reference-items" style="color: #000000 !important;">
 	<div class="col-xs-12">
 		<br/>
 		@php
@@ -398,7 +404,7 @@
 	</div>
 </div>
 
-<div class="row" style="color: #000000 !important;">
+<div class="row receipt-reference-summary" style="color: #000000 !important;">
 	<div class="col-md-12"><hr/></div>
 	<div class="col-xs-6">
 
@@ -644,12 +650,27 @@
     @endif
     
 </div>
-<div class="row" style="color: #000000 !important;">
-	@if(!empty($receipt_details->footer_text))
-	<div class="@if($receipt_details->show_barcode || $receipt_details->show_qr_code) col-xs-8 @else col-xs-12 @endif">
-		{!! $receipt_details->footer_text !!}
+<div class="row receipt-reference-footer" style="color: #000000 !important;">
+	<div class="@if($receipt_details->show_barcode || $receipt_details->show_qr_code) col-xs-8 @else col-xs-12 @endif receipt-closing-message">
+		@if(!empty($receipt_details->footer_text))
+			{!! $receipt_details->footer_text !!}
+		@else
+			<p>Thank you for shopping with us!<br>Please come again.</p>
+			<p>Goods once sold are subject<br>to store policy.</p>
+			<p>Powered by {{ config('app.name') }}</p>
+		@endif
+
+		@if(!empty($receipt_details->contact))
+			<p class="receipt-closing-details">{!! $receipt_details->contact !!}</p>
+		@endif
+
+		@if(!empty($receipt_details->tax_info1))
+			<p class="receipt-closing-details"><strong>{{ $receipt_details->tax_label1 }}</strong> {{ $receipt_details->tax_info1 }}</p>
+		@endif
+		@if(!empty($receipt_details->tax_info2))
+			<p class="receipt-closing-details"><strong>{{ $receipt_details->tax_label2 }}</strong> {{ $receipt_details->tax_info2 }}</p>
+		@endif
 	</div>
-	@endif
 	@if($receipt_details->show_barcode || $receipt_details->show_qr_code)
 		<div class="@if(!empty($receipt_details->footer_text)) col-xs-4 @else col-xs-12 @endif text-center">
 			@if($receipt_details->show_barcode)
@@ -663,3 +684,151 @@
 		</div>
 	@endif
 </div>
+
+<style>
+@media print {
+	body {
+		color: #000 !important;
+		font-family: Arial, Helvetica, sans-serif !important;
+		font-size: 10px !important;
+	}
+
+	.receipt-reference-header .row,
+	.receipt-reference-items .row,
+	.receipt-reference-summary .row,
+	.receipt-reference-footer .row {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.receipt-reference-header,
+	.receipt-reference-items,
+	.receipt-reference-summary,
+	.receipt-reference-footer {
+		max-width: 100%;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+
+	.receipt-reference-header [class*="col-"],
+	.receipt-reference-items [class*="col-"],
+	.receipt-reference-summary [class*="col-"],
+	.receipt-reference-footer [class*="col-"] {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.receipt-reference-header .img {
+		max-height: 58px !important;
+		margin: 5px auto 8px;
+	}
+
+	.receipt-reference-header h2 {
+		margin: 0 0 6px;
+		font-size: 15px;
+		font-weight: 700;
+	}
+
+	.receipt-reference-header p {
+		margin: 0 0 5px;
+		line-height: 1.35;
+	}
+
+	.receipt-reference-title {
+		margin: 9px 0;
+		padding: 6px 0;
+		border-top: 1px dashed #222;
+		border-bottom: 1px dashed #222;
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: .4px;
+		text-transform: uppercase;
+	}
+
+	.receipt-reference-meta {
+		padding: 2px 0 7px !important;
+		border-bottom: 1px dashed #222;
+		font-size: 10px;
+		line-height: 1.45;
+	}
+
+	.receipt-reference-meta > p > .pull-left,
+	.receipt-reference-meta > p > .pull-right {
+		display: block;
+		float: none !important;
+		max-width: 100%;
+		text-align: left !important;
+	}
+
+	.receipt-reference-items br {
+		line-height: 1.3;
+	}
+
+	.receipt-reference-items .table {
+		margin: 9px 0 6px;
+		border-bottom: 1px dashed #222;
+		font-size: 10px;
+		table-layout: fixed;
+		width: 100%;
+	}
+
+	.receipt-reference-items .table > thead > tr > th,
+	.receipt-reference-items .table > tbody > tr > td {
+		padding: 4px 1px;
+		border-top: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.receipt-reference-items .table > thead > tr > th {
+		border-bottom: 1px dashed #222;
+		font-size: 9px;
+		text-transform: uppercase;
+	}
+
+	.receipt-reference-summary > .col-md-12 > hr {
+		margin: 5px 0;
+		border-top: 1px dashed #222;
+	}
+
+	.receipt-reference-summary .table {
+		margin-bottom: 4px;
+		font-size: 10px;
+		width: 100%;
+	}
+
+	.receipt-reference-summary .table > tbody > tr > th,
+	.receipt-reference-summary .table > tbody > tr > td {
+		padding: 2px 1px;
+		border-top: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.receipt-reference-summary .col-xs-6 {
+		width: 100%;
+	}
+
+	.receipt-reference-summary .col-xs-6:last-of-type tr:last-child th,
+	.receipt-reference-summary .col-xs-6:last-of-type tr:last-child td {
+		padding-top: 5px;
+		border-top: 1px dashed #222;
+		font-size: 11px;
+	}
+
+	.receipt-reference-footer {
+		margin-top: 8px !important;
+		padding-top: 8px;
+		border-top: 1px dashed #222;
+		text-align: center;
+		line-height: 1.45;
+	}
+
+	.receipt-closing-message p {
+		margin: 0 0 7px;
+	}
+
+	.receipt-closing-message .receipt-closing-details {
+		margin-bottom: 2px;
+		font-size: 9px;
+	}
+}
+</style>
