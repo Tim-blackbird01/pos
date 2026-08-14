@@ -11,6 +11,7 @@ use App\Currency;
 use App\Events\TransactionPaymentAdded;
 use App\Events\TransactionPaymentDeleted;
 use App\Events\TransactionPaymentUpdated;
+use App\EtimsInvoice;
 use App\Exceptions\AdvanceBalanceNotAvailable;
 use App\Exceptions\PurchaseSellMismatch;
 use App\InvoiceScheme;
@@ -25,6 +26,7 @@ use App\TransactionSellLinesPurchaseLines;
 use App\Variation;
 use App\VariationLocationDetails;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use App\CashRegister;
 
@@ -1227,6 +1229,24 @@ class TransactionUtil extends Util
         $output['invoice_no'] = $transaction->invoice_no;
         $output['invoice_no_prefix'] = $il->invoice_no_prefix;
         $output['shipping_address'] = ! empty($transaction->shipping_address()) ? $transaction->shipping_address() : $transaction->shipping_address;
+
+        // KRA eTIMS receipt data is only shown after the sale was accepted by KRA.
+        $output['etims'] = null;
+        if (config('etims.enabled') && Schema::hasTable('etims_invoices')) {
+            $etimsInvoice = EtimsInvoice::where('transaction_id', $transaction->id)
+                ->where('status', 'accepted')
+                ->first();
+
+            if ($etimsInvoice) {
+                $output['etims'] = [
+                    'current_receipt_number' => $etimsInvoice->current_receipt_number,
+                    'total_receipt_number' => $etimsInvoice->total_receipt_number,
+                    'internal_data' => $etimsInvoice->internal_data,
+                    'receipt_signature' => $etimsInvoice->receipt_signature,
+                    'sdc_datetime' => $etimsInvoice->sdc_datetime,
+                ];
+            }
+        }
 
         //Heading & invoice label, when quotation use the quotation heading.
         if ($transaction_type == 'sell_return') {

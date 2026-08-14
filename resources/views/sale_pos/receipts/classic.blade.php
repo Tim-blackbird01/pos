@@ -582,12 +582,32 @@
     
 </div>
 <div class="row receipt-reference-footer" style="color: #000000 !important;">
+	@php
+		$powered_by_app_name = trim((string) config('app.name', 'POS SYSTEM'));
+		$footer_has_powered_by = !empty($receipt_details->footer_text)
+			&& stripos(strip_tags($receipt_details->footer_text), 'powered by') !== false;
+	@endphp
+
 	<div class="col-xs-12 receipt-barcode-block">
 		<img class="center-block receipt-barcode" src="data:image/png;base64,{{DNS1D::getBarcodePNG($receipt_details->invoice_no, 'C128', 2,30,array(39, 48, 54), true)}}">
 		<div class="receipt-barcode-text">{{$receipt_details->invoice_no}}</div>
 	</div>
 
 	<div class="col-xs-12 receipt-closing-message">
+		@if(!empty($receipt_details->etims))
+			<p class="receipt-etims-details">
+				<strong>eTIMS Receipt No:</strong> {{ $receipt_details->etims['current_receipt_number'] }}
+				@if(!empty($receipt_details->etims['total_receipt_number']))
+					/ {{ $receipt_details->etims['total_receipt_number'] }}
+				@endif
+				@if(!empty($receipt_details->etims['receipt_signature']))
+					<br><strong>eTIMS Signature:</strong> {{ $receipt_details->etims['receipt_signature'] }}
+				@endif
+				@if(!empty($receipt_details->etims['internal_data']))
+					<br><strong>eTIMS Internal Data:</strong> {{ $receipt_details->etims['internal_data'] }}
+				@endif
+			</p>
+		@endif
 		@if(!empty($receipt_details->footer_text))
 			{!! $receipt_details->footer_text !!}
 		@else
@@ -600,14 +620,42 @@
 			<img class="center-block mt-5" src="data:image/png;base64,{{DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 3, 3, [39, 48, 54])}}">
 		</div>
 	@endif
+
+	@if(!empty($powered_by_app_name) && !$footer_has_powered_by)
+		<div class="col-xs-12 receipt-powered-by">
+			Powered by {{ $powered_by_app_name }}
+		</div>
+	@endif
 </div>
 
 <style>
 @media print {
+	@page {
+		size: auto;
+		margin: 0;
+	}
+
+	html,
 	body {
+		height: auto !important;
+		min-height: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		overflow: visible !important;
 		color: #000 !important;
 		font-family: Arial, Helvetica, sans-serif !important;
 		font-size: 10px !important;
+	}
+
+	#receipt_section,
+	.print_section,
+	.receipt-reference-header,
+	.receipt-reference-items,
+	.receipt-reference-summary,
+	.receipt-reference-footer {
+		height: auto !important;
+		min-height: 0 !important;
+		overflow: visible !important;
 	}
 
 	.receipt-reference-header .row,
@@ -799,6 +847,16 @@
 
 	.receipt-closing-message p {
 		margin: 0 0 7px;
+	}
+
+	.receipt-powered-by {
+		margin-top: 8px;
+		padding-bottom: 2px;
+		text-align: center;
+		font-size: 9px;
+		line-height: 1.35;
+		page-break-inside: avoid;
+		break-inside: avoid;
 	}
 
 	.receipt-closing-message .receipt-closing-details {
