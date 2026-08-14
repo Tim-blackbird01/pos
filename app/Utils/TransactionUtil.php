@@ -11,6 +11,7 @@ use App\Currency;
 use App\Events\TransactionPaymentAdded;
 use App\Events\TransactionPaymentDeleted;
 use App\Events\TransactionPaymentUpdated;
+use App\EtimsInvoice;
 use App\Exceptions\AdvanceBalanceNotAvailable;
 use App\Exceptions\PurchaseSellMismatch;
 use App\InvoiceScheme;
@@ -25,6 +26,7 @@ use App\TransactionSellLinesPurchaseLines;
 use App\Variation;
 use App\VariationLocationDetails;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use App\CashRegister;
 
@@ -1015,7 +1017,7 @@ class TransactionUtil extends Util
         //Address
         $output['address'] = '';
         $temp = [];
-        if ($il->show_landmark == 1) {
+        if ($il->show_landmark == 1 && ! empty($location_details->landmark)) {
             $temp[] = $location_details->landmark;
         }
         if ($il->show_city == 1 && ! empty($location_details->city)) {
@@ -1206,6 +1208,7 @@ class TransactionUtil extends Util
         // added by 
         $user = \App\User::find($transaction->created_by);
         $output['added_by'] = $user ? trim("{$user->surname} {$user->first_name} {$user->last_name}") : '';
+        $output['served_by'] = $output['added_by'];
 
         //Sales person info
         $output['sales_person'] = '';
@@ -1213,6 +1216,9 @@ class TransactionUtil extends Util
         if ($il->show_sales_person == 1) {
             $output['sales_person_label'] = ! empty($il->sales_person_label) ? $il->sales_person_label : '';
             $output['sales_person'] = ! empty($transaction->sales_person->user_full_name) ? $transaction->sales_person->user_full_name : '';
+            if (! empty($output['sales_person'])) {
+                $output['served_by'] = trim($output['sales_person']);
+            }
         }
 
         //commission agent info
@@ -1227,6 +1233,24 @@ class TransactionUtil extends Util
         $output['invoice_no'] = $transaction->invoice_no;
         $output['invoice_no_prefix'] = $il->invoice_no_prefix;
         $output['shipping_address'] = ! empty($transaction->shipping_address()) ? $transaction->shipping_address() : $transaction->shipping_address;
+
+        // KRA eTIMS receipt data is only shown after the sale was accepted by KRA.
+        $output['etims'] = null;
+        if (config('etims.enabled') && Schema::hasTable('etims_invoices')) {
+            $etimsInvoice = EtimsInvoice::where('transaction_id', $transaction->id)
+                ->where('status', 'accepted')
+                ->first();
+
+            if ($etimsInvoice) {
+                $output['etims'] = [
+                    'current_receipt_number' => $etimsInvoice->current_receipt_number,
+                    'total_receipt_number' => $etimsInvoice->total_receipt_number,
+                    'internal_data' => $etimsInvoice->internal_data,
+                    'receipt_signature' => $etimsInvoice->receipt_signature,
+                    'sdc_datetime' => $etimsInvoice->sdc_datetime,
+                ];
+            }
+        }
 
         //Heading & invoice label, when quotation use the quotation heading.
         if ($transaction_type == 'sell_return') {
@@ -1492,11 +1516,17 @@ class TransactionUtil extends Util
         if ($transaction_type == 'sell' && $transaction->status == 'final') {
             $paid_amount = $this->getTotalPaid($transaction->id);
             $due = $transaction->final_total - $paid_amount;
+            $amount_received = $transaction->payment_lines->where('is_return', 0)->sum('amount');
+            $change_return_amount = $transaction->payment_lines->where('is_return', 1)->sum('amount');
 
             $output['total_paid'] = ($paid_amount == 0) ? 0 : $this->num_f($paid_amount, $show_currency, $business_details);
             $output['total_paid_label'] = $il->paid_label;
             $output['total_due'] = ($due == 0) ? 0 : $this->num_f($due, $show_currency, $business_details);
             $output['total_due_label'] = $il->total_due_label;
+            $output['amount_received'] = ($amount_received == 0) ? 0 : $this->num_f($amount_received, $show_currency, $business_details);
+            $output['amount_received_label'] = __('lang_v1.total_paying');
+            $output['change_return'] = ($change_return_amount == 0) ? 0 : $this->num_f($change_return_amount, $show_currency, $business_details);
+            $output['change_return_label'] = $il->change_return_label;
 
             if ($il->show_previous_bal == 1) {
                 $all_due = $this->getContactDue($transaction->contact_id);
@@ -1530,6 +1560,7 @@ class TransactionUtil extends Util
                                 ['method' => $method.($value['is_return'] == 1 ? ' ('.$il->change_return_label.')(-)' : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                             if ($value['is_return'] == 1) {
                             }
@@ -1538,30 +1569,35 @@ class TransactionUtil extends Util
                                 ['method' => $method.(! empty($value['card_transaction_number']) ? (', Transaction Number:'.$value['card_transaction_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'cheque') {
                             $output['payments'][] =
                                 ['method' => $method.(! empty($value['cheque_number']) ? (', Cheque Number:'.$value['cheque_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'bank_transfer') {
                             $output['payments'][] =
                                 ['method' => $method.(! empty($value['bank_account_number']) ? (', Account Number:'.$value['bank_account_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'advance') {
                             $output['payments'][] =
                                 ['method' => $method,
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'other') {
                             $output['payments'][] =
                                 ['method' => $method,
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                     'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                    'is_return' => $value['is_return'],
                                 ];
                         }
 
@@ -1571,6 +1607,7 @@ class TransactionUtil extends Util
                                     ['method' => $method.(! empty($value['transaction_no']) ? (', '.trans('lang_v1.transaction_no').':'.$value['transaction_no']) : ''),
                                         'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
                                         'date' => $this->format_date($value['paid_on'], false, $business_details),
+                                        'is_return' => $value['is_return'],
                                     ];
                             }
                         }
@@ -1751,6 +1788,9 @@ class TransactionUtil extends Util
 
                 //res_table_id
                 $output['service_staff'] = ! empty($waiter->id) ? implode(' ', [$waiter->first_name, $waiter->last_name]) : '';
+                if (! empty($output['service_staff'])) {
+                    $output['served_by'] = trim($output['service_staff']);
+                }
             }
         }
 
