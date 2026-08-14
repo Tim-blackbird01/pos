@@ -669,7 +669,7 @@ $(document).ready(function() {
     });
 
     //Finalize invoice, open payment modal
-    $('button#pos-finalize').click(function() {
+    $('button#pos-finalize, button.pos-finalize').click(function() {
         //Check if product is present or not.
         if ($('table#pos_table tbody').find('.product_row').length <= 0) {
             toastr.warning(LANG.no_products_added);
@@ -696,6 +696,41 @@ $(document).ready(function() {
         if ($('form#edit_pos_sell_form').length == 0) {
             $(this).find('#method_0').change();
         }
+    });
+
+    $('button.pos-cash-payment').click(function() {
+        //Check if product is present or not.
+        if ($('table#pos_table tbody').find('.product_row').length <= 0) {
+            toastr.warning(LANG.no_products_added);
+            return false;
+        }
+
+        if ($('#reward_point_enabled').length) {
+            var validate_rp = isValidatRewardPoint();
+            if (!validate_rp['is_valid']) {
+                toastr.error(validate_rp['msg']);
+                return false;
+            }
+        }
+
+        if ($('#is_credit_sale').length) {
+            $('#is_credit_sale').val(0);
+        }
+
+        var payment_method_dropdown = $('#payment_rows_div')
+            .find('.payment_types_dropdown')
+            .first();
+        payment_method_dropdown.val('cash');
+        payment_method_dropdown.change();
+
+        $('#modal_payment').modal('show');
+        $('#modal_payment').one('shown.bs.modal', function() {
+            $(this)
+                .find('.payment-amount')
+                .filter(':visible:first')
+                .focus()
+                .select();
+        });
     });
 
     //Finalize without showing payment options

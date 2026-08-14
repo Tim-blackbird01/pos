@@ -4,7 +4,7 @@
 @section ('standalone_auth', 'true')
 @section ('content')
     @php
-        $username = old('username');
+        $username = old('login', old('username'));
         $password = null;
         if (config('app.env') == 'demo') {
             $username = 'admin';
@@ -219,21 +219,21 @@
                     >
                         {{ csrf_field() }}
 
-                        <div class="lp-field {{ $errors->has('username') ? 'has-error' : '' }}">
+                        <div class="lp-field {{ $errors->has('login') ? 'has-error' : '' }}">
                             <i class="fas fa-user"></i>
                             <input
-                                name="username"
+                                name="login"
                                 required
                                 autofocus
-                                placeholder="@lang('lang_v1.username')"
+                                placeholder="Username or email address"
                                 data-last-active-input=""
                                 id="username"
                                 type="text"
                                 value="{{ $username }}"
                             />
                         </div>
-                        @if ($errors->has('username'))
-                            <span class="lp-error">{{ $errors->first('username') }}</span>
+                        @if ($errors->has('login'))
+                            <span class="lp-error">{{ $errors->first('login') }}</span>
                         @endif
 
                         <div
@@ -300,6 +300,18 @@
 
                         <button type="submit" class="lp-submit">@lang ('lang_v1.login')</button>
                     </form>
+                    @if (config('services.google.client_id') && config('services.google.client_secret'))
+                        <div class="lp-oauth-divider"><span>or</span></div>
+                        <a href="{{ route('auth.google.redirect') }}" class="lp-google-button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill="#4285F4" d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.79h3.14c1.84-1.69 2.92-4.19 2.92-7.75Z"/>
+                                <path fill="#34A853" d="M12 21.75c2.62 0 4.82-.87 6.43-2.36l-3.14-2.79c-.87.58-1.99.92-3.29.92-2.53 0-4.67-1.71-5.44-4.01H3.31v2.88A9.72 9.72 0 0 0 12 21.75Z"/>
+                                <path fill="#FBBC05" d="M6.56 13.51A5.85 5.85 0 0 1 6.26 12c0-.52.11-1.02.3-1.51V7.61H3.31A9.72 9.72 0 0 0 2.25 12c0 1.57.38 3.06 1.06 4.39l3.25-2.88Z"/>
+                                <path fill="#EA4335" d="M12 6.48c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.81 3.55 14.61 2.25 12 2.25a9.72 9.72 0 0 0-8.69 5.36l3.25 2.88C7.33 8.19 9.47 6.48 12 6.48Z"/>
+                            </svg>
+                            Continue with Google
+                        </a>
+                    @endif
                     @if (config('constants.allow_registration'))
                         <p class="lp-register-prompt">{{ __('business.not_yet_registered') }} <a href="{{ route('business.getRegister') }}@if(!empty(request()->lang)){{ '?lang='.request()->lang }}@endif">{{ __('business.register') }}</a></p>
                     @endif
@@ -607,6 +619,11 @@
             cursor: pointer;
         }
         .lp-submit:hover { background: linear-gradient(90deg, #4aa64f, #6fcf5e); }
+        .lp-oauth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 14px; color: rgba(255,255,255,.72); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+        .lp-oauth-divider::before, .lp-oauth-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.24); }
+        .lp-google-button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px 16px; border: 1px solid rgba(255,255,255,.48); border-radius: 10px; color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; transition: background .2s ease, border-color .2s ease; }
+        .lp-google-button:hover { background: rgba(255,255,255,.12); border-color: #fff; color: #fff; }
+        .lp-google-button svg { width: 20px; height: 20px; padding: 2px; border-radius: 50%; background: #fff; }
         .lp-register-prompt { margin: 25px 0 0; color: rgba(255,255,255,.86); font-size: 14px; }
         .cs-copyright { position: absolute; bottom: 28px; left: 0; right: 0; margin: 0; color: rgba(255,255,255,.62); font-size: 12px; text-align: center; }
 
