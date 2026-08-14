@@ -153,16 +153,21 @@
 				@if(!empty($receipt_details->customer_custom_fields))
 					<br/>{!! $receipt_details->customer_custom_fields !!}
 				@endif
-				@if(!empty($receipt_details->sales_person_label) && !empty($receipt_details->sales_person) && $receipt_details->sales_person != ($receipt_details->service_staff ?? null))
+				@php
+					$served_by = '';
+					if (!empty($receipt_details->served_by)) {
+						$served_by = $receipt_details->served_by;
+					} elseif (!empty($receipt_details->service_staff)) {
+						$served_by = $receipt_details->service_staff;
+					} elseif (!empty($receipt_details->sales_person)) {
+						$served_by = $receipt_details->sales_person;
+					} elseif (!empty($receipt_details->added_by)) {
+						$served_by = $receipt_details->added_by;
+					}
+				@endphp
+				@if(!empty($served_by))
 					<br/>
-					<b>{{ $receipt_details->sales_person_label }}</b> {{ $receipt_details->sales_person }}
-				@endif
-				@if(!empty($receipt_details->service_staff))
-					<br/>
-					<b>Served by:</b> {{ $receipt_details->service_staff }}
-				@elseif(!empty($receipt_details->sales_person))
-					<br/>
-					<b>Served by:</b> {{ $receipt_details->sales_person }}
+					<b>Served by:</b> {{ $served_by }}
 				@endif
 				@if(!empty($receipt_details->commission_agent_label))
 					<br/>
@@ -590,7 +595,6 @@
 
 	<div class="col-xs-12 receipt-barcode-block">
 		<img class="center-block receipt-barcode" src="data:image/png;base64,{{DNS1D::getBarcodePNG($receipt_details->invoice_no, 'C128', 2,30,array(39, 48, 54), true)}}">
-		<div class="receipt-barcode-text">{{$receipt_details->invoice_no}}</div>
 	</div>
 
 	<div class="col-xs-12 receipt-closing-message">
@@ -637,14 +641,21 @@
 
 	html,
 	body {
+		box-sizing: border-box !important;
 		height: auto !important;
 		min-height: 0 !important;
 		margin: 0 !important;
-		padding: 0 !important;
+		padding: 2mm 2.5mm !important;
 		overflow: visible !important;
 		color: #000 !important;
 		font-family: Arial, Helvetica, sans-serif !important;
 		font-size: 10px !important;
+	}
+
+	*,
+	*:before,
+	*:after {
+		box-sizing: inherit !important;
 	}
 
 	#receipt_section,
@@ -656,6 +667,7 @@
 		height: auto !important;
 		min-height: 0 !important;
 		overflow: visible !important;
+		width: 100% !important;
 	}
 
 	.receipt-reference-header .row,
@@ -734,7 +746,15 @@
 		border-bottom: 1px dashed #222;
 		font-size: 10px;
 		table-layout: fixed;
-		width: 100%;
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+
+	.receipt-reference-items .table-responsive,
+	.receipt-reference-summary .table-responsive {
+		border: 0 !important;
+		overflow: visible !important;
+		width: 100% !important;
 	}
 
 	.receipt-reference-items .table > thead > tr > th,
@@ -766,6 +786,8 @@
 	.receipt-reference-items .table > thead > tr > th.text-right,
 	.receipt-reference-items .table > tbody > tr > td.text-right {
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: clip;
 	}
 
 	.receipt-reference-items .receipt-item-product {
@@ -786,7 +808,8 @@
 	.receipt-reference-summary .table {
 		margin-bottom: 4px;
 		font-size: 10px;
-		width: 100%;
+		width: 100% !important;
+		max-width: 100% !important;
 	}
 
 	.receipt-reference-summary .table > tbody > tr > th,
@@ -836,11 +859,6 @@
 		margin: 0 auto;
 	}
 
-	.receipt-barcode-text {
-		margin-top: 2px;
-		font-size: 8px;
-	}
-
 	.receipt-qr-block {
 		margin-top: 8px;
 	}
@@ -868,6 +886,7 @@
 @media print and (max-width: 90mm) {
 	body {
 		font-size: 9px !important;
+		padding: 2mm 2mm !important;
 	}
 
 	.receipt-reference-items .table {
@@ -884,15 +903,20 @@
 	}
 
 	.receipt-reference-items .receipt-item-product {
-		width: 54%;
+		width: 50%;
 	}
 
 	.receipt-reference-items .receipt-item-qty {
-		width: 16%;
+		width: 18%;
 	}
 
 	.receipt-reference-items .receipt-item-subtotal {
-		width: 30%;
+		width: 32%;
+	}
+
+	.receipt-reference-items .receipt-item-qty,
+	.receipt-reference-items .receipt-item-subtotal {
+		font-size: 8px;
 	}
 
 	.receipt-reference-summary .table {

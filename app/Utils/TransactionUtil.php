@@ -1208,6 +1208,7 @@ class TransactionUtil extends Util
         // added by 
         $user = \App\User::find($transaction->created_by);
         $output['added_by'] = $user ? trim("{$user->surname} {$user->first_name} {$user->last_name}") : '';
+        $output['served_by'] = $output['added_by'];
 
         //Sales person info
         $output['sales_person'] = '';
@@ -1215,6 +1216,9 @@ class TransactionUtil extends Util
         if ($il->show_sales_person == 1) {
             $output['sales_person_label'] = ! empty($il->sales_person_label) ? $il->sales_person_label : '';
             $output['sales_person'] = ! empty($transaction->sales_person->user_full_name) ? $transaction->sales_person->user_full_name : '';
+            if (! empty($output['sales_person'])) {
+                $output['served_by'] = trim($output['sales_person']);
+            }
         }
 
         //commission agent info
@@ -1784,6 +1788,9 @@ class TransactionUtil extends Util
 
                 //res_table_id
                 $output['service_staff'] = ! empty($waiter->id) ? implode(' ', [$waiter->first_name, $waiter->last_name]) : '';
+                if (! empty($output['service_staff'])) {
+                    $output['served_by'] = trim($output['service_staff']);
+                }
             }
         }
 
