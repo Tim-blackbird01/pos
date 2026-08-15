@@ -291,29 +291,40 @@ class NotificationUtil extends Util
             $email_settings = request()->session()->get('business.email_settings');
         }
 
-        $is_superadmin_settings_allowed = System::getProperty('allow_email_settings_to_businesses');
-
-        //Check if prefered email setting is superadmin email settings
-        if (! empty($is_superadmin_settings_allowed) && ! empty($email_settings['use_superadmin_settings']) && $check_superadmin) {
-            $email_settings['mail_driver'] = config('mail.mailers.smtp.transport');
-            $email_settings['mail_host'] = config('mail.mailers.smtp.host');
-            $email_settings['mail_port'] = config('mail.mailers.smtp.port');
-            $email_settings['mail_username'] = config('mail.mailers.smtp.username');
-            $email_settings['mail_password'] = config('mail.mailers.smtp.password');
-            $email_settings['mail_encryption'] = config('mail.mailers.smtp.encryption');
-            $email_settings['mail_from_address'] = config('mail.mailers.smtp.address');
+        // Use the credentials saved by the administrator if the business opted
+        // in, or when it has not configured its own mail settings.
+        if ($check_superadmin && (! empty($email_settings['use_superadmin_settings']) || empty($email_settings['mail_host']))) {
+            $superadmin_settings = System::getProperties([
+                'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
+                'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS',
+                'MAIL_FROM_NAME',
+            ], true);
+            $email_settings = [
+                'mail_driver' => $superadmin_settings->get('MAIL_MAILER', 'smtp'),
+                'mail_host' => $superadmin_settings->get('MAIL_HOST'),
+                'mail_port' => $superadmin_settings->get('MAIL_PORT'),
+                'mail_username' => $superadmin_settings->get('MAIL_USERNAME'),
+                'mail_password' => $superadmin_settings->get('MAIL_PASSWORD'),
+                'mail_encryption' => $superadmin_settings->get('MAIL_ENCRYPTION'),
+                'mail_from_address' => $superadmin_settings->get('MAIL_FROM_ADDRESS'),
+                'mail_from_name' => $superadmin_settings->get('MAIL_FROM_NAME'),
+            ];
         }
 
         $mail_driver = ! empty($email_settings['mail_driver']) ? $email_settings['mail_driver'] : 'smtp';
-        Config::set('mail.driver', $mail_driver);
-        Config::set('mail.host', $email_settings['mail_host']);
-        Config::set('mail.port', $email_settings['mail_port']);
-        Config::set('mail.username', $email_settings['mail_username']);
-        Config::set('mail.password', $email_settings['mail_password']);
-        Config::set('mail.encryption', $email_settings['mail_encryption']);
-
+        Config::set('mail.default', $mail_driver);
+        Config::set("mail.mailers.{$mail_driver}.host", $email_settings['mail_host'] ?? null);
+        Config::set("mail.mailers.{$mail_driver}.port", $email_settings['mail_port'] ?? null);
+        Config::set("mail.mailers.{$mail_driver}.username", $email_settings['mail_username'] ?? null);
+        Config::set("mail.mailers.{$mail_driver}.password", $email_settings['mail_password'] ?? null);
+        Config::set("mail.mailers.{$mail_driver}.encryption", $email_settings['mail_encryption'] ?? null);
         Config::set('mail.from.address', $email_settings['mail_from_address']);
-        Config::set('mail.from.name', $email_settings['mail_from_name']);
+        Config::set('mail.from.name', $email_settings['mail_from_name'] ?? null);
+        Config::set('mail.contact_address', $email_settings['mail_from_address']);
+
+        // Mailers are cached by Laravel for the current request. Recreate the
+        // selected mailer after applying the settings above.
+        app('mail.manager')->purge($mail_driver);
     }
 
     public function replaceHmsBookingTags($data, $transaction, $adults, $childrens, $customer){
