@@ -18,9 +18,9 @@
                 />
             </div>
             <div class="story-copy animate-delay-2">
-                <h2>Designed for the work behind every sale.</h2>
-                <p>Businesses do their best work when systems quietly support the people using them. That means fewer loose ends, clearer answers and more attention left for customers.</p>
-                <p>We care about useful detail, dependable workflows and software that feels understandable from the first day through the next stage of growth.</p>
+                <h2>Built for everything that happens before and after the sale.</h2>
+                <p>Great businesses run best when technology gets out of the way. By eliminating system friction and providing clear operational insights, we help your team spend less time troubleshooting and more time serving customers.</p>
+                <p>We focus on reliable workflows, practical details, and software that feels effortless to use—from day one to your next stage of growth.</p>
             </div>
         </section>
 
@@ -34,7 +34,7 @@
                 <p>Faster Checkout Speed</p>
             </div>
             <div class="stat-item">
-                <h3>10k+</h3>
+                <h3>1000+</h3>
                 <p>Active Workflows daily</p>
             </div>
         </section>
@@ -43,12 +43,12 @@
             <article class="card">
                 <span class="icon">&rarr;</span>
                 <h3>Our mission</h3>
-                <p>Give independent teams and growing organisations a practical, connected operating foundation.</p>
+                <p>Our mission is to equip independent teams and growing organizations with a practical, fully connected operating foundation that simplifies daily workflows, unifies retail operations, and turns everyday decisions into steady business growth.</p>
             </article>
             <article class="card">
                 <span class="icon mint">&#9733;</span>
                 <h3>Our vision</h3>
-                <p>Make powerful commerce tools feel approachable enough to support better work everywhere.</p>
+                <p>To empower everyday businesses with intuitive, unified commerce tools that eliminate operational friction and turn daily operations into effortless, sustainable growth.</p>
             </article>
         </section>
 
