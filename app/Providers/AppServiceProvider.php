@@ -7,6 +7,7 @@ use App\Utils\ModuleUtil;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +37,35 @@ class AppServiceProvider extends ServiceProvider
             error_reporting(E_ALL & ~E_USER_DEPRECATED);
         } else {
             error_reporting(0);
+        }
+
+        // Email credentials are maintained in the administrator settings, so
+        // all mail sent by the application (including system notifications)
+        // uses the same configuration without depending on .env values.
+        try {
+            if (isAppInstalled() && Schema::hasTable('system')) {
+                $mail_settings = System::getProperties([
+                    'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
+                    'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS',
+                    'MAIL_FROM_NAME',
+                ], true);
+
+                if ($mail_settings->has('MAIL_MAILER')) {
+                    $mailer = $mail_settings->get('MAIL_MAILER', 'smtp');
+                    Config::set('mail.default', $mailer);
+                    Config::set("mail.mailers.{$mailer}.host", $mail_settings->get('MAIL_HOST'));
+                    Config::set("mail.mailers.{$mailer}.port", $mail_settings->get('MAIL_PORT'));
+                    Config::set("mail.mailers.{$mailer}.username", $mail_settings->get('MAIL_USERNAME'));
+                    Config::set("mail.mailers.{$mailer}.password", $mail_settings->get('MAIL_PASSWORD'));
+                    Config::set("mail.mailers.{$mailer}.encryption", $mail_settings->get('MAIL_ENCRYPTION'));
+                    Config::set('mail.from.address', $mail_settings->get('MAIL_FROM_ADDRESS'));
+                    Config::set('mail.from.name', $mail_settings->get('MAIL_FROM_NAME'));
+                    Config::set('mail.contact_address', $mail_settings->get('MAIL_FROM_ADDRESS'));
+                }
+            }
+        } catch (\Throwable $e) {
+            // The installer and database maintenance commands can run before
+            // the system settings table is available.
         }
 
         //force https
