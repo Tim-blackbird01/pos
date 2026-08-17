@@ -72,7 +72,7 @@
             <article class="post post--large" data-topic="product">
                 <div class="post__media">
                     <img
-                        src="images/landing/dj-image.svg"
+                        src="{{ asset('images/landing/dj-image.webp') }}"
                         alt="Dashboard showing activity across multiple business locations"
                         loading="lazy"
                     />
@@ -91,7 +91,7 @@
                 <article class="post" data-topic="operations">
                     <div class="post__media post__media--small">
                         <img
-                            src="images/landing/code-laptop.svg"
+                            src="{{ asset('images/landing/code-laptop.webp') }}"
                             alt="Weekly reporting summary screen"
                             loading="lazy"
                         />
@@ -109,7 +109,7 @@
                 <article class="post" data-topic="security">
                     <div class="post__media post__media--small">
                         <img
-                            src="images/landing//handshake.svg"
+                        src="{{ asset('images/landing/handshake.webp') }}"
                             alt="Role-based access permissions screen"
                             loading="lazy"
                         />
@@ -131,7 +131,7 @@
             <article class="post" data-topic="product">
                 <div class="post__media">
                     <img
-                        src="images/landing/inventory-team.svg"
+                        src="{{ asset('images/landing/inventory-team.webp') }}"
                         alt="Inventory syncing between two warehouses"
                         loading="lazy"
                     />
@@ -149,7 +149,7 @@
             <article class="post" data-topic="growth">
                 <div class="post__media">
                     <img
-                        src="images/landing/dashboard-presentation.svg"
+                        src="{{ asset('images/landing/dashboard-presentation.webp') }}"
                         alt="Team activity feed on a tablet"
                         loading="lazy"
                     />
@@ -167,7 +167,7 @@
             <article class="post" data-topic="support">
                 <div class="post__media">
                     <img
-                        src="images/landing/office-worker.svg"
+                        src="{{ asset('images/landing/office-worker.webp') }}"
                         alt="Support conversation between two teammates"
                         loading="lazy"
                     />
@@ -185,7 +185,7 @@
             <article class="post" data-topic="operations">
                 <div class="post__media">
                     <img
-                        src="{{ asset('images/landing/open-close.svg') }}"
+                        src="{{ asset('images/landing/open-close.webp') }}"
                         alt="Opening and closing checklist illustration"
                         loading="lazy"
                     />
@@ -203,7 +203,7 @@
             <article class="post" data-topic="security">
                 <div class="post__media">
                     <img
-                        src="images/landing/history-monitor.svg"
+                        src="{{ asset('images/landing/history-monitor.webp') }}"
                         alt="Audit log of account activity"
                         loading="lazy"
                     />
@@ -221,7 +221,7 @@
             <article class="post" data-topic="growth">
                 <div class="post__media">
                     <img
-                        src="images/landing/sales-forecast.svg"
+                        src="{{ asset('images/landing/sales-forecast.webp') }}"
                         alt="Sales forecast chart trending upward"
                         loading="lazy"
                     />

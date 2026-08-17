@@ -69,7 +69,7 @@
         <div class="spotlight" data-reveal>
             <div class="spotlight-media">
                 <img
-                    src="{{ asset('images/landing/checkout.svg') }}"
+                    src="{{ asset('images/landing/checkout.webp') }}"
                     alt="Cashier using CraftSalesPOS checkout"
                     loading="lazy"
                 />
@@ -89,7 +89,7 @@
         <div class="spotlight reverse" data-reveal>
             <div class="spotlight-media">
                 <img
-                    src="{{ asset('images/landing/stock_report.svg') }}"
+                    src="{{ asset('images/landing/stock_report.webp') }}"
                     alt="Stockroom shelves tracked in CraftSalesPOS"
                     loading="lazy"
                 />
@@ -109,7 +109,7 @@
         <div class="spotlight" data-reveal>
             <div class="spotlight-media">
                 <img
-                    src="{{ asset('images/landing/laptop.svg') }}"
+                    src="{{ asset('images/landing/laptop.webp') }}"
                     alt="Business owner reviewing CraftSalesPOS reports on a tablet"
                     loading="lazy"
                 />

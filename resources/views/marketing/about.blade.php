@@ -13,7 +13,7 @@
         <section class="story-grid animate-fade-in animate-delay-1">
             <div class="visual-wrapper">
                 <img
-                    src="{{ asset('images/landing/team.svg') }}"
+                    src="{{ asset('images/landing/team.webp') }}"
                     alt="Team collaborating in a modern store environment"
                 />
             </div>

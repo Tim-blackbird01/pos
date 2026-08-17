@@ -41,6 +41,18 @@
         .footer-cta { padding:61px 0 30px; color:#e7ecf8; background:#0f1930; }.footer-grid { display:grid; grid-template-columns:1.45fr 1fr 1fr; gap:30px; }.footer-grid .brand { color:#fff; }.footer-grid p { max-width:315px; color:#aeb8ce; font-size:14px; line-height:1.6; }.footer-grid h4 { margin:5px 0 13px; color:#fff; font-size:13px; }.footer-grid a { display:block; margin:9px 0; color:#aeb8ce; font-size:13px; }.footer-grid a:hover { color:var(--mint); }.footer-bottom { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-top:48px; padding-top:24px; color:#8895b2; border-top:1px solid #ffffff17; font-size:12px; } .footer-bottom-links { display:flex; gap:26px; margin-right:22px; } .footer-bottom-links a { color:#aeb8ce; text-decoration:none; } .footer-bottom-links a:hover { color:var(--mint); } .legal { display:flex; justify-content:space-between; gap:15px; margin-top:44px; padding-top:18px; color:#8895b2; border-top:1px solid #ffffff17; font-size:12px; }
         @media(max-width:850px) { .navlinks { display:none; }.nav-actions { display:none; }.nav-toggle { display:grid; }.hero { padding-top:52px; }.hero-grid,.bento,.how-grid { grid-template-columns:1fr; }.hero-visual { min-height:365px; }.report { left:0; transform:none; }.receipt { left:9px; }.heading { align-items:start; flex-direction:column; }.enterprise { grid-column:auto; }.location-stats { right:25px; bottom:23px; }.footer-grid { grid-template-columns:1.3fr 1fr; }.footer-grid > :first-child { grid-column:span 2; } .numbers-strip .inner { grid-template-columns:1fr 1fr; }.fact:nth-child(2) { border-right:0; }.fact:nth-child(-n+2) { border-bottom:1px solid var(--line); } .brand-row { grid-template-columns:repeat(3,1fr); } }
         @media(max-width:540px) { .shell { width:min(100% - 28px,1160px); }.nav { min-height:65px; }.signin,.language { display:none; }.brand { font-size:17px; }.button { padding:11px 14px; }.hero { padding:90px 0 55px; }.lede { font-size:16px; }.hero-visual { min-height:326px; }.report { padding:13px; }.panel { grid-template-columns:72px 1fr; gap:10px; }.side { gap:8px; }.assurance div { flex-wrap:wrap; }.assurance span { width:45%; }.solutions { padding:69px 0 62px; }.enterprise { padding:28px 24px 145px; }.location-stats { left:24px; right:auto; grid-template-columns:repeat(3,1fr); }.location-stats span { padding:10px; }.quote { padding-bottom:61px; }.quote-box { grid-template-columns:1fr; gap:13px; padding:28px; }.how { padding-bottom:62px; }.process,.outcome { padding:26px; }.footer-grid { grid-template-columns:1fr 1fr; }.footer-grid > :first-child { grid-column:span 2; }.legal { flex-direction:column; }.numbers-strip { padding-bottom:65px; }.numbers-strip .inner { grid-template-columns:1fr; }.fact,.fact:nth-child(2) { border-right:0; border-bottom:1px solid var(--line); }.fact:last-child { border-bottom:0; }.trusted { padding-bottom:66px; }.brand-row { grid-template-columns:1fr 1fr; } }
+        /* Keep account actions available inside the opened mobile navigation. */
+        @media(max-width:850px) {
+            .mobile-menu { max-height:calc(100vh - 78px); overflow-y:auto; }
+            .mobile-menu .nav-actions { display:grid; grid-template-columns:1fr 1fr; align-items:stretch; padding:16px 20px 20px; gap:12px; }
+            .mobile-menu .signin { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:11px 14px; border:1px solid var(--line); border-radius:11px; color:var(--ink); background:#fff; }
+            .mobile-menu .signin:hover { color:#1d5f3d; border-color:#a8d9bb; background:#f3fbf6; }
+            .mobile-menu .button { min-height:46px; }
+        }
+        @media(max-width:540px) {
+            .mobile-menu .nav-actions { grid-template-columns:1fr; }
+            .mobile-menu .signin { display:inline-flex; }
+        }
         .card-photo{position:absolute;inset:0;z-index:0}.card-photo img{width:100%;height:100%;object-fit:cover;transform:scale(1.03);transition:transform .55s ease}.card-photo .wash{position:absolute;inset:0}.retail .wash{background:linear-gradient(195deg,#0c3121f2 8%,#1d5c3cc5 48%,#2f7f5d66)}.restaurant .wash{background:linear-gradient(195deg,#221607f2 8%,#5a3a10c7 48%,#8a5a1858)}.service .wash{background:linear-gradient(195deg,#04241af2 8%,#0e4a34c7 48%,#1a6f4f58)}.photo-card{color:#fff}.photo-card p{color:#d7e7d4}.photo-card .icon{position:relative;z-index:1;color:#fff;background:#ffffff27;backdrop-filter:blur(5px)}.card:hover .card-photo img{transform:scale(1.1)}.workflow { padding:0 0 96px; }.workflow-head { max-width:650px; margin:0 auto 32px; text-align:center; }.workflow-head h2 { margin:0 0 12px; font-size:clamp(31px,4vw,47px); line-height:1.05; letter-spacing:-.055em; }.workflow-head p { margin:0; color:var(--muted); line-height:1.65; }.workflow-grid { display:grid; grid-template-columns:1.15fr .85fr .85fr; gap:17px; }.workflow-card { min-height:345px; position:relative; overflow:hidden; padding:25px; border:1px solid var(--line); border-radius:21px; background:#fff; }.workflow-card h3 { position:relative; z-index:1; margin:15px 0 7px; font-size:21px; letter-spacing:-.045em; }.workflow-card p { position:relative; z-index:1; max-width:285px; margin:0; color:var(--muted); font-size:14px; line-height:1.6; }.workflow-card svg { position:absolute; width:100%; max-width:230px; height:118px; right:12px; bottom:14px; }.workflow-card.focus { color:#fff; border:0; background:linear-gradient(145deg,#1d5f3d,#5ebf89); }.workflow-card.focus p { color:#e6f4e9; }.workflow-card.focus svg { max-width:290px; height:130px; right:-6px; bottom:12px; }.workflow-badge { position:relative; z-index:1; display:inline-flex; align-items:center; gap:7px; padding:6px 9px; border-radius:999px; color:#1f6a47; background:#e3f9eb; font-size:11px; font-weight:850; }.focus .workflow-badge {  color:#dce5ff; background:#ffffff19; }.workflow-badge i { width:6px; height:6px; border-radius:50%; background:#4eca8b; }.workflow-card:hover svg { transform:translateY(-4px); transition:transform .25s ease; }.gallery{padding:0 0 92px}.gallery-head{max-width:650px;margin:0 auto 31px;text-align:center}.gallery-head h2{margin:0 0 11px;font-size:clamp(31px,4vw,47px);letter-spacing:-.055em}.gallery-head p{margin:0;color:var(--muted);line-height:1.65}.gallery-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:17px}.gallery-item{position:relative;min-height:250px;overflow:hidden;border-radius:21px;background:#dbe3f5}.gallery-item.tall{grid-row:span 2;min-height:517px}.gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.03);transition:transform .55s ease}.gallery-item:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0b1225a8 0%,transparent 47%)}.gallery-item:hover img{transform:scale(1.1)}.gallery-tag{position:absolute;z-index:1;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;color:var(--ink);background:#ffffffec;font-size:12px;font-weight:850}.gallery-tag i{width:7px;height:7px;border-radius:50%;background:#4eca8b}.top{position:fixed;top:0;left:0;right:0;z-index:50;transition:box-shadow .25s ease,border-color .25s ease}.top.scrolled{box-shadow:0 8px 24px #17213d14;border-color:transparent}[data-reveal]{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}[data-reveal].in{opacity:1;transform:none}@media(max-width:850px){.workflow-grid{grid-template-columns:1fr 1fr}.workflow-card.focus{grid-column:span 2}.gallery-grid{grid-template-columns:1fr 1fr}.gallery-item.tall{grid-row:span 1;min-height:250px}}@media(max-width:540px){.workflow{padding-bottom:64px}.workflow-grid,.gallery-grid{grid-template-columns:1fr}.workflow-card.focus{grid-column:auto}.workflow-card{min-height:325px}.workflow-card.focus svg{max-width:270px}.gallery{padding-bottom:64px}.gallery-item,.gallery-item.tall{min-height:240px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
         .hero{position:relative;overflow:hidden;padding:110px 0 100px;background:#fafbfc;}
         .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:0.75fr 1.25fr;gap:20px;align-items:center;}
@@ -200,8 +212,10 @@
                     <div class="laptop-container">
                         <img
                             class="laptop-img"
-                            src="{{ asset('images/landing/laptop.svg') }}"
+                            src="{{ asset('images/landing/laptop.webp') }}"
                             alt="CraftSalesPOS running on a laptop"
+                            fetchpriority="high"
+                            decoding="async"
                         />
                     </div>
                     <div class="badges-container">
@@ -286,7 +300,7 @@
                 <div class="industry-track">
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
+                            src="{{ asset('images/landing/retail-store-pos-embedded.webp') }}"
                             alt="Supermarkets using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -294,7 +308,7 @@
                     </article>
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/african-pharmacies.png') }}"
+                            src="{{ asset('images/landing/african-pharmacies.webp') }}"
                             alt="Pharmacies using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -302,7 +316,7 @@
                     </article>
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
+                            src="{{ asset('images/landing/barbershop-interior-embedded.webp') }}"
                             alt="Salons and barbershops using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -312,7 +326,7 @@
                     </article>
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/african-laptop.png') }}"
+                            src="{{ asset('images/landing/african-laptop.webp') }}"
                             alt="Agrovet stores using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -320,7 +334,7 @@
                     </article>
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/african-retail.png') }}"
+                            src="{{ asset('images/landing/african-retail.webp') }}"
                             alt="Hardware and building supplies stores using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -330,7 +344,7 @@
                     </article>
                     <article class="industry-card">
                         <img
-                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
+                            src="{{ asset('images/landing/clothing-store-display-embedded.webp') }}"
                             alt="Fashion boutiques using CraftSalesPOS"
                             loading="lazy"
                         />
@@ -338,7 +352,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/retail-store-pos-embedded.svg') }}"
+                            src="{{ asset('images/landing/retail-store-pos-embedded.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -346,7 +360,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-pharmacies.png') }}"
+                            src="{{ asset('images/landing/african-pharmacies.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -354,7 +368,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/barbershop-interior-embedded.svg') }}"
+                            src="{{ asset('images/landing/barbershop-interior-embedded.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -364,7 +378,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-laptop.png') }}"
+                            src="{{ asset('images/landing/african-laptop.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -372,7 +386,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/african-retail.png') }}"
+                            src="{{ asset('images/landing/african-retail.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -382,7 +396,7 @@
                     </article>
                     <article class="industry-card" aria-hidden="true">
                         <img
-                            src="{{ asset('images/landing/clothing-store-display-embedded.svg') }}"
+                            src="{{ asset('images/landing/clothing-store-display-embedded.webp') }}"
                             alt=""
                             loading="lazy"
                         />
@@ -406,7 +420,7 @@
                 <article class="card retail photo-card" data-reveal>
                     <span class="card-photo"
                         ><img
-                            src="{{ asset('images/landing/retail.jpg') }}"
+                            src="{{ asset('images/landing/retail.webp') }}"
                             alt="Retail workspace"
                             loading="lazy" /><span class="wash"></span></span
                     ><span class="icon"
@@ -421,7 +435,7 @@
                 <article class="card restaurant photo-card" data-reveal>
                     <span class="card-photo"
                         ><img
-                            src="{{ asset('images/landing/restaurant.jpg') }}"
+                            src="{{ asset('images/landing/restaurant.webp') }}"
                             alt="Busy restaurant service"
                             loading="lazy" /><span class="wash"></span></span
                     ><span class="icon"
@@ -436,7 +450,7 @@
                 <article class="card service photo-card" data-reveal>
                     <span class="card-photo"
                         ><img
-                            src="{{ asset('images/landing/service.jpg') }}"
+                            src="{{ asset('images/landing/service.webp') }}"
                             alt="Service business owner"
                             loading="lazy" /><span class="wash"></span></span
                     ><span class="icon"
@@ -527,7 +541,7 @@
                     <div class="mobile-shadow" aria-hidden="true"></div>
                     <img
                         class="mobile-shot"
-                        src="{{ asset('images/landing/phone_dashboard.svg') }}"
+                        src="{{ asset('images/landing/phone_dashboard.webp') }}"
                         alt="CraftSalesPOS dashboard on a phone"
                         loading="lazy"
                     />

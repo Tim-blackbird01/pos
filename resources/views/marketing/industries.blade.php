@@ -122,7 +122,7 @@
                     <div class="spotlight-plate"></div>
                     <img
                         class="spotlight-image"
-                        src="{{ asset('images/landing/stock_report.svg') }}"
+                        src="{{ asset('images/landing/stock_report.webp') }}"
                         alt="CraftSalesPOS stock report"
                         loading="lazy"
                     />
