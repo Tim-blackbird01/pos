@@ -11,13 +11,13 @@
 
             <div class="hero-stats" data-reveal data-reveal-delay="1">
                 <div class="hero-stat">
-                    <strong>1,200+</strong>
+                    <strong>15+</strong>
                     <span>businesses running on CraftSalesPOS</span>
                 </div>
                 <div class="hero-stat-divider" aria-hidden="true"></div>
                 <div class="hero-stat">
-                    <strong>40+</strong>
-                    <span>countries with active workspaces</span>
+                    <strong>100% Sync</strong>
+                    <span>Real-time inventory tracking across all registers and locations.</span>
                 </div>
                 <div class="hero-stat-divider" aria-hidden="true"></div>
                 <div class="hero-stat">

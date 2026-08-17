@@ -56,14 +56,14 @@ class SuperadminSettingsController extends Controller
             'APP_NAME' => env('APP_NAME'),
             'APP_TITLE' => env('APP_TITLE'),
             'APP_LOCALE' => env('APP_LOCALE'),
-            'MAIL_MAILER' => $is_demo ? null : env('MAIL_MAILER'),
-            'MAIL_HOST' => $is_demo ? null : env('MAIL_HOST'),
-            'MAIL_PORT' => $is_demo ? null : env('MAIL_PORT'),
-            'MAIL_USERNAME' => $is_demo ? null : env('MAIL_USERNAME'),
-            'MAIL_PASSWORD' => $is_demo ? null : env('MAIL_PASSWORD'),
-            'MAIL_ENCRYPTION' => $is_demo ? null : env('MAIL_ENCRYPTION'),
-            'MAIL_FROM_ADDRESS' => $is_demo ? null : env('MAIL_FROM_ADDRESS'),
-            'MAIL_FROM_NAME' => $is_demo ? null : env('MAIL_FROM_NAME'),
+            'MAIL_MAILER' => $is_demo ? null : $settings->get('MAIL_MAILER', 'smtp'),
+            'MAIL_HOST' => $is_demo ? null : $settings->get('MAIL_HOST'),
+            'MAIL_PORT' => $is_demo ? null : $settings->get('MAIL_PORT'),
+            'MAIL_USERNAME' => $is_demo ? null : $settings->get('MAIL_USERNAME'),
+            'MAIL_PASSWORD' => $is_demo ? null : $settings->get('MAIL_PASSWORD'),
+            'MAIL_ENCRYPTION' => $is_demo ? null : $settings->get('MAIL_ENCRYPTION'),
+            'MAIL_FROM_ADDRESS' => $is_demo ? null : $settings->get('MAIL_FROM_ADDRESS'),
+            'MAIL_FROM_NAME' => $is_demo ? null : $settings->get('MAIL_FROM_NAME'),
             'STRIPE_PUB_KEY' => $is_demo ? null : env('STRIPE_PUB_KEY'),
             'STRIPE_SECRET_KEY' => $is_demo ? null : env('STRIPE_SECRET_KEY'),
             'PAYPAL_MODE' => env('PAYPAL_MODE'),
@@ -162,10 +162,23 @@ class SuperadminSettingsController extends Controller
                             );
             }
 
+            // SMTP credentials are application settings, not deployment
+            // environment variables. They are used by the mail configuration
+            // resolver for every outgoing message.
+            $mail_settings = $request->only([
+                'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
+                'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS',
+                'MAIL_FROM_NAME',
+            ]);
+            foreach ($mail_settings as $key => $setting) {
+                System::updateOrCreate(
+                    ['key' => $key],
+                    ['value' => $setting]
+                );
+            }
+
             $env_settings = $request->only(['APP_NAME', 'APP_TITLE',
-                'APP_LOCALE', 'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT',
-                'MAIL_USERNAME', 'MAIL_PASSWORD', 'MAIL_ENCRYPTION',
-                'MAIL_FROM_ADDRESS', 'MAIL_FROM_NAME', 'STRIPE_PUB_KEY',
+                'APP_LOCALE', 'STRIPE_PUB_KEY',
                 'STRIPE_SECRET_KEY', 'PAYPAL_MODE',
                 'PAYPAL_CLIENT_ID', 'PAYPAL_APP_SECRET',
                 'BACKUP_DISK', 'DROPBOX_ACCESS_TOKEN',

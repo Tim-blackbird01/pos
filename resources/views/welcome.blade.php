@@ -399,8 +399,8 @@
         </section>
         <section class="shell solutions" id="solutions">
             <div class="heading">
-                <h2>Built around the way your business actually moves.</h2>
-                <p>Choose the tools that fit today, then let CraftSalesPOS keep up as your operation gains momentum.</p>
+                <h2>Tailored to how your business actually runs.</h2>
+                <p>Pick the capabilities you need now, then let CraftSalesPOS scale with you as you grow.</p>
             </div>
             <div class="bento">
                 <article class="card retail photo-card" data-reveal>
@@ -415,8 +415,8 @@
                             <path d="m4 12 8 4 8-4M4 17l8 4 8-4" />
                         </svg
                     ></span>
-                    <h3>Retail with a steady pulse</h3>
-                    <p>Make each sale simple while inventory, products and customer history stay quietly in sync.</p>
+                    <h3>Seamless Store Operations</h3>
+                    <p>Keep transactions moving while stock levels, product updates, and buyer history update in real time.</p>
                 </article>
                 <article class="card restaurant photo-card" data-reveal>
                     <span class="card-photo"
@@ -430,8 +430,8 @@
                             <path d="M9 15h6" />
                         </svg
                     ></span>
-                    <h3>Service that keeps flowing</h3>
-                    <p>Bring orders, tables and payments into one confident rhythm.</p>
+                    <h3>Continuous Service Flow</h3>
+                    <p>Unify orders, floor tables, and payments into one seamless, fast-paced workflow.</p>
                 </article>
                 <article class="card service photo-card" data-reveal>
                     <span class="card-photo"
@@ -445,8 +445,8 @@
                             <path d="M8 8h8M8 12h5M8 16h3" />
                         </svg
                     ></span>
-                    <h3>Clients, organised</h3>
-                    <p>Manage bookings, invoices and follow-ups without losing the personal touch.</p>
+                    <h3>Client Management Made Easy</h3>
+                    <p>Handle appointments, invoices, and customer communications in one clean workspace.</p>
                 </article>
                 <article class="card enterprise" id="growth">
                     <h3>One view for every location, team and next decision.</h3>
@@ -605,7 +605,7 @@
                 </div>
                 <div class="fact">
                     <b>Multi-location</b><span>control as your business expands</span>
-                </div>
+                </div> 
                 <div class="fact">
                     <b>One clear view</b><span>for every meaningful next move</span>
                 </div>
@@ -614,8 +614,8 @@
         <section class="shell trusted">
             <p>A polished foundation for every kind of business</p>
             <div class="brand-row">
-                <span>MERIDIAN</span><span>FIELD &amp; FORM</span><span>NORTHLINE</span
-                ><span>COMMON GOODS</span><span>STUDIO 8</span>
+                <span>Social Proof & Trust</span><span>Versatility & Industry Focus</span><span>Outcome & Performance Focused</span
+                ><span>Direct & Concise</span><span>Action & Community Driven</span>
             </div>
         </section>
         <section class="pricing" id="pricing" style="margin-bottom: 80px">
