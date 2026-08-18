@@ -805,8 +805,8 @@
                     href="{{ route('marketing.features') }}"
                     >Features</a
                 ><a
-                    class="{{ request()->routeIs('marketing.pricing') ? 'active' : '' }}"
-                    href="{{ route('marketing.pricing') }}"
+                    class="{{ request()->routeIs('marketing.plans') ? 'active' : '' }}"
+                    href="{{ route('marketing.plans') }}"
                     >Pricing</a
                 ><a
                     class="{{ request()->routeIs('marketing.about') ? 'active' : '' }}"
@@ -857,8 +857,8 @@
                         >Features</a
                     >
                     <a
-                        href="{{ route('marketing.pricing') }}"
-                        class="{{ request()->routeIs('marketing.pricing') ? 'active' : '' }}"
+                        href="{{ route('marketing.plans') }}"
+                        class="{{ request()->routeIs('marketing.plans') ? 'active' : '' }}"
                         >Pricing</a
                     >
                     <a

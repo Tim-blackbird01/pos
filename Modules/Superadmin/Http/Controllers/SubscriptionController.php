@@ -5,6 +5,7 @@ namespace Modules\Superadmin\Http\Controllers;
 use App\Business;
 use App\System;
 use App\Utils\ModuleUtil;
+use App\Utils\NotificationUtil;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,15 @@ use MyFatoorah\Library\API\Payment\MyFatoorahPaymentStatus;
 class SubscriptionController extends BaseController
 {
     protected $provider;
+
+    protected function packageForBilling($packageId, $billingCycle = 'monthly')
+    {
+        $package = Package::active()->findOrFail($packageId);
+
+        return $billingCycle === 'annual' && $package->supportsAnnualBilling()
+            ? $package->billedAnnually()
+            : $package;
+    }
 
     public function __construct(ModuleUtil $moduleUtil = null)
     {
@@ -102,7 +112,8 @@ class SubscriptionController extends BaseController
 
             $business_id = request()->session()->get('user.business_id');
 
-            $package = Package::active()->find($package_id);
+            $billingCycle = $request->input('billing', $request->input('billing_cycle', 'monthly'));
+            $package = $this->packageForBilling($package_id, $billingCycle);
 
             //Check if superadmin only package
             if ($package->is_private == 1 && ! auth()->user()->can('superadmin')) {
@@ -237,7 +248,7 @@ class SubscriptionController extends BaseController
                
             }
             return view('superadmin::subscription.pay')
-            ->with(compact('package', 'gateways', 'system_currency', 'layout', 'user', 'offline_payment_details', 'coupon_status', 'package_price_after_discount', 'discount_amount'));
+            ->with(compact('package', 'billingCycle', 'gateways', 'system_currency', 'layout', 'user', 'offline_payment_details', 'coupon_status', 'package_price_after_discount', 'discount_amount'));
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -295,7 +306,7 @@ class SubscriptionController extends BaseController
             $business_id = request()->session()->get('user.business_id');
             $business_name = request()->session()->get('business.name');
             $user_id = request()->session()->get('user.id');
-            $package = Package::active()->find($package_id);
+            $package = $this->packageForBilling($package_id, $request->input('billing_cycle'));
            
             //Call the payment method
             $pay_function = 'pay_'.request()->gateway;
@@ -305,7 +316,7 @@ class SubscriptionController extends BaseController
                 $payment_transaction_id = $this->$pay_function($business_id, $business_name, $package, $request);
             }
             //Add subscription details after payment is succesful
-            $this->_add_subscription(request()->coupon_code, request()->price,$business_id, $package_id, request()->gateway, $payment_transaction_id, $user_id);
+            $this->_add_subscription(request()->coupon_code, request()->price, $business_id, $package, request()->gateway, $payment_transaction_id, $user_id);
             DB::commit();
 
             $msg = __('lang_v1.success');
@@ -346,7 +357,7 @@ class SubscriptionController extends BaseController
             $business_id = request()->session()->get('user.business_id');
             $business_name = request()->session()->get('business.name');
             $user_id = request()->session()->get('user.id');
-            $package = Package::active()->find($package_id);
+            $package = $this->packageForBilling($package_id, $pesapal_session['billing_cycle'] ?? 'monthly');
 
             $this->_add_subscription(null, 0, $business_id, $package, 'pesapal', $transaction_id, $user_id);
             $output = ['success' => 1, 'msg' => __('superadmin::lang.waiting_for_confirmation')];
@@ -418,6 +429,7 @@ class SubscriptionController extends BaseController
         $system_currency = System::getCurrency();
         $package->price = $system_currency->symbol.number_format($package->price, 2, $system_currency->decimal_separator, $system_currency->thousand_separator);
 
+        (new NotificationUtil)->configureSuperadminEmail();
         Notification::route('mail', $email)
             ->notify(new SubscriptionOfflinePaymentActivationConfirmation($business, $package));
 
@@ -432,8 +444,9 @@ class SubscriptionController extends BaseController
      */
     public function paypalExpressCheckout(Request $request)
     {
-        $price = $request->input('price');
-        $package_name = $request->input('package_name');
+        $package = $this->packageForBilling($request->input('package_id'), $request->input('billing_cycle'));
+        $price = $package->price;
+        $package_name = $package->name;
 
         $accessToken = $this->generatePaypalAccessToken();
 
@@ -502,7 +515,8 @@ class SubscriptionController extends BaseController
                     $coupon_code = null;  
                 }
     
-                $this->_add_subscription($coupon_code, $price, $business_id, $package_id, $gateway,$transaction_id, $user_id);
+                $package = $this->packageForBilling($package_id, $request->input('billing_cycle'));
+                $this->_add_subscription($coupon_code, $price, $business_id, $package, $gateway,$transaction_id, $user_id);
     
                 $output = ['success' => true,
                     'msg' => __('lang_v1.success'),
@@ -602,7 +616,8 @@ class SubscriptionController extends BaseController
 
         if ($payment['status']) {
             //Add subscription
-            $this->_add_subscription($coupon_code, $price, $business_id, $package_id, $gateway, $payment_transaction_id, $user_id);
+            $package = $this->packageForBilling($package_id, $payment['data']['metadata']['billing_cycle'] ?? 'monthly');
+            $this->_add_subscription($coupon_code, $price, $business_id, $package, $gateway, $payment_transaction_id, $user_id);
 
             return redirect()
                 ->action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index'])
@@ -661,7 +676,8 @@ class SubscriptionController extends BaseController
             }
 
            
-            $this->_add_subscription($coupon_code,$price, $business_id, $package_id, $gateway, $payment_transaction_id, $user_id);
+            $package = $this->packageForBilling($package_id, $payment['data']['meta']['billing_cycle'] ?? 'monthly');
+            $this->_add_subscription($coupon_code,$price, $business_id, $package, $gateway, $payment_transaction_id, $user_id);
 
             return redirect()
                 ->action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index'])
@@ -735,7 +751,8 @@ class SubscriptionController extends BaseController
                 $business_id = $UserDefinedField->business_id;
                 $user_id = $UserDefinedField->user_id;
                 
-                $this->_add_subscription($coupon_code, $price, $business_id, $package_id, 'myfatoorsh', $payment_transaction_id, $user_id);
+                $package = $this->packageForBilling($package_id, $UserDefinedField->billing_cycle ?? 'monthly');
+                $this->_add_subscription($coupon_code, $price, $business_id, $package, 'myfatoorsh', $payment_transaction_id, $user_id);
 
                 return redirect()
                 ->action([\Modules\Superadmin\Http\Controllers\SubscriptionController::class, 'index'])

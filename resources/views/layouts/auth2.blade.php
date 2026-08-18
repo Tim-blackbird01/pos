@@ -144,11 +144,11 @@
                                                     </div>
 
                                                     <!-- pricing url -->
-                                                    @if (Route::has('pricing') && config('app.env') != 'demo' && $request->segment(1) != 'pricing')
+                                                    @if (Route::has('marketing.plans') && config('app.env') != 'demo' && $request->segment(1) != 'plans')
                                                         &nbsp;
                                                         <a
                                                             class="tw-text-white tw-font-medium tw-text-sm md:tw-text-base hover:tw-text-white"
-                                                            href="{{ action([\Modules\Superadmin\Http\Controllers\PricingController::class, 'index']) }}"
+                                                            href="{{ route('marketing.plans') }}"
                                                         >
                                                             @lang ('superadmin::lang.pricing')
                                                         </a>

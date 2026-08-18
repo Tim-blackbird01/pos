@@ -10,8 +10,8 @@
                 @if (file_exists(public_path('uploads/logo.svg')))<img src="{{ asset('uploads/logo.svg') }}" alt="{{ config('app.name', 'ultimatePOS') }}">@else<img src="{{ asset('img/logo-small.png') }}" alt="{{ config('app.name', 'ultimatePOS') }}">@endif
             </a>
             <nav class="register-nav-links">
-                @if (Route::has('pricing') && config('app.env') != 'demo')
-                    <a href="{{ action([\Modules\Superadmin\Http\Controllers\PricingController::class, 'index']) }}">@lang('superadmin::lang.pricing')</a>
+                @if (Route::has('marketing.plans') && config('app.env') != 'demo')
+                    <a href="{{ route('marketing.plans') }}">@lang('superadmin::lang.pricing')</a>
                 @endif
                 <a href="{{ route('login') }}@if(!empty(request()->lang)){{ '?lang='.request()->lang }}@endif" class="register-login">{{ __('business.sign_in') }}</a>
                 <details class="register-language">
@@ -34,6 +34,7 @@
             ]) !!}
             @include('business.partials.register_form', ['is_register' => true])
             {!! Form::hidden('package_id', $package_id) !!}
+            {!! Form::hidden('billing_cycle', request('billing') === 'annual' ? 'annual' : 'monthly') !!}
             {!! Form::close() !!}
             </div>
         </main>

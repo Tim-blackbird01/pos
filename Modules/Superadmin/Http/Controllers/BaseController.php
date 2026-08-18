@@ -3,6 +3,7 @@
 namespace Modules\Superadmin\Http\Controllers;
 
 use App\System;
+use App\Utils\NotificationUtil;
 use Illuminate\Routing\Controller;
 use Modules\Superadmin\Entities\Package;
 use Modules\Superadmin\Entities\Subscription;
@@ -122,6 +123,7 @@ class BaseController extends Controller
             $is_notif_enabled = System::getProperty('enable_new_subscription_notification');
 
             if (! empty($email) && $is_notif_enabled == 1) {
+                (new NotificationUtil)->configureSuperadminEmail();
                 Notification::route('mail', $email)
                 ->notify(new NewSubscriptionNotification($subscription));
             }

@@ -18,7 +18,7 @@
                 <h4>Product</h4>
                 <a href="{{ route('marketing.industries') }}">Industries</a>
                 <a href="{{ route('marketing.features') }}">Features</a>
-                <a href="{{ route('marketing.pricing') }}">Pricing</a>
+                <a href="{{ route('marketing.plans') }}">Pricing</a>
                 <a href="{{ route('marketing.updates') }}">Updates</a>
             </div>
             <div>

@@ -4,6 +4,7 @@ namespace Modules\Superadmin\Http\Controllers;
 
 use App\System;
 use App\Utils\Util;
+use App\Utils\NotificationUtil;
 use Illuminate\Routing\Controller;
 use Menu;
 use Modules\Superadmin\Notifications\NewBusinessNotification;
@@ -71,6 +72,7 @@ class DataController extends Controller
             $business = $data['business'];
 
             if (!empty($email) && $is_notif_enabled == 1) {
+                (new NotificationUtil)->configureSuperadminEmail();
                 Notification::route('mail', $email)
                     ->notify(new NewBusinessNotification($business));
             }
@@ -79,6 +81,7 @@ class DataController extends Controller
             $welcome_email_settings = System::getProperties(['enable_welcome_email', 'welcome_email_subject', 'welcome_email_body'], true);
 
             if (isset($welcome_email_settings['enable_welcome_email']) && $welcome_email_settings['enable_welcome_email'] == 1 && !empty($welcome_email_settings['welcome_email_subject']) && !empty($welcome_email_settings['welcome_email_body'])) {
+                (new NotificationUtil)->configureSuperadminEmail();
                 $subject = $this->removeTags($welcome_email_settings['welcome_email_subject'], $business);
                 $body = $this->removeTags($welcome_email_settings['welcome_email_body'], $business);
 

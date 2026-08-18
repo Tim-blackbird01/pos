@@ -18,8 +18,8 @@ paypal.Buttons({
 		// use the "body" param to optionally pass additional order information
 		// like product skus and quantities
 		body: JSON.stringify({
-		  price: '{{ $package->price }}',
-		  package_name: '{{ $package->name }}',
+		  package_id: '{{ $package->id }}',
+		  billing_cycle: '{{ $billingCycle }}',
 		}),
 	  })
 	  .then((response) => response.json())
@@ -42,6 +42,7 @@ paypal.Buttons({
 			business_id: "{{$user['business_id']}}",
 			user_id: "{{$user['id']}}",
 			coupon_code: "{{ request()->get('code') ?? null}}",
+			billing_cycle: "{{ $billingCycle }}",
 		})
 	  })
 	  .then((response) => response.json())

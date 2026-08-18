@@ -103,7 +103,7 @@ Route::middleware(['setData'])->group(function () {
         }
 
         return view('marketing.pricing', compact('landingPackages'));
-    })->name('marketing.pricing');
+    })->name('marketing.plans');
     Route::view('/contact', 'marketing.contact')->name('marketing.contact');
     Route::post('/contact', [ContactController::class, 'sendMarketingContact'])->name('contact.send');
     Route::view('/updates', 'marketing.updates')->name('marketing.updates');

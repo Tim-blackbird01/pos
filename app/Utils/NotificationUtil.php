@@ -291,24 +291,14 @@ class NotificationUtil extends Util
             $email_settings = request()->session()->get('business.email_settings');
         }
 
-        // Use the credentials saved by the administrator if the business opted
-        // in, or when it has not configured its own mail settings.
-        if ($check_superadmin && (! empty($email_settings['use_superadmin_settings']) || empty($email_settings['mail_host']))) {
-            $superadmin_settings = System::getProperties([
-                'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
-                'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS',
-                'MAIL_FROM_NAME',
-            ], true);
-            $email_settings = [
-                'mail_driver' => $superadmin_settings->get('MAIL_MAILER', 'smtp'),
-                'mail_host' => $superadmin_settings->get('MAIL_HOST'),
-                'mail_port' => $superadmin_settings->get('MAIL_PORT'),
-                'mail_username' => $superadmin_settings->get('MAIL_USERNAME'),
-                'mail_password' => $superadmin_settings->get('MAIL_PASSWORD'),
-                'mail_encryption' => $superadmin_settings->get('MAIL_ENCRYPTION'),
-                'mail_from_address' => $superadmin_settings->get('MAIL_FROM_ADDRESS'),
-                'mail_from_name' => $superadmin_settings->get('MAIL_FROM_NAME'),
-            ];
+        // Mail credentials are tenant-specific. A business must never fall
+        // back to Superadmin SMTP credentials, including legacy records that
+        // still contain the old `use_superadmin_settings` option.
+        if (empty($email_settings['mail_host']) || empty($email_settings['mail_from_address'])) {
+            Config::set('mail.default', 'log');
+            app('mail.manager')->purge('log');
+
+            return false;
         }
 
         $mail_driver = ! empty($email_settings['mail_driver']) ? $email_settings['mail_driver'] : 'smtp';
@@ -325,6 +315,38 @@ class NotificationUtil extends Util
         // Mailers are cached by Laravel for the current request. Recreate the
         // selected mailer after applying the settings above.
         app('mail.manager')->purge($mail_driver);
+
+        return true;
+    }
+
+    /** Configure the platform's own SMTP account for Superadmin-only mail. */
+    public function configureSuperadminEmail()
+    {
+        $settings = System::getProperties([
+            'MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME',
+            'MAIL_PASSWORD', 'MAIL_ENCRYPTION', 'MAIL_FROM_ADDRESS',
+            'MAIL_FROM_NAME',
+        ], true);
+
+        if (empty($settings->get('MAIL_HOST')) || empty($settings->get('MAIL_FROM_ADDRESS'))) {
+            Config::set('mail.default', 'log');
+            app('mail.manager')->purge('log');
+
+            return false;
+        }
+
+        $mailer = $settings->get('MAIL_MAILER', 'smtp');
+        Config::set('mail.default', $mailer);
+        Config::set("mail.mailers.{$mailer}.host", $settings->get('MAIL_HOST'));
+        Config::set("mail.mailers.{$mailer}.port", $settings->get('MAIL_PORT'));
+        Config::set("mail.mailers.{$mailer}.username", $settings->get('MAIL_USERNAME'));
+        Config::set("mail.mailers.{$mailer}.password", $settings->get('MAIL_PASSWORD'));
+        Config::set("mail.mailers.{$mailer}.encryption", $settings->get('MAIL_ENCRYPTION'));
+        Config::set('mail.from.address', $settings->get('MAIL_FROM_ADDRESS'));
+        Config::set('mail.from.name', $settings->get('MAIL_FROM_NAME'));
+        app('mail.manager')->purge($mailer);
+
+        return true;
     }
 
     public function replaceHmsBookingTags($data, $transaction, $adults, $childrens, $customer){

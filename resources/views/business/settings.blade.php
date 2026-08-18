@@ -103,15 +103,6 @@
 @section('javascript')
 <script type="text/javascript">
     __page_leave_confirmation('#bussiness_edit_form');
-    $(document).on('ifToggled', '#use_superadmin_settings', function() {
-        if ($('#use_superadmin_settings').is(':checked')) {
-            $('#toggle_visibility').addClass('hide');
-            $('.test_email_btn').addClass('hide');
-        } else {
-            $('#toggle_visibility').removeClass('hide');
-            $('.test_email_btn').removeClass('hide');
-        }
-    });
 
     $(document).ready(function(){
 

@@ -10,6 +10,7 @@ use MyFatoorah\Library\API\Payment\MyFatoorahPayment;
 use MyFatoorah\Library\API\Payment\MyFatoorahPaymentEmbedded;
 use MyFatoorah\Library\API\Payment\MyFatoorahPaymentStatus;
 use Exception;
+use Modules\Superadmin\Entities\Package;
 
 class MyFatoorahController extends Controller {
 
@@ -53,10 +54,17 @@ class MyFatoorahController extends Controller {
             $name = request('name');
             $user_id = request('user_id');
             $business_id = request('business_id');
+            $billing_cycle = request('billing_cycle', 'monthly');
+
+            $package = Package::active()->findOrFail($package_id);
+            if ($billing_cycle === 'annual' && $package->supportsAnnualBilling()) {
+                $package = $package->billedAnnually();
+            }
+            $amount = $package->price;
 
             $language = request('language');
 
-            $curlData = $this->getPayLoadData($package_id, $amount , $currency, $coupon_code, $email, $name, $user_id, $business_id, $language);
+            $curlData = $this->getPayLoadData($package_id, $amount , $currency, $coupon_code, $email, $name, $user_id, $business_id, $language, $billing_cycle);
 
             $mfObj   = new MyFatoorahPayment($this->mfConfig);
             $payment = $mfObj->getInvoiceURL($curlData, $paymentId, $package_id, $sessionId);
@@ -78,7 +86,7 @@ class MyFatoorahController extends Controller {
      * 
      * @return array
      */
-    private function getPayLoadData($package_id = null, $amount, $currency, $coupon_code, $email, $name, $user_id, $business_id, $language) {
+    private function getPayLoadData($package_id = null, $amount, $currency, $coupon_code, $email, $name, $user_id, $business_id, $language, $billing_cycle = 'monthly') {
         $callbackURL = route('myfatoorah_callback');
 
         //You can get the data using the order object in your system
@@ -93,7 +101,7 @@ class MyFatoorahController extends Controller {
             'ErrorUrl'           => $callbackURL,
             'Language'           => $language,
             'CustomerReference'  => $package_id,
-            'UserDefinedField'   => json_encode(['business_id' => $business_id, 'coupon_code' => $coupon_code, 'user_id' => $user_id]),
+            'UserDefinedField'   => json_encode(['business_id' => $business_id, 'coupon_code' => $coupon_code, 'user_id' => $user_id, 'billing_cycle' => $billing_cycle]),
             'SourceInfo'         => 'Laravel ' . app()::VERSION . ' - MyFatoorah Package ' . MYFATOORAH_LARAVEL_PACKAGE_VERSION
         ];
     }

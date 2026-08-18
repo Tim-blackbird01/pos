@@ -122,6 +122,14 @@
 
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    {!! Form::label('annual_discount_percentage', 'Annual discount percentage:') !!}
+                                    {!! Form::number('annual_discount_percentage', $packages->annual_discount_percentage, ['class' => 'form-control', 'required', 'min' => 0, 'max' => 100, 'step' => '0.01']) !!}
+                                    <span class="help-block">Applied to annual billing for monthly packages.</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     {!! Form::label('sort_order	', __('superadmin::lang.sort_order') . ':') !!}
                                     {!! Form::number('sort_order', $packages->sort_order, ['class' => 'form-control', 'required']) !!}
                                 </div>

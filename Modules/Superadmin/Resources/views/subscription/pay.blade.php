@@ -94,6 +94,7 @@
 						'method' => 'get',
 						'id' => 'coupon_check',
 					]) !!}
+					{!! Form::hidden('billing', $billingCycle) !!}
 					<div class="col-md-4">
 						<div class="form-group">
 							{!! Form::label('coupon_code', __('superadmin::lang.coupon_code') . '*') !!}

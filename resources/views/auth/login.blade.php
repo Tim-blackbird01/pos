@@ -85,9 +85,9 @@
                     >{{ __('business.register') }}</a
                 >
             @endif
-            @if (Route::has('pricing') && config('app.env') != 'demo')
+            @if (Route::has('marketing.plans') && config('app.env') != 'demo')
                 <a
-                    href="{{ action([\Modules\Superadmin\Http\Controllers\PricingController::class, 'index']) }}"
+                    href="{{ route('marketing.plans') }}"
                     class="cs-nav-link"
                 >
                     @lang ('superadmin::lang.pricing')

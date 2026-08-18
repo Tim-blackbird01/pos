@@ -17,6 +17,10 @@
 
     {{-- ================= PLANS (logic unchanged) ================= --}}
     <section class="shell section">
+        <div class="billing-toggle" role="group" aria-label="Billing frequency">
+            <button type="button" class="is-active" data-billing-cycle="monthly">Monthly</button>
+            <button type="button" data-billing-cycle="annual">Annual billing</button>
+        </div>
         <div class="plans">
             @forelse ($landingPackages as $package)
                 <article
@@ -37,19 +41,23 @@
                         <p>{{ $package->description ?: 'A practical foundation for a more connected business day.' }}</p>
                     </div>
 
-                    <div class="price">
+                    @php
+                        $annualPrice = $package->supportsAnnualBilling() ? $package->billedAnnually()->price : null;
+                    @endphp
+                    <div class="price" data-monthly-price="{{ $package->price }}" @if ($annualPrice !== null) data-annual-price="{{ $annualPrice }}" @endif>
                         @if ((float) $package->price === 0)
                             Free
                             <small
                                 >for {{ $package->interval_count }} {{ Str::singular($package->interval) }}</small
                             >
                         @else
-                            {{ number_format((float) $package->price, 2) }}
-                            <small
-                                >per {{ $package->interval_count }} {{ Str::singular($package->interval) }}</small
-                            >
+                            <span class="price-amount">{{ number_format((float) $package->price, 2) }}</span>
+                            <small class="price-period">per {{ $package->interval_count }} {{ Str::singular($package->interval) }}</small>
                         @endif
                     </div>
+                    @if ($package->supportsAnnualBilling() && $package->annualDiscountPercentage() > 0)
+                        <p class="annual-discount">Save {{ number_format($package->annualDiscountPercentage(), 2) }}% with annual billing</p>
+                    @endif
 
                     <ul>
                         <li>{{ $package->location_count ?: 'Unlimited' }} locations</li>
@@ -71,6 +79,8 @@
                         <a
                             class="button {{ $package->mark_package_as_popular ? '' : 'primary' }}"
                             href="{{ route('business.getRegister', ['package' => $package->id]) }}"
+                            data-monthly-href="{{ route('business.getRegister', ['package' => $package->id]) }}"
+                            @if ($package->supportsAnnualBilling()) data-annual-href="{{ route('business.getRegister', ['package' => $package->id, 'billing' => 'annual']) }}" @endif
                         >
                             <span class="button-copy">Choose this plan</span>
                             <span class="button-icon">→</span>
@@ -242,8 +252,35 @@
 
 @push ('styles')
     <link rel="stylesheet" href="{{ asset('css/marketing-pricing.css') }}" />
+    <style>
+        .billing-toggle { display:flex; width:max-content; margin:0 auto 2rem; padding:.28rem; border:1px solid #d8e7df; border-radius:999px; background:#f5faf7; gap:.2rem; }
+        .billing-toggle button { border:0; border-radius:999px; padding:.6rem 1rem; background:transparent; color:#24563e; font:inherit; font-weight:700; cursor:pointer; }
+        .billing-toggle button.is-active { background:#1d6a49; color:#fff; }
+        .billing-toggle span { font-size:.75em; opacity:.85; }
+        .annual-discount { margin:.4rem 0 0; color:#26724e; font-size:.85rem; font-weight:700; }
+    </style>
 @endpush
 
 @push ('scripts')
     <script src="{{ asset('js/marketing-pricing.js') }}" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-billing-cycle]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var annual = button.dataset.billingCycle === 'annual';
+                    document.querySelectorAll('[data-billing-cycle]').forEach(function (item) { item.classList.toggle('is-active', item === button); });
+                    document.querySelectorAll('.price[data-annual-price]').forEach(function (price) {
+                        var amount = price.querySelector('.price-amount');
+                        var period = price.querySelector('.price-period');
+                        amount.textContent = Number(annual ? price.dataset.annualPrice : price.dataset.monthlyPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        period.textContent = annual ? 'per year' : 'per month';
+                    });
+                    document.querySelectorAll('[data-monthly-href]').forEach(function (link) {
+                        if (annual && link.dataset.annualHref) link.href = link.dataset.annualHref;
+                        else link.href = link.dataset.monthlyHref;
+                    });
+                });
+            });
+        });
+    </script>
 @endpush

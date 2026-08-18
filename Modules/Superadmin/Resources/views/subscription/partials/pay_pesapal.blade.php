@@ -1,7 +1,7 @@
 @php
 
 	$random_reference = Pesapal::random_reference();
-	session(['pesapal' => ['ref' => $random_reference, 'package_id' => $package->id]]);
+	session(['pesapal' => ['ref' => $random_reference, 'package_id' => $package->id, 'billing_cycle' => $billingCycle]]);
 
 	$details = [
 	        'amount' => $package->price,

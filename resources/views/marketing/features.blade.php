@@ -213,7 +213,7 @@
                 <a class="button primary" href="{{ route('business.getRegister') }}"
                     >Start your workspace &rarr;</a
                 >
-                <a class="button button-ghost" href="{{ route('pricing') ?? '#' }}">See pricing</a>
+                <a class="button button-ghost" href="{{ route('marketing.plans') }}">See pricing</a>
             </div>
         </div>
     </section>

@@ -137,6 +137,13 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {!! Form::label('annual_discount_percentage', 'Annual discount percentage:') !!}
+                                    {!! Form::number('annual_discount_percentage', 8.33, ['class' => 'form-control', 'required', 'min' => 0, 'max' => 100, 'step' => '0.01']) !!}
+                                    <span class="help-block">Applied to annual billing for monthly packages.</span>
+                                </div>
+                            </div>
                             <div class="clearfix"></div>
 
                             <div class="col-sm-6">

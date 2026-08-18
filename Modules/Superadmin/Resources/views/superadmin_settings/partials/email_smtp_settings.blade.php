@@ -54,16 +54,6 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label>
-                {!! Form::checkbox('allow_email_settings_to_businesses', 1,!empty($settings["allow_email_settings_to_businesses"]), 
-                [ 'class' => 'input-icheck']); !!}
-                @lang('superadmin::lang.allow_email_settings_to_businesses') 
-                </label>
-                @show_tooltip(__('superadmin::lang.allow_email_settings_tooltip'))
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label>
                 {!! Form::checkbox('enable_new_business_registration_notification', 1,!empty($settings["enable_new_business_registration_notification"]), 
                 [ 'class' => 'input-icheck']); !!}
                 @lang('superadmin::lang.enable_new_business_registration_notification') 

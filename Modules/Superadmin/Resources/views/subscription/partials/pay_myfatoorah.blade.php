@@ -14,6 +14,7 @@ $currency_code = strtolower($system_currency->code);
         <input type="hidden" name="currency" value="{{$currency_code}}"> {{--Ghana:GHS, Nigeria:NGN, USD--}}
 
         <input type="hidden" name="coupon_code" value="{{request()->get('code') ?? null}}">
+        <input type="hidden" name="billing_cycle" value="{{ $billingCycle }}">
         <input type="hidden" name="package_id" value="{{ $package->id }}">
         <input type="hidden" name="business_id" value="{{$user['business_id']}}">
         <input type="hidden" name="user_id" value="{{$user['id']}}">

@@ -7,6 +7,7 @@ $code = strtolower($system_currency->code);
 	 	{{ csrf_field() }}
 	 	<input type="hidden" name="gateway" value="{{$k}}">
 	 	<input type="hidden" name="price" value="{{$package->price}}">
+	 	<input type="hidden" name="billing_cycle" value="{{ $billingCycle }}">
 		<input type="hidden" name="coupon_code" value="{{request()->get('code') ?? null}}">
 		<script
 		        src="https://checkout.stripe.com/checkout.js" class="stripe-button"

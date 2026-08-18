@@ -4,7 +4,8 @@
 // use App\Http\Controllers\Modules;
 // use Illuminate\Support\Facades\Route;
 
-Route::get('/pricing', [Modules\Superadmin\Http\Controllers\PricingController::class, 'index'])->name('pricing');
+// Keep old bookmarks working while exposing a single public packages URL.
+Route::redirect('/pricing', '/plans', 301)->name('legacy.pricing');
 Route::get('/package-duration-update', [Modules\Superadmin\Http\Controllers\PricingController::class, 'package_duration_update'])->name('package_duration_update');
 
 Route::middleware('web', 'auth', 'language', 'AdminSidebarMenu', 'superadmin')->prefix('superadmin')->group(function () {

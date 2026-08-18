@@ -3,6 +3,7 @@
 	 	{{ csrf_field() }}
 	 	<input type="hidden" name="gateway" value="{{$k}}">
 		 <input type="hidden" name="price" value="{{$package->price}}">
+		 <input type="hidden" name="billing_cycle" value="{{ $billingCycle }}">
 		 <input type="hidden" name="coupon_code" value="{{request()->get('code') ?? null}}">
 
 	 	<button type="submit" class="tw-dw-btn tw-dw-btn-success tw-text-white tw-dw-btn-sm"> <i class="fas fa-handshake"></i> {{$v}}</button>

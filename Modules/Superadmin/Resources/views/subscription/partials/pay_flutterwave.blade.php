@@ -35,6 +35,7 @@
                 business_id: "{{$user['business_id']}}",
                 user_id: "{{$user['id']}}",
                 coupon_code: "{{ request()->get('code') ?? null}}",
+                billing_cycle: "{{ $billingCycle }}",
             },
             customer: {
                 email: "{{$user['email']}}"

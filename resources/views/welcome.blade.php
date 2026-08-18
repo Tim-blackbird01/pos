@@ -147,7 +147,7 @@
             <div class="navlinks">
                 <a href="{{ route('marketing.industries') }}">Industries</a
                 ><a href="{{ route('marketing.features') }}">Features</a
-                ><a href="{{ route('marketing.pricing') }}">Pricing</a
+                ><a href="{{ route('marketing.plans') }}">Pricing</a
                 ><a href="{{ route('marketing.about') }}">About</a
                 ><a href="{{ route('marketing.updates') }}">Updates</a
                 ><a href="{{ route('marketing.contact') }}">Contact</a>
@@ -178,7 +178,7 @@
                 <div class="navlinks">
                     <a href="{{ route('marketing.industries') }}">Industries</a
                     ><a href="{{ route('marketing.features') }}">Features</a
-                    ><a href="{{ route('marketing.pricing') }}">Pricing</a
+                    ><a href="{{ route('marketing.plans') }}">Pricing</a
                     ><a href="{{ route('marketing.about') }}">About</a
                     ><a href="{{ route('marketing.updates') }}">Updates</a
                     ><a href="{{ route('marketing.contact') }}">Contact</a>

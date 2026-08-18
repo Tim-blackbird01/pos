@@ -57,4 +57,37 @@ class Package extends Model
     {
         return $query->where('is_private', 0);
     }
+
+    /**
+     * Return a non-persisted annual version of a monthly package.
+     * Annual price is calculated from the package's configured discount.
+     */
+    public function billedAnnually()
+    {
+        if ($this->interval !== 'months' || (int) $this->interval_count < 1) {
+            return $this;
+        }
+
+        $annualPackage = clone $this;
+        $discount = $this->annualDiscountPercentage();
+        $annualPackage->price = round(
+            ((float) $this->price / (int) $this->interval_count) * 12 * (1 - ($discount / 100)),
+            2
+        );
+        $annualPackage->interval = 'years';
+        $annualPackage->interval_count = 1;
+        $annualPackage->billing_cycle = 'annual';
+
+        return $annualPackage;
+    }
+
+    public function annualDiscountPercentage()
+    {
+        return max(0, min(100, (float) $this->annual_discount_percentage));
+    }
+
+    public function supportsAnnualBilling()
+    {
+        return $this->interval === 'months' && (int) $this->interval_count > 0;
+    }
 }

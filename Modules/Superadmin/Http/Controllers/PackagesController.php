@@ -94,12 +94,17 @@ class PackagesController extends Controller
         }
 
 
+        $request->validate([
+            'annual_discount_percentage' => 'required|numeric|between:0,100',
+        ]);
+
         try {
             $input = $request->only(['name', 'description', 'location_count', 'user_count', 'product_count', 'invoice_count', 'interval', 'interval_count', 'trial_days', 'price', 'sort_order', 'is_active', 'mark_package_as_popular', 'custom_permissions', 'is_private', 'is_one_time', 'enable_custom_link', 'custom_link',
-                'custom_link_text', 'businesses' ]);
+                'custom_link_text', 'businesses', 'annual_discount_percentage' ]);
             $currency = System::getCurrency();
 
             $input['price'] = $this->businessUtil->num_uf($input['price'], $currency);
+            $input['annual_discount_percentage'] = (float) $input['annual_discount_percentage'];
             $input['is_active'] = empty($input['is_active']) ? 0 : 1;
             $input['mark_package_as_popular'] = empty($input['mark_package_as_popular']) ? 0 : 1;
             $input['created_by'] = $request->session()->get('user.id');
@@ -172,8 +177,14 @@ class PackagesController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $request->validate([
+            'annual_discount_percentage' => 'required|numeric|between:0,100',
+        ]);
+
         try {
-            $packages_details = $request->only(['name', 'id', 'description', 'location_count', 'user_count', 'product_count', 'invoice_count', 'interval', 'interval_count', 'trial_days', 'price', 'sort_order', 'is_active', 'mark_package_as_popular', 'custom_permissions', 'is_private', 'is_one_time', 'enable_custom_link', 'custom_link', 'custom_link_text', 'businesses']);
+            $packages_details = $request->only(['name', 'id', 'description', 'location_count', 'user_count', 'product_count', 'invoice_count', 'interval', 'interval_count', 'trial_days', 'price', 'sort_order', 'is_active', 'mark_package_as_popular', 'custom_permissions', 'is_private', 'is_one_time', 'enable_custom_link', 'custom_link', 'custom_link_text', 'businesses', 'annual_discount_percentage']);
+
+            $packages_details['annual_discount_percentage'] = (float) $packages_details['annual_discount_percentage'];
 
             $packages_details['is_active'] = empty($packages_details['is_active']) ? 0 : 1;
             $packages_details['mark_package_as_popular'] = empty($packages_details['mark_package_as_popular']) ? 0 : 1;
