@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\EtimsInvoice;
+use App\Business;
 use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -12,8 +13,47 @@ use InvalidArgumentException;
 
 class EtimsService
 {
+    /** Load eTIMS credentials for one business only. */
+    protected function configureFor(Transaction $transaction): bool
+    {
+        $settings = Business::findOrFail($transaction->business_id)->etims_settings ?? [];
+        if (empty($settings['enabled'])) {
+            return false;
+        }
+
+        $environment = $settings['environment'] ?? 'sandbox';
+        $baseUrl = $settings['base_url'] ?? ($environment === 'production'
+            ? 'https://etims-api.kra.go.ke/etims-api/'
+            : 'https://etims-api-sbx.kra.go.ke/etims-api/');
+
+        // Explicitly set every credential for this sale. There is no .env
+        // fallback, so another subscriber's eTIMS account can never be used.
+        foreach (['tin', 'branch_id', 'device_serial_number', 'communication_key', 'item_classification_code', 'item_code_prefix', 'package_unit_code', 'quantity_unit_code', 'default_tax_code', 'zero_tax_code', 'default_payment_code'] as $key) {
+            config(['etims.'.$key => $settings[$key] ?? null]);
+        }
+        config([
+            'etims.enabled' => true,
+            'etims.environment' => $environment,
+            'etims.base_url' => $baseUrl,
+            'etims.tax_rates' => $settings['tax_rates'] ?? ['A' => 0, 'B' => 16],
+            'etims.timeout' => 20,
+            'etims.package_unit_code' => $settings['package_unit_code'] ?? 'NT',
+            'etims.quantity_unit_code' => $settings['quantity_unit_code'] ?? 'U',
+            'etims.default_tax_code' => $settings['default_tax_code'] ?? 'B',
+            'etims.zero_tax_code' => $settings['zero_tax_code'] ?? 'A',
+            'etims.default_payment_code' => $settings['default_payment_code'] ?? '01',
+            'etims.item_code_prefix' => $settings['item_code_prefix'] ?? '',
+        ]);
+
+        return true;
+    }
+
     public function submit(Transaction $transaction): EtimsInvoice
     {
+        if (! $this->configureFor($transaction)) {
+            throw new InvalidArgumentException('eTIMS is not enabled for this business.');
+        }
+
         $invoice = DB::transaction(function () use ($transaction) {
             $invoice = EtimsInvoice::where('transaction_id', $transaction->id)->lockForUpdate()->first();
 

@@ -15,12 +15,6 @@ class SyncEtimsInvoices extends Command
 
     public function handle(EtimsService $etims): int
     {
-        if (! config('etims.enabled')) {
-            $this->error('Set ETIMS_ENABLED=true before retrying invoices.');
-
-            return self::FAILURE;
-        }
-
         $transactionId = $this->argument('transaction_id');
         if ($transactionId) {
             $transactions = Transaction::whereKey($transactionId)->where('type', 'sell')->where('status', 'final')->get();
