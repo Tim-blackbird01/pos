@@ -298,23 +298,23 @@
                 aria-label="Industries served by CraftSalesPOS"
             >
                 <div class="industry-track">
-                    <article class="industry-card">
+                    <a class="industry-card" href="{{ route('marketing.industry', 'supermarkets') }}">
                         <img
                             src="{{ asset('images/landing/retail-store-pos-embedded.webp') }}"
                             alt="Supermarkets using CraftSalesPOS"
                             loading="lazy"
                         />
                         <span class="industry-badge badge-blue"><i></i> Supermarkets</span>
-                    </article>
-                    <article class="industry-card">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'pharmacies') }}">
                         <img
                             src="{{ asset('images/landing/african-pharmacies.webp') }}"
                             alt="Pharmacies using CraftSalesPOS"
                             loading="lazy"
                         />
                         <span class="industry-badge badge-green"><i></i> Pharmacies</span>
-                    </article>
-                    <article class="industry-card">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'salons-barbershops') }}">
                         <img
                             src="{{ asset('images/landing/barbershop-interior-embedded.webp') }}"
                             alt="Salons and barbershops using CraftSalesPOS"
@@ -323,16 +323,16 @@
                         <span class="industry-badge badge-gold"
                             ><i></i> Salons &amp; Barbershops</span
                         >
-                    </article>
-                    <article class="industry-card">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'agrovet-stores') }}">
                         <img
                             src="{{ asset('images/landing/african-laptop.webp') }}"
                             alt="Agrovet stores using CraftSalesPOS"
                             loading="lazy"
                         />
                         <span class="industry-badge badge-purple"><i></i> Agrovet Stores</span>
-                    </article>
-                    <article class="industry-card">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'hardware-building-supplies') }}">
                         <img
                             src="{{ asset('images/landing/african-retail.webp') }}"
                             alt="Hardware and building supplies stores using CraftSalesPOS"
@@ -341,32 +341,32 @@
                         <span class="industry-badge badge-coral"
                             ><i></i> Hardware &amp; Building Supplies</span
                         >
-                    </article>
-                    <article class="industry-card">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'fashion-boutiques') }}">
                         <img
                             src="{{ asset('images/landing/clothing-store-display-embedded.webp') }}"
                             alt="Fashion boutiques using CraftSalesPOS"
                             loading="lazy"
                         />
                         <span class="industry-badge badge-teal"><i></i> Fashion Boutiques</span>
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'supermarkets') }}" aria-label="Supermarkets">
                         <img
                             src="{{ asset('images/landing/retail-store-pos-embedded.webp') }}"
                             alt=""
                             loading="lazy"
                         />
                         <span class="industry-badge badge-blue"><i></i> Supermarkets</span>
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'pharmacies') }}" aria-label="Pharmacies">
                         <img
                             src="{{ asset('images/landing/african-pharmacies.webp') }}"
                             alt=""
                             loading="lazy"
                         />
                         <span class="industry-badge badge-green"><i></i> Pharmacies</span>
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'salons-barbershops') }}" aria-label="Salons and Barbershops">
                         <img
                             src="{{ asset('images/landing/barbershop-interior-embedded.webp') }}"
                             alt=""
@@ -375,16 +375,16 @@
                         <span class="industry-badge badge-gold"
                             ><i></i> Salons &amp; Barbershops</span
                         >
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'agrovet-stores') }}" aria-label="Agrovet Stores">
                         <img
                             src="{{ asset('images/landing/african-laptop.webp') }}"
                             alt=""
                             loading="lazy"
                         />
                         <span class="industry-badge badge-purple"><i></i> Agrovet Stores</span>
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'hardware-building-supplies') }}" aria-label="Hardware and Building Supplies">
                         <img
                             src="{{ asset('images/landing/african-retail.webp') }}"
                             alt=""
@@ -393,15 +393,15 @@
                         <span class="industry-badge badge-coral"
                             ><i></i> Hardware &amp; Building Supplies</span
                         >
-                    </article>
-                    <article class="industry-card" aria-hidden="true">
+                    </a>
+                    <a class="industry-card" href="{{ route('marketing.industry', 'fashion-boutiques') }}" aria-label="Fashion Boutiques">
                         <img
                             src="{{ asset('images/landing/clothing-store-display-embedded.webp') }}"
                             alt=""
                             loading="lazy"
                         />
                         <span class="industry-badge badge-teal"><i></i> Fashion Boutiques</span>
-                    </article>
+                    </a>
                 </div>
             </div>
         </section>

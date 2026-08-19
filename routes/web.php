@@ -91,6 +91,19 @@ Route::middleware(['setData'])->group(function () {
 
     Route::view('/features', 'marketing.features')->name('marketing.features');
     Route::view('/industries', 'marketing.industries')->name('marketing.industries');
+    Route::get('/industries/{industry}', function ($industry) {
+        $industries = [
+            'supermarkets' => ['name' => 'Supermarkets', 'image' => 'retail-store-pos-embedded.webp', 'title' => 'Point of sale software for supermarkets', 'intro' => 'Keep queues moving, shelves replenished and every shift accountable with a connected supermarket POS.', 'challenges' => ['Fast barcode checkout during peak hours', 'Accurate stock across aisles and branches', 'Clear cashier, till and sales reporting'], 'features' => ['Barcode-ready checkout', 'Low-stock visibility', 'Multi-location inventory', 'Daily sales reports']],
+            'pharmacies' => ['name' => 'Pharmacies', 'image' => 'african-pharmacies.webp', 'title' => 'Pharmacy POS software for confident daily operations', 'intro' => 'Give your pharmacy team a faster counter, clearer inventory control and the information needed to serve customers with confidence.', 'challenges' => ['Managing a wide, fast-moving catalogue', 'Keeping medicine stock visible', 'Making every sale easy to trace'], 'features' => ['Fast product lookup', 'Inventory reports', 'Customer receipts', 'Role-based access']],
+            'salons-barbershops' => ['name' => 'Salons & Barbershops', 'image' => 'barbershop-interior-embedded.webp', 'title' => 'Salon and barbershop POS for a smoother service day', 'intro' => 'CraftSalesPOS helps salons and barbershops take payments, manage products and understand the performance of every busy day.', 'challenges' => ['Quick, professional checkout', 'Tracking retail products alongside services', 'Knowing what each shift brings in'], 'features' => ['Simple sales screen', 'Service and product sales', 'Cashier accountability', 'Performance reporting']],
+            'agrovet-stores' => ['name' => 'Agrovet Stores', 'image' => 'african-laptop.webp', 'title' => 'Agrovet POS software for stock-led retail', 'intro' => 'Bring structure to product-heavy agrovet operations with checkout, stock visibility and reporting in one practical system.', 'challenges' => ['Large catalogues with changing demand', 'Knowing which products need replenishing', 'Keeping sales records clear'], 'features' => ['Inventory management', 'Product categorisation', 'Supplier-ready records', 'Sales trends']],
+            'hardware-building-supplies' => ['name' => 'Hardware & Building Supplies', 'image' => 'african-retail.webp', 'title' => 'Hardware store POS software built for busy counters', 'intro' => 'From a single counter to several locations, run hardware sales and inventory with a dependable view of what is moving.', 'challenges' => ['Managing thousands of product variations', 'Supporting trade and walk-in customers', 'Reducing stock surprises'], 'features' => ['Flexible product setup', 'Stock movement reports', 'Customer sale history', 'Multi-location visibility']],
+            'fashion-boutiques' => ['name' => 'Fashion Boutiques', 'image' => 'clothing-store-display-embedded.webp', 'title' => 'Fashion boutique POS software for better retail control', 'intro' => 'Keep every size, colour and collection organised while giving customers the quick, considered checkout they expect.', 'challenges' => ['Tracking variants such as size and colour', 'Understanding best-selling collections', 'Making returns and receipts simple'], 'features' => ['Variant-aware inventory', 'Fast checkout', 'Sales reporting', 'Customer records']],
+        ];
+
+        abort_unless(isset($industries[$industry]), 404);
+        return view('marketing.industry', ['industry' => $industries[$industry]]);
+    })->name('marketing.industry');
     Route::get('/plans', function () {
         $landingPackages = collect();
 

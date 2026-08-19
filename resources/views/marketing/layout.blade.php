@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="@yield('meta_description', 'CraftSalesPOS helps growing businesses run sales, inventory and reporting from one place.')" />
     <title>
         @yield ('title')
         | {{ config('app.name', 'CraftSalesPOS') }}
