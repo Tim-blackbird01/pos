@@ -344,6 +344,7 @@ class NotificationUtil extends Util
         Config::set("mail.mailers.{$mailer}.encryption", $settings->get('MAIL_ENCRYPTION'));
         Config::set('mail.from.address', $settings->get('MAIL_FROM_ADDRESS'));
         Config::set('mail.from.name', $settings->get('MAIL_FROM_NAME'));
+        Config::set('mail.contact_address', $settings->get('MAIL_FROM_ADDRESS'));
         app('mail.manager')->purge($mailer);
 
         return true;
