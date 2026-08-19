@@ -136,6 +136,13 @@
                         });
                     }
                 },
+                error: function(xhr) {
+                    var result = xhr.responseJSON || {};
+                    swal({
+                        text: result.msg || 'Email configuration could not be verified.',
+                        icon: 'error'
+                    });
+                }
             });
         });
 

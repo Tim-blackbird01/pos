@@ -593,10 +593,35 @@ class BusinessController extends Controller
      */
     public function testEmailConfiguration(Request $request)
     {
+        $validator = Validator::make($request->only([
+            'mail_driver', 'mail_host', 'mail_port', 'mail_username',
+            'mail_password', 'mail_encryption', 'mail_from_address',
+            'mail_from_name',
+        ]), [
+            'mail_driver' => 'required|in:smtp',
+            'mail_host' => 'required|string',
+            'mail_port' => 'required|integer|between:1,65535',
+            'mail_username' => 'required|string',
+            'mail_password' => 'required|string',
+            'mail_encryption' => 'required|in:tls,ssl',
+            'mail_from_address' => 'required|email',
+            'mail_from_name' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => 0,
+                'msg' => 'Enter this business’s complete SMTP credentials before sending a test email.',
+            ], 422);
+        }
+
         try {
             $email_settings = $request->input();
 
             $data['email_settings'] = $email_settings;
+            if (! (new \App\Utils\NotificationUtil)->configureEmail($data, false)) {
+                throw new \Exception('This business does not have a complete email configuration.');
+            }
             \Notification::route('mail', $email_settings['mail_from_address'])
             ->notify(new TestEmailNotification($data));
 
