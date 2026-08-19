@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Business;
+use App\System;
 use App\BusinessLocation;
 use App\Contact;
 use App\CustomerGroup;
@@ -67,20 +68,32 @@ class ContactController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        $recipient = config('mail.contact_address');
+        // The public website belongs to Superadmin, so its contact messages
+        // must always use Superadmin SMTP—not any business/tenant settings.
+        if (! $this->notificationUtil->configureSuperadminEmail()) {
+            return redirect()->back()->with('error', 'The Superadmin email configuration is incomplete. Please configure it before sending contact messages.')->withInput();
+        }
+
+        $recipient = System::getProperty('email') ?: config('mail.contact_address');
         $fromAddress = config('mail.from.address');
         $fromName = config('mail.from.name', config('app.name'));
 
         if (empty($recipient)) {
-            return redirect()->back()->with('error', 'Contact recipient email is not configured. Set MAIL_CONTACT_ADDRESS in .env.');
+            return redirect()->back()->with('error', 'The Superadmin contact recipient email is not configured.')->withInput();
         }
 
         if (empty($fromAddress)) {
-            return redirect()->back()->with('error', 'Mail sender address is not configured. Set MAIL_FROM_ADDRESS in .env.');
+            return redirect()->back()->with('error', 'The Superadmin sender email is not configured.')->withInput();
         }
 
-        // Send to site recipient (admin)
-        Mail::to($recipient)->send((new MarketingContactForm($data))->from($fromAddress, $fromName));
+        // Send to the Superadmin contact recipient.
+        try {
+            Mail::to($recipient)->send((new MarketingContactForm($data))->from($fromAddress, $fromName));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return redirect()->back()->with('error', 'Your message could not be sent. Please check the Superadmin email configuration.')->withInput();
+        }
 
         // Send confirmation/auto-reply to sender
         try {

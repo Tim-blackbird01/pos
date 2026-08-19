@@ -331,6 +331,7 @@ class BusinessController extends Controller
         $pos_settings = empty($business->pos_settings) ? $this->businessUtil->defaultPosSettings() : json_decode($business->pos_settings, true);
 
         $email_settings = empty($business->email_settings) ? $this->businessUtil->defaultEmailSettings() : $business->email_settings;
+        $etims_settings = $business->etims_settings ?? [];
 
         $sms_settings = empty($business->sms_settings) ? $this->businessUtil->defaultSmsSettings() : $business->sms_settings;
 
@@ -350,7 +351,7 @@ class BusinessController extends Controller
 
         $payment_types = $this->moduleUtil->payment_types(null, false, $business_id);
 
-        return view('business.settings', compact('business', 'currencies', 'tax_rates', 'timezone_list', 'months', 'accounting_methods', 'commission_agent_dropdown', 'units_dropdown', 'date_formats', 'shortcuts', 'pos_settings', 'modules', 'theme_colors', 'email_settings', 'sms_settings', 'mail_drivers', 'allow_superadmin_email_settings', 'custom_labels', 'common_settings', 'weighing_scale_setting', 'payment_types'));
+        return view('business.settings', compact('business', 'currencies', 'tax_rates', 'timezone_list', 'months', 'accounting_methods', 'commission_agent_dropdown', 'units_dropdown', 'date_formats', 'shortcuts', 'pos_settings', 'modules', 'theme_colors', 'email_settings', 'etims_settings', 'sms_settings', 'mail_drivers', 'allow_superadmin_email_settings', 'custom_labels', 'common_settings', 'weighing_scale_setting', 'payment_types'));
     }
 
     /**
@@ -373,7 +374,7 @@ class BusinessController extends Controller
 
             $business_details = $request->only(['name', 'start_date', 'currency_id', 'tax_label_1', 'tax_number_1', 'tax_label_2', 'tax_number_2', 'default_profit_percent', 'default_sales_tax', 'default_sales_discount', 'sell_price_tax', 'sku_prefix', 'time_zone', 'fy_start_month', 'accounting_method', 'transaction_edit_days', 'sales_cmsn_agnt', 'item_addition_method', 'currency_symbol_placement', 'on_product_expiry',
                 'stop_selling_before', 'default_unit', 'expiry_type', 'date_format',
-                'time_format', 'ref_no_prefixes', 'theme_color', 'email_settings',
+                'time_format', 'ref_no_prefixes', 'theme_color', 'email_settings', 'etims_settings',
                 'sms_settings', 'rp_name', 'amount_for_unit_rp',
                 'min_order_total_for_rp', 'max_rp_per_order',
                 'redeem_amount_per_unit_rp', 'min_order_total_for_redeem',
@@ -479,6 +480,24 @@ class BusinessController extends Controller
             $business_details['custom_labels'] = json_encode($business_details['custom_labels']);
 
             $business_details['common_settings'] = ! empty($request->input('common_settings')) ? $request->input('common_settings') : [];
+
+            $etimsSettings = $request->input('etims_settings', []);
+            $request->validate([
+                'etims_settings.enabled' => 'nullable|boolean',
+                'etims_settings.environment' => 'nullable|in:sandbox,production',
+                'etims_settings.tin' => 'nullable|string|max:20',
+                'etims_settings.branch_id' => 'nullable|string|max:10',
+                'etims_settings.device_serial_number' => 'nullable|string|max:100',
+                'etims_settings.communication_key' => 'nullable|string|max:255',
+                'etims_settings.item_classification_code' => 'nullable|string|max:30',
+            ]);
+            $etimsSettings['enabled'] = ! empty($etimsSettings['enabled']);
+            $etimsSettings['environment'] = $etimsSettings['environment'] ?? 'sandbox';
+            $etimsSettings['branch_id'] = $etimsSettings['branch_id'] ?? '00';
+            if (empty($etimsSettings['communication_key']) && !empty($business->etims_settings['communication_key'])) {
+                $etimsSettings['communication_key'] = $business->etims_settings['communication_key'];
+            }
+            $business_details['etims_settings'] = $etimsSettings;
 
             //Enabled modules
             $enabled_modules = $request->input('enabled_modules');

@@ -11,7 +11,7 @@ class SyncSaleToEtims
     {
         $transaction = $event->transaction;
 
-        if (! config('etims.enabled') || $transaction->type !== 'sell' || $transaction->status !== 'final') {
+        if ($transaction->type !== 'sell' || $transaction->status !== 'final' || empty($transaction->business->etims_settings['enabled'])) {
             return;
         }
 

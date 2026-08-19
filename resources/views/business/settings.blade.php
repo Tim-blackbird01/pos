@@ -34,6 +34,7 @@
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('business.system')</a>
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('lang_v1.prefixes')</a>
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('lang_v1.email_settings')</a>
+                    <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">KRA eTIMS</a>
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('lang_v1.sms_settings')</a>
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('lang_v1.reward_point_settings')</a>
                     <a href="#" class="list-group-item text-center tw-font-bold tw-text-sm md:tw-text-base">@lang('lang_v1.modules')</a>
@@ -74,6 +75,7 @@
                 <!-- tab 9 start -->
                 @include('business.partials.settings_email')
                 <!-- tab 9 end -->
+                @include('business.partials.settings_etims')
                 <!-- tab 10 start -->
                 @include('business.partials.settings_sms')
                 <!-- tab 10 end -->
