@@ -13,7 +13,7 @@
         	@if(empty($receipt_details->letter_head))
 				@if(!empty($receipt_details->logo))
 					<div class="text-box centered">
-						<img style="max-height: 100px; width: auto;" src="{{$receipt_details->logo}}" alt="Logo">
+						<img class="receipt-logo" src="{{$receipt_details->logo}}" alt="Logo">
 					</div>
 				@endif
 				<div class="text-box">
@@ -870,5 +870,12 @@ img {
 
 .bw {
 	word-break: break-word;
+}
+.receipt-logo {
+	display: block;
+	max-height: 100px;
+	max-width: 100%;
+	width: auto;
+	margin: 0 auto;
 }
 </style>

@@ -1017,11 +1017,14 @@ class TransactionUtil extends Util
         //Address
         $output['address'] = '';
         $temp = [];
-        if ($il->show_landmark == 1 && ! empty($location_details->landmark)) {
+        if ($il->show_landmark == 1 && ! empty($location_details->landmark)
+            && stripos($location_details->landmark, $business_details->name) === false) {
             $temp[] = $location_details->landmark;
         }
         if ($il->show_city == 1 && ! empty($location_details->city)) {
-            $temp[] = $location_details->city;
+            if (stripos(implode(', ', $temp), $location_details->city) === false) {
+                $temp[] = $location_details->city;
+            }
         }
         if ($il->show_state == 1 && ! empty($location_details->state)) {
             $temp[] = $location_details->state;
@@ -1236,7 +1239,8 @@ class TransactionUtil extends Util
 
         // KRA eTIMS receipt data is only shown after the sale was accepted by KRA.
         $output['etims'] = null;
-        if (config('etims.enabled') && Schema::hasTable('etims_invoices')) {
+        $etimsEnabled = ! empty($business_details->etims_settings['enabled']) || config('etims.enabled');
+        if ($etimsEnabled && Schema::hasTable('etims_invoices')) {
             $etimsInvoice = EtimsInvoice::where('transaction_id', $transaction->id)
                 ->where('status', 'accepted')
                 ->first();
@@ -1336,7 +1340,11 @@ class TransactionUtil extends Util
 
             $output['show_base_unit_details'] = ! empty($il->common_settings['show_base_unit_details']);
 
-            $output['tax_summary_label'] = $il->common_settings['tax_summary_label'] ?? '';
+            //Show a per-rate tax summary by default. A custom label in the invoice
+            //layout settings still takes precedence when one has been configured.
+            $output['tax_summary_label'] = ! empty($il->common_settings['tax_summary_label'])
+                ? $il->common_settings['tax_summary_label']
+                : $il->tax_label;
             $details = $this->_receiptDetailsSellLines($lines, $il, $business_details);
 
             $output['lines'] = $details['lines'];
@@ -1477,6 +1485,13 @@ class TransactionUtil extends Util
         }
         $output['tax_label'] .= ':';
         $output['tax'] = ($transaction->tax_amount != 0) ? $this->num_f($transaction->tax_amount, $show_currency, $business_details) : 0;
+        // Keep receipt totals authoritative: this includes transaction-level
+        // tax and tax already calculated on every sell line. Receipt views
+        // must display this value, not recalculate it from formatted strings.
+        $total_tax_amount = $transaction->tax_amount + $total_line_taxes;
+        $output['total_tax'] = ($total_tax_amount != 0)
+            ? $this->num_f($total_tax_amount, $show_currency, $business_details)
+            : 0;
 
         if ($transaction->tax_amount != 0 && $tax->is_tax_group) {
             $transaction_group_tax_details = $this->groupTaxDetails($tax, $transaction->tax_amount);
@@ -1637,6 +1652,17 @@ class TransactionUtil extends Util
         //Additional notes
         $output['additional_notes'] = $transaction->additional_notes;
         $output['footer_text'] = $invoice_layout->footer_text;
+        $receiptSettings = is_array($il->common_settings) ? $il->common_settings : [];
+        $output['show_footer'] = ! array_key_exists('show_footer', $receiptSettings)
+            || ! empty($receiptSettings['show_footer']);
+        $output['show_etims_details'] = ! empty($receiptSettings['show_etims_details']);
+        $output['etims_details_label'] = $receiptSettings['etims_details_label'] ?? '';
+        $output['etims_fields'] = ! empty($receiptSettings['etims_fields']) && is_array($receiptSettings['etims_fields'])
+            ? $receiptSettings['etims_fields']
+            : [];
+        $output['footer_lines'] = array_values(array_filter($receiptSettings['footer_lines'] ?? [], function ($line) {
+            return trim((string) $line) !== '';
+        }));
 
         //Barcode related information.
         $output['show_barcode'] = ! empty($il->show_barcode) ? true : false;
@@ -1782,12 +1808,13 @@ class TransactionUtil extends Util
             $output['service_staff'] = null;
             if (isset($il->module_info['service_staff']['show_service_staff'])) {
                 $output['service_staff_label'] = ! empty($il->module_info['service_staff']['service_staff_label']) ? $il->module_info['service_staff']['service_staff_label'] : '';
+                $waiter = null;
                 if (! empty($transaction->res_waiter_id)) {
                     $waiter = \App\User::find($transaction->res_waiter_id);
                 }
 
                 //res_table_id
-                $output['service_staff'] = ! empty($waiter->id) ? implode(' ', [$waiter->first_name, $waiter->last_name]) : '';
+                $output['service_staff'] = ! empty($waiter) ? implode(' ', [$waiter->first_name, $waiter->last_name]) : '';
                 if (! empty($output['service_staff'])) {
                     $output['served_by'] = trim($output['service_staff']);
                 }

@@ -4,7 +4,7 @@
 	$default['table_label'] = 'Table';
 
 	$default['show_service_staff'] = 1;
-	$default['service_staff_label'] = 'Service staff';
+	$default['service_staff_label'] = 'Served by';
 	
 	if(!empty($edit_il)){
 		$default['show_table'] = isset($module_info['tables']['show_table']) ? $module_info['tables']['show_table'] : 0;
@@ -18,10 +18,10 @@
 @endphp
 @if(!empty($enabled_modules))
 <div class="box box-solid">
+	<div class="box-header with-border">
+		<h3 class="box-title">@lang('lang_v1.restaurant_module_settings')</h3>
+	</div>
     <div class="box-body">
-    	<div class="box-header">
-            <h3 class="box-title">@lang('lang_v1.restaurant_module_settings')</h3>
-        </div>
 		<div class="row">
 		@if(in_array('tables', $enabled_modules) )
 			<div class="col-sm-3">

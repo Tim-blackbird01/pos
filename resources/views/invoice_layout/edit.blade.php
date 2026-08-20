@@ -22,6 +22,9 @@
     $contact_custom_fields = !empty($invoice_layout->contact_custom_fields) ? $invoice_layout->contact_custom_fields : [];
     $location_custom_fields = !empty($invoice_layout->location_custom_fields) ? $invoice_layout->location_custom_fields : [];
     $custom_labels = json_decode(session('business.custom_labels'), true);
+    $receipt_settings = $invoice_layout->common_settings ?? [];
+    $etims_fields = $receipt_settings['etims_fields'] ?? [];
+    $footer_lines = array_pad($receipt_settings['footer_lines'] ?? [], 4, '');
   @endphp
   <div class="box box-solid">
     <div class="box-body">
@@ -124,7 +127,7 @@
               </div>
           </div>
         </div>
-        <div class="col-sm-12">
+		<div class="col-sm-12">
           <div class="form-group">
             {!! Form::label('header_text', __('invoice.header_text') . ':' ) !!}
               {!! Form::textarea('header_text', $invoice_layout->header_text, ['class' => 'form-control',
@@ -961,12 +964,39 @@
         </div>
         
         <div class="col-sm-12">
-          <div class="form-group">
-            {!! Form::label('footer_text', __('invoice.footer_text') . ':' ) !!}
-              {!! Form::textarea('footer_text', $invoice_layout->footer_text, ['class' => 'form-control',
-              'placeholder' => __('invoice.footer_text'), 'rows' => 3]); !!}
-          </div>
-        </div>
+		  <h4>Footer, eTIMS & receipt display settings</h4>
+		</div>
+		<div class="col-sm-3">
+		  <div class="form-group"><div class="checkbox"><label>
+			{!! Form::checkbox('common_settings[show_footer]', 1, !array_key_exists('show_footer', $receipt_settings) || !empty($receipt_settings['show_footer']), ['class' => 'input-icheck']); !!} Show footer
+		  </label><p class="help-block">Enter the footer message in the field below.</p></div></div>
+		</div>
+		<div class="col-sm-3">
+		  <div class="form-group"><div class="checkbox"><label>
+			{!! Form::checkbox('common_settings[show_etims_details]', 1, !empty($receipt_settings['show_etims_details']), ['class' => 'input-icheck']); !!} Show eTIMS details
+		  </label></div></div>
+		</div>
+		<div class="col-sm-6">
+		  <div class="form-group">
+			{!! Form::label('etims_details_label', 'eTIMS heading:') !!}
+			{!! Form::text('common_settings[etims_details_label]', $receipt_settings['etims_details_label'] ?? '', ['class' => 'form-control', 'placeholder' => 'eTIMS details']); !!}
+		  </div>
+		</div>
+		<div class="col-sm-12">
+		  <div class="form-group"><label>eTIMS fields</label><br>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'receipt_number', in_array('receipt_number', $etims_fields), ['class' => 'input-icheck']); !!} Receipt number</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'receipt_signature', in_array('receipt_signature', $etims_fields), ['class' => 'input-icheck']); !!} Signature</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'internal_data', in_array('internal_data', $etims_fields), ['class' => 'input-icheck']); !!} Internal data</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'sdc_datetime', in_array('sdc_datetime', $etims_fields), ['class' => 'input-icheck']); !!} SDC date/time</label>
+		  </div>
+		</div>
+		<div class="col-sm-12"><label>Footer lines</label><p class="help-block">Each filled line is printed in this order. Leave a line blank to hide it.</p></div>
+		@for($footer_line_index = 0; $footer_line_index < 4; $footer_line_index++)
+			<div class="col-sm-3"><div class="form-group">
+				{!! Form::label('footer_line_'.$footer_line_index, 'Footer line '.($footer_line_index + 1).':') !!}
+				{!! Form::text('common_settings[footer_lines]['.$footer_line_index.']', $footer_lines[$footer_line_index], ['class' => 'form-control', 'placeholder' => 'Footer text']); !!}
+			</div></div>
+		@endfor
         @if(empty($invoice_layout->is_default))
         <div class="col-sm-6">
           <div class="form-group">
