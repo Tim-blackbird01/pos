@@ -741,8 +741,13 @@ class SellPosController extends Controller
             'data' => [],
         ];
 
+        $transaction = Transaction::where('business_id', $business_id)->findOrFail($transaction_id);
+        // A receipt must use the branch recorded on its transaction, not a
+        // request value that may refer to another branch.
+        $location_id = $transaction->location_id;
         $business_details = $this->businessUtil->getDetails($business_id);
-        $location_details = BusinessLocation::find($location_id);
+        $location_details = BusinessLocation::where('business_id', $business_id)
+            ->findOrFail($location_id);
 
         if ($from_pos_screen && $location_details->print_receipt_on_invoice != 1) {
             return $output;

@@ -967,10 +967,18 @@ class TransactionUtil extends Util
     {
         $il = $invoice_layout;
 
-        $transaction = Transaction::find($transaction_id);
+        $transaction = Transaction::where('business_id', $business_details->id)
+            ->findOrFail($transaction_id);
+        // Receipt location data must always come from the saved transaction.
+        // Do not trust a location supplied by a print request, as it can belong
+        // to a different branch of the same business.
+        $location_id = $transaction->location_id;
+        $location_details = BusinessLocation::where('business_id', $transaction->business_id)
+            ->findOrFail($location_id);
         $transaction_type = $transaction->type;
 
         $output = [
+            'location_id' => $location_id,
             'header_text' => isset($il->header_text) ? $il->header_text : '',
             'business_name' => ($il->show_business_name == 1) ? $business_details->name : '',
             'location_name' => ($il->show_location_name == 1) ? $location_details->name : '',
@@ -1535,11 +1543,11 @@ class TransactionUtil extends Util
             $change_return_amount = $transaction->payment_lines->where('is_return', 1)->sum('amount');
 
             $output['total_paid'] = ($paid_amount == 0) ? 0 : $this->num_f($paid_amount, $show_currency, $business_details);
-            $output['total_paid_label'] = $il->paid_label;
+            $output['total_paid_label'] = 'Amount Received';
             $output['total_due'] = ($due == 0) ? 0 : $this->num_f($due, $show_currency, $business_details);
-            $output['total_due_label'] = $il->total_due_label;
+            $output['total_due_label'] = __('lang_v1.balance');
             $output['amount_received'] = ($amount_received == 0) ? 0 : $this->num_f($amount_received, $show_currency, $business_details);
-            $output['amount_received_label'] = __('lang_v1.total_paying');
+            $output['amount_received_label'] = 'Amount Received';
             $output['change_return'] = ($change_return_amount == 0) ? 0 : $this->num_f($change_return_amount, $show_currency, $business_details);
             $output['change_return_label'] = $il->change_return_label;
 
@@ -1572,9 +1580,8 @@ class TransactionUtil extends Util
                         $method = ! empty($payment_types[$value['method']]) ? $payment_types[$value['method']] : '';
                         if ($value['method'] == 'cash') {
                             $output['payments'][] =
-                                ['method' => $method.($value['is_return'] == 1 ? ' ('.$il->change_return_label.')(-)' : ''),
+                                ['method' => $value['is_return'] == 1 ? __('lang_v1.balance') : $method,
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                             if ($value['is_return'] == 1) {
@@ -1583,35 +1590,30 @@ class TransactionUtil extends Util
                             $output['payments'][] =
                                 ['method' => $method.(! empty($value['card_transaction_number']) ? (', Transaction Number:'.$value['card_transaction_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'cheque') {
                             $output['payments'][] =
                                 ['method' => $method.(! empty($value['cheque_number']) ? (', Cheque Number:'.$value['cheque_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'bank_transfer') {
                             $output['payments'][] =
                                 ['method' => $method.(! empty($value['bank_account_number']) ? (', Account Number:'.$value['bank_account_number']) : ''),
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'advance') {
                             $output['payments'][] =
                                 ['method' => $method,
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                         } elseif ($value['method'] == 'other') {
                             $output['payments'][] =
                                 ['method' => $method,
                                     'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                    'date' => $this->format_date($value['paid_on'], false, $business_details),
                                     'is_return' => $value['is_return'],
                                 ];
                         }
@@ -1621,7 +1623,6 @@ class TransactionUtil extends Util
                                 $output['payments'][] =
                                     ['method' => $method.(! empty($value['transaction_no']) ? (', '.trans('lang_v1.transaction_no').':'.$value['transaction_no']) : ''),
                                         'amount' => $this->num_f($value['amount'], $show_currency, $business_details),
-                                        'date' => $this->format_date($value['paid_on'], false, $business_details),
                                         'is_return' => $value['is_return'],
                                     ];
                             }
@@ -6366,10 +6367,12 @@ class TransactionUtil extends Util
         $business_details = $businessUtil->getDetails($business_id);
 
         //Get transaction
-        $transaction = Transaction::findOrFail($transaction_id);
+        $transaction = Transaction::where('business_id', $business_id)
+            ->findOrFail($transaction_id);
 
         //Get business location details
-        $location_details = BusinessLocation::find($transaction->location_id);
+        $location_details = BusinessLocation::where('business_id', $business_id)
+            ->findOrFail($transaction->location_id);
 
         //Get invoice layout
         $invoice_layout_id = $location_details->invoice_layout_id;

@@ -1,11 +1,9 @@
-<!-- business information here -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- <link rel="stylesheet" href="style.css"> -->
     <title>Receipt-{{$receipt_details->invoice_no}}</title>
 </head>
 <body>
@@ -88,6 +86,7 @@
                 <img
                     style="width: 100%; margin-bottom: 10px"
                     src="{{$receipt_details->letter_head}}"
+                    alt="Business letterhead"
                 />
             </div>
         @endif
@@ -541,7 +540,8 @@
                 @foreach ($receipt_details->payments as $payment)
                     <div class="flex-box">
                         @if (!empty($payment['is_return']))
-                            <p class="width-100 text-left">@lang('lang_v1.balance'): {{ preg_replace('/\s*\([^)]*\)\(-\)$/', '', $payment['method']) }} ({{$payment['amount']}})</p>
+                            <p class="width-50 text-left">@lang('lang_v1.balance')</p>
+                            <p class="width-50 text-right">{{$payment['amount']}}</p>
                         @else
                             <p class="width-50 text-left">{{$payment['method']}}</p>
                             <p class="width-50 text-right">{{$payment['amount']}}</p>
@@ -628,6 +628,7 @@
                 <img
                     class="center-block"
                     src="data:image/png;base64,{{DNS1D::getBarcodePNG($receipt_details->invoice_no, 'C128', 2,30,array(39, 48, 54), true)}}"
+                    alt="Barcode for invoice {{$receipt_details->invoice_no}}"
                 />
             </div>
         @endif
@@ -636,6 +637,7 @@
             <img
                 class="center-block mt-5"
                 src="data:image/png;base64,{{DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE')}}"
+                alt="Receipt QR code"
             />
         @endif
 
@@ -654,8 +656,6 @@
             </div>
         @endif
     </div>
-    <!-- <button id="btnPrint" class="hidden-print">Print</button>
-        <script src="script.js"></script> -->
 </body>
 </html>
 

@@ -324,7 +324,7 @@
                                 </tr>
                                 
                                 <tr>
-                                    <td style=" font-weight: bold; text-align: right;">Paid Amount:</td>
+                                    <td style=" font-weight: bold; text-align: right;">Amount Received:</td>
                                     <td class="print-red" style=" text-align: center;">
                                         @if(!empty($receipt_details->total_paid))
                                             {{$receipt_details->total_paid}}
@@ -334,7 +334,7 @@
                                 </tr>
                                 
                                 <tr>
-                                    <td style=" font-weight: bold; text-align: right;">Due Amount:</td>
+                                    <td style=" font-weight: bold; text-align: right;">Balance:</td>
                                     <td class="print-red" style="text-align: center;">
                                         @if(!empty($receipt_details->total_due))
                                             {{$receipt_details->total_due}}
