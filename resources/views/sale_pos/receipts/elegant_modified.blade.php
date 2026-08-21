@@ -1,7 +1,4 @@
-<table role="presentation" style="width:100%;">
-    <tbody>
-        <tr>
-            <td>
+<div style="width:100%;">
 
 @if(!empty($receipt_details->header_text))
     <div class="row invoice-info">
@@ -252,16 +249,16 @@
 
 <div class="row invoice-info color-555" style="page-break-inside: avoid !important">
     <div class="col-md-6 invoice-col width-50">
-        <table role="presentation" class="table table-condensed">
+        <div class="table table-condensed">
             @if(!empty($receipt_details->payments))
                 @foreach($receipt_details->payments as $payment)
-                    <tr>
-                        <td>{{$payment['method']}}</td>
-                        <td>{{$payment['amount']}}</td>
-                    </tr>
+                    <div style="display: flex;">
+                        <span style="width: 50%;">{{$payment['method']}}</span>
+                        <span class="text-right" style="width: 50%;">{{$payment['amount']}}</span>
+                    </div>
                 @endforeach
             @endif
-        </table>
+        </div>
         <b class="pull-left">Authorized Signatory</b>
     </div>
 
@@ -373,7 +370,4 @@
     </div>
 @endif
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+</div>

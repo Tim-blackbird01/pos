@@ -1,19 +1,13 @@
-<table role="presentation" style="width:100%;">
-    <thead>
-        <tr>
-            <th scope="col">
+<div style="width:100%;">
+    <div>
 
             <p class="text-right color-555 font-30">
               <b>@lang('lang_v1.delivery_note')</b>
             </p>
 
-            </th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        <tr>
-            <td>
+    <div>
 
 <!-- business information here -->
 <div class="row invoice-info">
@@ -104,63 +98,6 @@
         @endif
     </div>
 </div>
-<!--
-<div class="row invoice-info color-555">
-    <br/>
-    <div class="col-md-6 invoice-col width-50 word-wrap">
-        @if(!empty($receipt_details->customer_label))
-            <b>{{ $receipt_details->customer_label }}</b><br/>
-        @endif
-
-
-        @if(!empty($receipt_details->customer_name))
-            {{ $receipt_details->customer_name }}<br>
-        @endif
-        @if(!empty($receipt_details->customer_info))
-            {!! $receipt_details->customer_info !!}
-        @endif
-        @if(!empty($receipt_details->client_id_label))
-            <br/>
-            <strong>{{ $receipt_details->client_id_label }}</strong> {{ $receipt_details->client_id }}
-        @endif
-        @if(!empty($receipt_details->customer_tax_label))
-            <br/>
-            <strong>{{ $receipt_details->customer_tax_label }}</strong> {{ $receipt_details->customer_tax_number }}
-        @endif
-        @if(!empty($receipt_details->customer_custom_fields))
-            <br/>{!! $receipt_details->customer_custom_fields !!}
-        @endif
-        @if(!empty($receipt_details->sales_person_label))
-            <br/>
-            <strong>{{ $receipt_details->sales_person_label }}</strong> {{ $receipt_details->sales_person }}
-        @endif
-    </div>
-    <div class="col-md-6 invoice-col width-50 word-wrap">
-        <strong>@lang('lang_v1.shipping_address'):</strong><br>
-        {!! $receipt_details->shipping_address !!}
-        @if(!empty($receipt_details->shipping_custom_field_1_label))
-            <br><strong>{!!$receipt_details->shipping_custom_field_1_label!!} :</strong> {!!$receipt_details->shipping_custom_field_1_value ?? ''!!}
-        @endif
-
-        @if(!empty($receipt_details->shipping_custom_field_2_label))
-            <br><strong>{!!$receipt_details->shipping_custom_field_2_label!!}:</strong> {!!$receipt_details->shipping_custom_field_2_value ?? ''!!}
-        @endif
-
-        @if(!empty($receipt_details->shipping_custom_field_3_label))
-            <br><strong>{!!$receipt_details->shipping_custom_field_3_label!!}:</strong> {!!$receipt_details->shipping_custom_field_3_value ?? ''!!}
-        @endif
-
-        @if(!empty($receipt_details->shipping_custom_field_4_label))
-            <br><strong>{!!$receipt_details->shipping_custom_field_4_label!!}:</strong> {!!$receipt_details->shipping_custom_field_4_value ?? ''!!}
-        @endif
-
-        @if(!empty($receipt_details->shipping_custom_field_5_label))
-            <br><strong>{!!$receipt_details->shipping_custom_field_2_label!!}:</strong> {!!$receipt_details->shipping_custom_field_5_value ?? ''!!}
-        @endif
-    </div>
-</div>
- -->
-
 <div class="row color-555">
     <div class="col-xs-12">
         <br/>
@@ -274,7 +211,5 @@
     </div>
 @endif
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+    </div>
+</div>

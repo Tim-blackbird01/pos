@@ -982,6 +982,7 @@ class TransactionUtil extends Util
             'header_text' => isset($il->header_text) ? $il->header_text : '',
             'business_name' => ($il->show_business_name == 1) ? $business_details->name : '',
             'location_name' => ($il->show_location_name == 1) ? $location_details->name : '',
+            'receipt_location_name' => $location_details->name,
             'sub_heading_line1' => trim($il->sub_heading_line1),
             'sub_heading_line2' => trim($il->sub_heading_line2),
             'sub_heading_line3' => trim($il->sub_heading_line3),

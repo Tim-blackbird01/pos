@@ -1,7 +1,5 @@
-<table role="presentation" style="width:100%;">
-    <thead>
-        <tr>
-            <th scope="col">
+<div style="width:100%;">
+    <div class="text-right">
                 <p class="text-right">
                     <small class="text-muted-imp">
                         @if (!empty($receipt_details->invoice_no_prefix))
@@ -11,13 +9,9 @@
                         {{ $receipt_details->invoice_no }}
                     </small>
                 </p>
-            </th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        <tr>
-            <td class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
+    <div class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
                 @if (empty($receipt_details->letter_head))
                     @if (!empty($receipt_details->header_text))
                         {!! $receipt_details->header_text !!}
@@ -634,16 +628,16 @@
 
                 <div class="row invoice-info " style="page-break-inside: avoid !important">
                     <div class="col-md-6 invoice-col width-50">
-                        <table role="presentation" class="table table-slim">
+                        <div class="table table-slim">
                             @if (!empty($receipt_details->payments))
                                 @foreach ($receipt_details->payments as $payment)
-                                    <tr>
-                                        <td>{{ $payment['method'] }}</td>
-                                        <td>{{ $payment['amount'] }}</td>
-                                    </tr>
+                                    <div style="display: flex;">
+                                        <span style="width: 50%;">{{ $payment['method'] }}</span>
+                                        <span class="text-right" style="width: 50%;">{{ $payment['amount'] }}</span>
+                                    </div>
                                 @endforeach
                             @endif
-                        </table>
+                        </div>
 
                         <b class="pull-left">@lang('lang_v1.authorized_signatory')</b>
                     </div>
@@ -868,10 +862,8 @@
                     @endif
                 </div>
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+    </div>
+</div>
 
 <style type="text/css">
     body {

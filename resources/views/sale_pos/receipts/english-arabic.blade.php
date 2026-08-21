@@ -45,7 +45,10 @@
 <!-- Customer Information Section -->
 <div class="row">
     <div class="col-xs-12">
-        <table role="presentation" class="table customer-info-table" style="width: 98%; font-size: 12px;">
+        <table class="table customer-info-table" style="width: 98%; font-size: 12px;">
+            <thead class="sr-only">
+                <tr><th scope="col" colspan="6">Customer information</th></tr>
+            </thead>
             <tbody>
                 <tr style="background: #2d2360;">
                     <td style="padding: 5px; font-weight: bold; width: 15%; text-align: right !important;">CUS ID:</td>
@@ -205,7 +208,13 @@
 <!-- Totals Section -->
 <div class="row">
     <div class="col-xs-12">
-        <table role="presentation" style="width:98%; border-collapse: collapse;">
+        <table style="width:98%; border-collapse: collapse;">
+            <thead class="sr-only">
+                <tr>
+                    <th scope="col">Notes and payment reference</th>
+                    <th scope="col">Receipt totals</th>
+                </tr>
+            </thead>
             <tr>
                 <td style="width:40%; vertical-align:top;">
                     <!-- Left side: notes, payment reference, etc. -->
@@ -250,7 +259,14 @@
                 <td>
                     <!-- Right side: totals, tax, etc. -->
                     <div class="table-responsive totals-section">
-                        <table role="presentation" class="table table-bordered" style="width: 98%; font-size: 11px; margin-bottom: 2px;">
+                        <table class="table table-bordered" style="width: 98%; font-size: 11px; margin-bottom: 2px;">
+                            <thead class="sr-only">
+                                <tr>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Arabic description</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
                                     <td  style="font-weight: bold; text-align: right; width: 30%;">Gross:</td>

@@ -1,19 +1,13 @@
-<table role="presentation" style="width:100%; color: #000000 !important;">
-    <thead>
-        <tr>
-            <th scope="col">
+<div style="width:100%; color: #000000 !important;">
+    <div>
 
             <p class="text-right color-555 font-30">
                 @lang('lang_v1.packing_slip')
             </p>
 
-            </th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        <tr>
-            <td>
+    <div>
 
 <!-- business information here -->
 <div class="row invoice-info">
@@ -229,7 +223,5 @@
     </div>
 @endif
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+    </div>
+</div>

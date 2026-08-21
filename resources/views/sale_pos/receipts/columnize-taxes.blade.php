@@ -2,10 +2,8 @@
     $totals = ['taxable_value' => 0];
 @endphp
 
-<table role="presentation" style="width:100%; color: #000000 !important;">
-    <thead>
-        <tr>
-            <th scope="col" class="pull-right">
+<div style="width:100%; color: #000000 !important;">
+    <div class="pull-right">
                 <small class="text-muted-imp">
                     @if(!empty($receipt_details->invoice_no_prefix))
                         {!! $receipt_details->invoice_no_prefix !!}
@@ -13,13 +11,9 @@
 
                     {{$receipt_details->invoice_no}}
                 </small>
-            </th>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        <tr>
-                <td class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
+    <div class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
                 @if(empty($receipt_details->letter_head))
                     @if(!empty($receipt_details->header_text))
                         {!! $receipt_details->header_text !!}
@@ -668,27 +662,27 @@
                         style="background-color: #d2d6de !important;">
                         Total
                     </th>
-                    <th class="text-right" style="background-color: #d2d6de !important;">
+                    <td class="text-right" style="background-color: #d2d6de !important;">
                         <span class="display_currency" data-currency_symbol="false">
                             {{$totals['taxable_value']}}
                         </span>
-                    </th>
+                    </td>
 
                     @if(!empty($receipt_details->table_tax_headings))
                     @foreach($receipt_details->table_tax_headings as $tax_heading)
-                        <th scope="col" class="text-right" style="background-color: #d2d6de !important;">
+                        <td class="text-right" style="background-color: #d2d6de !important;">
                             <span class="display_currency" data-currency_symbol="false">
                             {{$totals[$tax_heading]}}
                             </span>
-                        </th>
+                        </td>
                     @endforeach
                     @endif
 
-                    <th scope="col" class="text-right" style="background-color: #d2d6de !important;">
+                    <td class="text-right" style="background-color: #d2d6de !important;">
                         <span class="display_currency" data-currency_symbol="false">
                             {{$receipt_details->subtotal_unformatted}}
                         </span>
-                    </th>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -697,16 +691,16 @@
 
 <div class="row invoice-info " style="page-break-inside: avoid !important">
     <div class="col-md-6 invoice-col width-50">
-        <table role="presentation" class="table table-slim">
+        <div class="table table-slim">
             @if(!empty($receipt_details->payments))
                 @foreach($receipt_details->payments as $payment)
-                    <tr>
-                        <td>{{$payment['method']}}</td>
-                        <td>{{$payment['amount']}}</td>
-                    </tr>
+                    <div style="display: flex;">
+                        <span style="width: 50%;">{{$payment['method']}}</span>
+                        <span class="text-right" style="width: 50%;">{{$payment['amount']}}</span>
+                    </div>
                 @endforeach
             @endif
-        </table>
+        </div>
         <b class="pull-left">@lang('lang_v1.authorized_signatory')</b>
     </div>
 
@@ -921,7 +915,5 @@
         @endif
     </div>
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+    </div>
+</div>

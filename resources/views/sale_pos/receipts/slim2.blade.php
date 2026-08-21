@@ -23,8 +23,13 @@
                     @endif
 
                     <!-- business information here -->
-                    @if (empty($receipt_details->logo) && !empty($receipt_details->display_name))
-                        <span class="headings"> {{$receipt_details->display_name}} </span>
+                    @php
+                        $receipt_name = !empty($receipt_details->receipt_location_name)
+                            ? $receipt_details->receipt_location_name
+                            : $receipt_details->business_name;
+                    @endphp
+                    @if (empty($receipt_details->logo) && !empty($receipt_name))
+                        <span class="headings"> {{$receipt_name}} </span>
                         <br />
                     @endif
 
