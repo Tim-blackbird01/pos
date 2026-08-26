@@ -970,12 +970,39 @@
         </div>
 
         <div class="col-sm-12">
-          <div class="form-group">
-            {!! Form::label('footer_text', __('invoice.footer_text') . ':' ) !!}
-              {!! Form::textarea('footer_text', null, ['class' => 'form-control',
-              'placeholder' => __('invoice.footer_text'), 'rows' => 3]); !!}
-          </div>
-        </div>
+		  <h4>Footer, eTIMS & receipt display settings</h4>
+		</div>
+		<div class="col-sm-3">
+		  <div class="form-group"><div class="checkbox"><label>
+			{!! Form::checkbox('common_settings[show_footer]', 1, true, ['class' => 'input-icheck']); !!} Show footer
+		  </label><p class="help-block">Enter the footer message in the field below.</p></div></div>
+		</div>
+		<div class="col-sm-3">
+		  <div class="form-group"><div class="checkbox"><label>
+			{!! Form::checkbox('common_settings[show_etims_details]', 1, false, ['class' => 'input-icheck']); !!} Show eTIMS details
+		  </label></div></div>
+		</div>
+		<div class="col-sm-6">
+		  <div class="form-group">
+			{!! Form::label('etims_details_label', 'eTIMS heading:') !!}
+			{!! Form::text('common_settings[etims_details_label]', null, ['class' => 'form-control', 'placeholder' => 'eTIMS details']); !!}
+		  </div>
+		</div>
+		<div class="col-sm-12">
+		  <div class="form-group"><label>eTIMS fields</label><br>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'receipt_number', false, ['class' => 'input-icheck']); !!} Receipt number</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'receipt_signature', false, ['class' => 'input-icheck']); !!} Signature</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'internal_data', false, ['class' => 'input-icheck']); !!} Internal data</label>
+			<label class="checkbox-inline">{!! Form::checkbox('common_settings[etims_fields][]', 'sdc_datetime', false, ['class' => 'input-icheck']); !!} SDC date/time</label>
+		  </div>
+		</div>
+		<div class="col-sm-12"><label>Footer lines</label><p class="help-block">Each filled line is printed in this order. Leave a line blank to hide it.</p></div>
+		@for($footer_line_index = 0; $footer_line_index < 4; $footer_line_index++)
+			<div class="col-sm-3"><div class="form-group">
+				{!! Form::label('footer_line_'.$footer_line_index, 'Footer line '.($footer_line_index + 1).':') !!}
+				{!! Form::text('common_settings[footer_lines]['.$footer_line_index.']', null, ['class' => 'form-control', 'placeholder' => 'Footer text']); !!}
+			</div></div>
+		@endfor
         <div class="col-sm-6">
           <div class="form-group">
             <br>

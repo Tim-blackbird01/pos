@@ -8,7 +8,9 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('business', function (Blueprint $table) {
-            $table->json('etims_settings')->nullable()->after('email_settings');
+            // The Business model stores this as an encrypted array, so the
+            // database must accept the encrypted string rather than JSON.
+            $table->longText('etims_settings')->nullable()->after('email_settings');
         });
     }
 

@@ -347,7 +347,7 @@ class BusinessUtil extends Util
     {
         $layout = null;
         if (! empty($layout_id)) {
-            $layout = InvoiceLayout::find($layout_id);
+            $layout = InvoiceLayout::where('business_id', $business_id)->find($layout_id);
         }
 
         //If layout is not found (deleted) then get the default layout for the business

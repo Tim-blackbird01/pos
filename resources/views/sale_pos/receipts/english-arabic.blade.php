@@ -3,9 +3,9 @@
     <div class="row">
         <div class="col-xs-6">
             @if(!empty($receipt_details->letter_head))
-                <img style="max-height: 80px; width: auto;" src="{{$receipt_details->letter_head}}" class="img img-responsive center-block">
+                <img style="max-height: 80px; width: auto;" src="{{$receipt_details->letter_head}}" alt="Business letterhead" class="img img-responsive center-block">
             @elseif(!empty($receipt_details->logo))
-                <img style="max-height: 80px; width: auto;" src="{{$receipt_details->logo}}" class="img img-responsive center-block">
+                <img style="max-height: 80px; width: auto;" src="{{$receipt_details->logo}}" alt="Business logo" class="img img-responsive center-block">
             @endif
         </div>
         <div class="col-xs-6 text-center">
@@ -14,8 +14,8 @@
             @endif
             @if(!empty($receipt_details->address))
                 <div><b>{{$receipt_details->display_name}}</b>
-				{!! $receipt_details->customer_info_address !!}
-			</div>
+                {!! $receipt_details->customer_info_address !!}
+            </div>
             @endif
             @if(!empty($receipt_details->contact))
                 <div >{{$receipt_details->contact}}</div>
@@ -46,6 +46,9 @@
 <div class="row">
     <div class="col-xs-12">
         <table class="table customer-info-table" style="width: 98%; font-size: 12px;">
+            <thead class="sr-only">
+                <tr><th scope="col" colspan="6">Customer information</th></tr>
+            </thead>
             <tbody>
                 <tr style="background: #2d2360;">
                     <td style="padding: 5px; font-weight: bold; width: 15%; text-align: right !important;">CUS ID:</td>
@@ -158,8 +161,8 @@
                     </td>
                     <td class="print-red" style=" text-align: left;">
                         {{$line['name']}} {{$line['product_variation']}} {{$line['variation']}}
-                        @if(!empty($line['sub_sku'])), {{$line['sub_sku']}} @endif 
-                        @if(!empty($line['brand'])), {{$line['brand']}} @endif 
+                        @if(!empty($line['sub_sku'])), {{$line['sub_sku']}} @endif
+                        @if(!empty($line['brand'])), {{$line['brand']}} @endif
                         @if(!empty($line['cat_code'])), {{$line['cat_code']}}@endif
                         @if(!empty($line['product_custom_fields'])), {{$line['product_custom_fields']}} @endif
                         @if(!empty($line['product_description']))
@@ -188,16 +191,16 @@
 <!-- TOTAL QUANTITY & TOTAL ITEMS Row -->
 <div class="row">
     <div class="col-xs-12" style="font-size: 12px;">
-        <strong>TOTAL QUANTITY:</strong> 
+        <strong>TOTAL QUANTITY:</strong>
         <span class="print-red" >
             @if(!empty($receipt_details->total_quantity))
                 {{$receipt_details->total_quantity}}
             @endif
         </span>
         &nbsp;&nbsp;&nbsp;
-        <strong>TOTAL ITEMS:</strong> 
+        <strong>TOTAL ITEMS:</strong>
         <span class="print-red" >
-				{{ count($receipt_details->lines) }}
+                {{ count($receipt_details->lines) }}
         </span>
     </div>
 </div>
@@ -206,19 +209,25 @@
 <div class="row">
     <div class="col-xs-12">
         <table style="width:98%; border-collapse: collapse;">
+            <thead class="sr-only">
+                <tr>
+                    <th scope="col">Notes and payment reference</th>
+                    <th scope="col">Receipt totals</th>
+                </tr>
+            </thead>
             <tr>
                 <td style="width:40%; vertical-align:top;">
                     <!-- Left side: notes, payment reference, etc. -->
                     <div style="font-size: 12px;">
                         <div>
                             <strong >Sell Note</strong><br>
-							@if(!empty($receipt_details->additional_notes))
-								<div class="print-red">
-									{!! $receipt_details->additional_notes !!}
-								</div>
-							@endif
+                            @if(!empty($receipt_details->additional_notes))
+                                <div class="print-red">
+                                    {!! $receipt_details->additional_notes !!}
+                                </div>
+                            @endif
                         </div>
-                        
+
                         <div style="margin-top: 15px;">
                             <strong>PAYMENT REFERENCE:</strong>
                             <span >
@@ -229,10 +238,10 @@
                                 @endif
                             </span>
                         </div>
-                        
+
                         <div>
                             <strong>AMOUNT IN WORDS</strong>
-							<br>
+                            <br>
                         <span>
                             @if(!empty($receipt_details->total_unformatted))
                                 {{ app(\App\Utils\TransactionUtil::class)->numberToCurrencyWords($receipt_details->total_unformatted, 'riyal', 'halala', 'en') }}
@@ -241,7 +250,7 @@
                         <br>
                         <span>
                             @if(!empty($receipt_details->total_unformatted))
-							{{ app(\App\Utils\TransactionUtil::class)->numberToCurrencyWords($receipt_details->total_unformatted, 'ريالًا و', ' هللة فقط', 'ar'); }}
+                            {{ app(\App\Utils\TransactionUtil::class)->numberToCurrencyWords($receipt_details->total_unformatted, 'ريالًا و', ' هللة فقط', 'ar'); }}
                             @endif
                         </span>
                         </div>
@@ -251,6 +260,13 @@
                     <!-- Right side: totals, tax, etc. -->
                     <div class="table-responsive totals-section">
                         <table class="table table-bordered" style="width: 98%; font-size: 11px; margin-bottom: 2px;">
+                            <thead class="sr-only">
+                                <tr>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Arabic description</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
                                     <td  style="font-weight: bold; text-align: right; width: 30%;">Gross:</td>
@@ -261,28 +277,28 @@
                                     </td>
                                     <td style="font-weight: bold; direction: rtl; text-align: right; width: 45%;">المبلغ الكلي:</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td style="font-weight: bold; text-align: right;">Discount:</td>
                                     <td class="print-red" style="text-align: center;">
                                         @if(!empty($receipt_details->discount))
                                             {{$receipt_details->discount}}
-										@else
-											@format_currency(0)
+                                        @else
+                                            @format_currency(0)
                                         @endif
                                     </td>
                                     <td style="font-weight: bold; direction: rtl; text-align: right;">الخصم:</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td style="font-weight: bold; text-align: right;">After Discount:</td>
                                     <td class="print-red" style="text-align: center;">
-										@format_currency($receipt_details->subtotal_unformatted - $receipt_details->discount_amount_unformatted)
+                                        @format_currency($receipt_details->subtotal_unformatted - $receipt_details->discount_amount_unformatted)
                                     </td>
                                     <td style="font-weight: bold; direction: rtl; text-align: right;">المبلغ بعد الخصم:</td>
                                 </tr>
-                            
-								@php
+
+                                @php
                                     // Calculate total VAT (sum of all line taxes)
                                     $total_vat = 0;
                                     if (!empty($receipt_details->lines)) {
@@ -303,15 +319,15 @@
                                 <tr>
                                     <td style="font-weight: bold; text-align: right;">Order Tax:</td>
                                     <td class="print-red" style=" text-align: center;">
-										@if(!empty($receipt_details->tax))
-                                            {{ $receipt_details->tax }} 
-										@else
-											@format_currency(0)
-										@endif
+                                        @if(!empty($receipt_details->tax))
+                                            {{ $receipt_details->tax }}
+                                        @else
+                                            @format_currency(0)
+                                        @endif
                                     </td>
                                     <td style="font-weight: bold; direction: rtl; text-align: right;">ضريبة الطلب:</td>
                                 </tr>
-								<tr class="bg-net-amount">
+                                <tr class="bg-net-amount">
                                     <td style=" font-weight: bold; text-align: right;">
                                         NET AMOUNT
                                     </td>
@@ -322,9 +338,9 @@
                                         المبلغ الصافي (مجموع كل شيء):
                                     </td>
                                 </tr>
-                                
+
                                 <tr>
-                                    <td style=" font-weight: bold; text-align: right;">Paid Amount:</td>
+                                    <td style=" font-weight: bold; text-align: right;">Amount Received:</td>
                                     <td class="print-red" style=" text-align: center;">
                                         @if(!empty($receipt_details->total_paid))
                                             {{$receipt_details->total_paid}}
@@ -332,19 +348,19 @@
                                     </td>
                                     <td style=" font-weight: bold; direction: rtl; text-align: right;">المبلغ المدفوع:</td>
                                 </tr>
-                                
+
                                 <tr>
-                                    <td style=" font-weight: bold; text-align: right;">Due Amount:</td>
+                                    <td style=" font-weight: bold; text-align: right;">Balance:</td>
                                     <td class="print-red" style="text-align: center;">
                                         @if(!empty($receipt_details->total_due))
                                             {{$receipt_details->total_due}}
-										@else
-											@format_currency(0)
+                                        @else
+                                            @format_currency(0)
                                         @endif
                                     </td>
                                     <td style="font-weight: bold; direction: rtl; text-align: right;">المبلغ المستحق:</td>
                                 </tr>
-                               
+
                             </tbody>
                         </table>
                     </div>
@@ -371,7 +387,7 @@
     </div>
     <div class="col-xs-3 text-center">
         @if($receipt_details->show_qr_code && !empty($receipt_details->qr_code_text))
-            <img class="center-block" style="margin: 0 auto; width: 180px; height: 180px;" src="data:image/png;base64,{{DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 4, 4)}}" alt="QR Code">
+            <img class="center-block" style="margin: 0 auto; width: 180px; height: 180px;" src="data:image/png;base64,{{DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 4, 4)}}" alt="Receipt QR code">
         @endif
     </div>
 </div>
@@ -415,7 +431,7 @@
     .product-table-header th:first-child {
         border-top-left-radius: 12px !important;
     }
-	.product-table-header th:last-child {
+    .product-table-header th:last-child {
         border-top-right-radius: 12px !important;
     }
     .product-table-header th span[style*="direction: rtl"] {
@@ -425,7 +441,7 @@
         color: #c00 !important;
     }
 
-   
+
     /* .bg-net-amount:first-child {
         border-top-left-radius: 12px !important;
         border-bottom-left-radius: 12px !important;
@@ -435,7 +451,7 @@
         border-bottom-right-radius: 12px !important;
     }
      */
-   
+
     .customer-info-table {
         border-radius: 12px !important;
         border-collapse: separate !important;

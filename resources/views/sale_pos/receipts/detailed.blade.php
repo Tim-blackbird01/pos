@@ -1,7 +1,5 @@
-<table style="width:100%;">
-    <thead>
-        <tr>
-            <td>
+<div style="width:100%;">
+    <div class="text-right">
                 <p class="text-right">
                     <small class="text-muted-imp">
                         @if (!empty($receipt_details->invoice_no_prefix))
@@ -11,13 +9,9 @@
                         {{ $receipt_details->invoice_no }}
                     </small>
                 </p>
-            </td>
-        </tr>
-    </thead>
+    </div>
 
-    <tbody>
-        <tr>
-            <td class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
+    <div class="text-center" style="line-height: 15px !important; padding-bottom: 10px !important">
                 @if (empty($receipt_details->letter_head))
                     @if (!empty($receipt_details->header_text))
                         {!! $receipt_details->header_text !!}
@@ -49,7 +43,7 @@
         @if (!empty($receipt_details->letter_head))
             <tr>
                 <td>
-                    <img style="width: 100%;margin-bottom: 10px;" src="{{ $receipt_details->letter_head }}">
+                    <img style="width: 100%;margin-bottom: 10px;" src="{{ $receipt_details->letter_head }}" alt="Business letterhead">
                 </td>
             </tr>
         @endif
@@ -98,7 +92,7 @@
                                 {{ $receipt_details->all_due }}
                             </div>
                         @endif
-                        
+
 
                         <!-- Total Paid-->
                         @if (!empty($receipt_details->total_paid))
@@ -227,7 +221,7 @@
                         @if (empty($receipt_details->letter_head))
                             <!-- Logo -->
                             @if (!empty($receipt_details->logo))
-                                <img style="max-height: 120px; width: auto;" src="{{ $receipt_details->logo }}"
+                                <img style="max-height: 120px; width: auto;" src="{{ $receipt_details->logo }}" alt="Business logo"
                                     class="img center-block">
                                 <br />
                             @endif
@@ -404,9 +398,9 @@
                             <thead>
                                 <tr style="background-color: #357ca5 !important; color: white !important; font-size: 15px !important"
                                     class="table-no-side-cell-border table-no-top-cell-border text-center">
-                                    <td
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 3% !important">
-                                        #</td>
+                                        #</th>
 
                                     @php
                                         $p_width = 20;
@@ -416,45 +410,45 @@
                                             $p_width = 30;
                                         @endphp
                                     @endif
-                                    <td
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important; width: {{ $p_width }}% !important">
                                         {{ $receipt_details->table_product_label }}
-                                    </td>
+                                    </th>
 
                                     @if ($receipt_details->show_cat_code == 1)
-                                        <td
+                                        <th scope="col"
                                             style="background-color: #357ca5 !important; color: white !important; width: 10% !important;">
-                                            {{ $receipt_details->cat_code_label }}</td>
+                                            {{ $receipt_details->cat_code_label }}</th>
                                     @endif
 
-                                    <td
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->table_qty_label }}
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->table_unit_price_label }}
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->discounted_unit_price_label }}
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 8% !important;">
                                         {{ $receipt_details->line_discount_label }}
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->line_tax_label }}
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->table_unit_price_label }} (@lang('product.inc_of_tax'))
-                                    </td>
-                                    <td
+                                    </th>
+                                    <th scope="col"
                                         style="background-color: #357ca5 !important; color: white !important;width: 10% !important;">
                                         {{ $receipt_details->table_subtotal_label }}
-                                    </td>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -465,7 +459,7 @@
                                         </td>
                                         <td>
                                             @if (!empty($line['image']))
-                                                <img src="{{ $line['image'] }}" alt="Image" width="50"
+                                                <img src="{{ $line['image'] }}" alt="Product" width="50"
                                                     style="float: left; margin-right: 8px;">
                                             @endif
                                             {{ $line['name'] }} {{ $line['product_variation'] }}
@@ -634,17 +628,16 @@
 
                 <div class="row invoice-info " style="page-break-inside: avoid !important">
                     <div class="col-md-6 invoice-col width-50">
-                        <table class="table table-slim">
+                        <div class="table table-slim">
                             @if (!empty($receipt_details->payments))
                                 @foreach ($receipt_details->payments as $payment)
-                                    <tr>
-                                        <td>{{ $payment['method'] }}</td>
-                                        <td>{{ $payment['amount'] }}</td>
-                                        <td>{{ $payment['date'] }}</td>
-                                    </tr>
+                                    <div style="display: flex;">
+                                        <span style="width: 50%;">{{ $payment['method'] }}</span>
+                                        <span class="text-right" style="width: 50%;">{{ $payment['amount'] }}</span>
+                                    </div>
                                 @endforeach
                             @endif
-                        </table>
+                        </div>
 
                         <b class="pull-left">@lang('lang_v1.authorized_signatory')</b>
                     </div>
@@ -856,29 +849,29 @@
                             {{-- Barcode --}}
                             @if ($receipt_details->show_barcode)
                                 <img class="center-block"
-                                    src="data:image/png;base64,{{ DNS1D::getBarcodePNG($receipt_details->invoice_no, 'C128', 2, 30, [39, 48, 54], true) }}">
+                                    src="data:image/png;base64,{{ DNS1D::getBarcodePNG($receipt_details->invoice_no, 'C128', 2, 30, [39, 48, 54], true) }}"
+                                    alt="Barcode for invoice {{ $receipt_details->invoice_no }}">
                             @endif
 
                             @if ($receipt_details->show_qr_code && !empty($receipt_details->qr_code_text))
                                 <img class="center-block mt-5"
-                                    src="data:image/png;base64,{{ DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 3, 3, [39, 48, 54]) }}">
+                                    src="data:image/png;base64,{{ DNS2D::getBarcodePNG($receipt_details->qr_code_text, 'QRCODE', 3, 3, [39, 48, 54]) }}"
+                                    alt="Receipt QR code">
                             @endif
                         </div>
                     @endif
                 </div>
 
-            </td>
-        </tr>
-    </tbody>
-</table>
+    </div>
+</div>
 
 <style type="text/css">
     body {
         color: #000000;
     }
-	
+
 @media print {
-  
+
     tr, td {
         page-break-inside: auto !important; /* Let rows break naturally */
         page-break-after: auto;
